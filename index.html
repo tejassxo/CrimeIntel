@@ -25,87 +25,256 @@
 </head>
 <body class="bg-slate-100 text-slate-900 antialiased font-sans">
 
-  <!-- Top Announcement Bar -->
-  <div class="bg-slate-900 text-slate-200 text-xs py-2.5 px-6 flex justify-between items-center border-b border-slate-800 shadow-sm">
-    <div class="flex items-center gap-3">
-      <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-      <span class="font-bold text-white tracking-wide uppercase">NATIONAL CYBER THREAT ASSESSMENT (2020–2026 YTD)</span>
-      <span class="opacity-40">|</span>
-      <span class="text-amber-300 font-semibold"><i class="fa-solid fa-graduation-cap mr-1"></i> CEO Internship Briefing Report</span>
+  <!-- Top Announcement & Live Threat Ticker Bar -->
+  <div class="bg-slate-950 text-slate-200 text-xs py-2.5 px-8 flex items-center justify-between border-b border-slate-800 shadow-md font-mono z-50 gap-4">
+    
+    <!-- Left Badge -->
+    <div class="flex items-center gap-3 shrink-0">
+      <span class="relative flex h-2.5 w-2.5">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+      </span>
+      <span class="font-extrabold text-white tracking-wider uppercase text-[11px] font-outfit">NATIONAL CYBER THREAT ASSESSMENT (2020–2026 YTD)</span>
     </div>
-    <div class="flex items-center gap-6 text-xs text-slate-300 font-mono">
-      <span><i class="fa-solid fa-user-gear text-amber-400 mr-1.5"></i> Researched & Developed by <a href="https://github.com/tejassxo" target="_blank" class="underline text-amber-300 hover:text-white font-bold">M Tejas Yadav (@tejassxo)</a></span>
-      <span><i class="fa-solid fa-earth-asia text-emerald-400 mr-1.5"></i> ISRO Bhuvan Integration</span>
+    
+    <!-- Center Marquee Ticker -->
+    <div class="flex-1 max-w-3xl mx-4 overflow-hidden relative text-[11px] text-slate-300 hidden md:block">
+      <div class="animate-ticker space-x-12">
+        <span><strong class="text-amber-400">⚡ LIVE ALERT:</strong> MHA 1930 Helpline Freezes ₹12,958 Cr Funds</span>
+        <span><strong class="text-emerald-400">15 Lakh+</strong> Malicious SIMs/IMEIs Severed</span>
+        <span><strong class="text-rose-400">#1 THREAT:</strong> Digital Arrest Extortion (SE Asia Syndicates)</span>
+        <span><strong class="text-sky-400">SANCTION:</strong> SEBI ₹1 Cr Penalty Imposed on CDSL</span>
+        <span><strong class="text-amber-400">⚡ LIVE ALERT:</strong> MHA 1930 Helpline Freezes ₹12,958 Cr Funds</span>
+      </div>
+    </div>
+
+    <!-- Right Attribution -->
+    <div class="flex items-center gap-4 text-[11px] text-slate-300 shrink-0 font-mono">
+      <span><i class="fa-solid fa-code-branch text-amber-400 mr-1.5"></i> Researched & Developed by <a href="https://github.com/tejassxo" target="_blank" class="underline text-amber-300 hover:text-white font-bold">M Tejas Yadav (@tejassxo)</a></span>
     </div>
   </div>
 
-  <!-- Header with Theme Switcher & Segmented Controls -->
-  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-300 shadow-sm theme-card">
-    <div class="max-w-7xl mx-auto px-6 py-3.5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+  <!-- Main Executive Header Bar -->
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-slate-950/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/80 shadow-md theme-card transition-all duration-300">
+    <div class="max-w-[1700px] mx-auto px-8 py-3.5 flex items-center justify-between gap-6">
       
-      <!-- Brand Title -->
-      <div class="flex items-center gap-3.5">
-        <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-extrabold text-xl shadow-md font-outfit">
+      <!-- Brand Emblem & Title -->
+      <div class="flex items-center gap-4 shrink-0">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-blue-600 via-indigo-600 to-emerald-500 text-white flex items-center justify-center font-extrabold text-xl shadow-lg shadow-blue-500/25 border border-white/20 font-outfit shrink-0">
           IN
         </div>
         <div>
-          <h1 class="text-xl font-extrabold font-outfit tracking-tight flex items-center gap-2">
+          <h1 class="text-xl font-extrabold font-outfit tracking-tight flex items-center gap-2.5 text-slate-900 dark:text-white">
             Cybercrime Intelligence Portal
-            <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-700">ISRO Bhuvan Maps</span>
+            <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 uppercase tracking-wide">ISRO Bhuvan Geo-Spatial</span>
           </h1>
-          <p class="text-xs font-medium opacity-75">Master Threat Assessment & National Incident Repository • Researched & Developed by <a href="https://github.com/tejassxo" target="_blank" class="font-bold text-blue-600 dark:text-blue-400 hover:underline">M Tejas Yadav</a></p>
+          <p class="text-xs font-semibold text-slate-500 dark:text-slate-400">Master Threat Assessment & National Incident Repository • Developed by <a href="https://github.com/tejassxo" target="_blank" class="font-bold text-blue-600 dark:text-blue-400 hover:underline">M Tejas Yadav (@tejassxo)</a></p>
         </div>
       </div>
 
-      <!-- Theme Switcher & Navigation Controls -->
-      <div class="flex items-center gap-3">
-        <!-- Segmented Controls -->
-        <div class="segmented-control">
-          <button class="segmented-btn active" data-tab="overview"><i class="fa-solid fa-chart-pie mr-1.5"></i>Overview</button>
-          <button class="segmented-btn" data-tab="map"><i class="fa-solid fa-map-location-dot mr-1.5"></i>ISRO Bhuvan Map</button>
-          <button class="segmented-btn" data-tab="sectors"><i class="fa-solid fa-building-shield mr-1.5"></i>Sectors</button>
-          <button class="segmented-btn" data-tab="fraud"><i class="fa-solid fa-user-ninja mr-1.5"></i>Digital Arrest</button>
-          <button class="segmented-btn" data-tab="timeline"><i class="fa-solid fa-timeline mr-1.5"></i>Timeline</button>
-          <button class="segmented-btn" data-tab="mitre"><i class="fa-solid fa-network-wired mr-1.5"></i>MITRE</button>
-          <button class="segmented-btn" data-tab="repository"><i class="fa-solid fa-table-list mr-1.5"></i>Data Grid</button>
+      <!-- Navigation & Controls -->
+      <div class="flex items-center gap-4 shrink-0">
+        
+        <!-- Single-Row Floating Segmented Navbar -->
+        <div class="segmented-control no-scrollbar shadow-inner">
+          <button class="segmented-btn active" data-tab="landing"><i class="fa-solid fa-house"></i><span>Home Hero</span></button>
+          <button class="segmented-btn" data-tab="overview"><i class="fa-solid fa-chart-pie"></i><span>Overview</span></button>
+          <button class="segmented-btn" data-tab="map"><i class="fa-solid fa-map-location-dot"></i><span>ISRO Map</span></button>
+          <button class="segmented-btn" data-tab="sectors"><i class="fa-solid fa-building-shield"></i><span>Sectors</span></button>
+          <button class="segmented-btn" data-tab="fraud"><i class="fa-solid fa-user-ninja"></i><span>Digital Arrest</span></button>
+          <button class="segmented-btn" data-tab="timeline"><i class="fa-solid fa-timeline"></i><span>Timeline</span></button>
+          <button class="segmented-btn" data-tab="mitre"><i class="fa-solid fa-network-wired"></i><span>MITRE</span></button>
+          <button class="segmented-btn" data-tab="repository"><i class="fa-solid fa-table-list"></i><span>Data Grid</span></button>
         </div>
 
-        <!-- Dark / Light Theme Toggle Button -->
-        <button id="theme-toggle-btn" class="theme-toggle-btn shadow-sm" title="Toggle Light/Dark Executive Theme">
-          <i class="fa-solid fa-moon text-amber-500" id="theme-icon"></i>
-          <span id="theme-text">Executive Dark</span>
-        </button>
+        <!-- Quick Actions & Theme Switcher -->
+        <div class="flex items-center gap-3">
+          <button id="theme-toggle-btn" class="theme-toggle-btn shadow-sm hover:border-amber-500/50" title="Toggle Light/Dark Executive Theme">
+            <i class="fa-solid fa-moon text-amber-500" id="theme-icon"></i>
+            <span id="theme-text">Executive Dark</span>
+          </button>
+
+          <button class="hero-launch-btn hidden xl:flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-extrabold text-xs shadow-lg hover:shadow-blue-500/25 transition hover:scale-105" data-target-tab="map">
+            <i class="fa-solid fa-earth-asia text-emerald-300 animate-pulse"></i>
+            <span>Live Map</span>
+          </button>
+        </div>
+
       </div>
 
     </div>
   </header>
 
-  <!-- Main Content Layout -->
-  <main class="max-w-7xl mx-auto px-6 py-8 space-y-8">
+  <!-- Main Content Area -->
+  <main class="max-w-[1700px] mx-auto px-8 py-8 space-y-8">
 
     <!-- Official Data Source & URL Disclaimer Banner -->
-    <div class="border border-blue-300 dark:border-blue-700 rounded-2xl p-4 flex items-start gap-4 shadow-sm theme-subtle">
-      <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+    <div class="border border-blue-300 dark:border-blue-700/60 rounded-2xl p-4 flex items-start gap-4 shadow-sm theme-subtle relative overflow-hidden">
+      <div class="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 mt-0.5 font-bold border border-blue-500/20">
         <i class="fa-solid fa-satellite"></i>
       </div>
       <div class="flex-1 text-xs leading-relaxed space-y-1">
         <strong class="font-bold block text-sm">ISRO Bhuvan Geo-Spatial Integration & Official Source Disclaimers:</strong>
         <p class="font-medium opacity-90">
-          The map below renders <strong>India state boundaries exclusively</strong> using ISRO Bhuvan geospatial reference styling. Cybercrime risk levels are choropleth-colored based on official MHA I4C NCRP & CERT-In disclosures:
+          The map engine renders <strong>India state boundaries exclusively</strong> using ISRO Bhuvan geospatial reference styling. Cybercrime risk levels are choropleth-colored based on official MHA I4C NCRP & CERT-In disclosures:
         </p>
         <div class="flex flex-wrap gap-x-4 gap-y-1 text-[11px] font-bold text-blue-600 dark:text-blue-400 pt-1">
-          <a href="https://bhuvan.nrsc.gov.in/" target="_blank" class="hover:underline flex items-center gap-1"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> ISRO Bhuvan Portal (bhuvan.nrsc.gov.in)</a>
-          <a href="https://cybercrime.gov.in/" target="_blank" class="hover:underline flex items-center gap-1"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> MHA NCRP Portal (cybercrime.gov.in)</a>
-          <a href="https://www.cert-in.org.in/" target="_blank" class="hover:underline flex items-center gap-1"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> CERT-In Advisories (cert-in.org.in)</a>
-          <a href="https://ncrb.gov.in/" target="_blank" class="hover:underline flex items-center gap-1"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> NCRB Crime in India (ncrb.gov.in)</a>
+          <a href="https://bhuvan.nrsc.gov.in/" target="_blank" class="hover:underline flex items-center gap-1"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> ISRO Bhuvan Portal</a>
+          <a href="https://cybercrime.gov.in/" target="_blank" class="hover:underline flex items-center gap-1"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> MHA NCRP Portal</a>
+          <a href="https://www.cert-in.org.in/" target="_blank" class="hover:underline flex items-center gap-1"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> CERT-In Advisories</a>
+          <a href="https://ncrb.gov.in/" target="_blank" class="hover:underline flex items-center gap-1"><i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> NCRB Crime in India</a>
         </div>
       </div>
     </div>
 
     <!-- =========================================================================
+         TAB 0: LANDING HERO SHOWCASE
+         ========================================================================= -->
+    <div id="tab-landing" class="tab-panel active space-y-10">
+
+      <!-- Hero Header Showcase Banner -->
+      <div class="relative rounded-3xl p-8 md:p-12 overflow-hidden border border-slate-800 bg-slate-950 text-white shadow-2xl hero-grid-pattern">
+        
+        <!-- Ambient Radial Halos -->
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-amber-500/15 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 space-y-8">
+          
+          <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-700 text-xs font-semibold text-amber-400 shadow-inner">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            <span>National Threat Assessment & Repository (2020–2026 YTD)</span>
+          </div>
+
+          <div class="max-w-4xl space-y-4">
+            <h1 class="text-3xl md:text-5xl font-extrabold font-outfit tracking-tight leading-tight">
+              India Cybercrime Intelligence Initiative
+              <span class="block text-2xl md:text-4xl gradient-text-blue font-bold mt-1">Master Cyber Threat Portal & ISRO Bhuvan Spatial Risk Engine</span>
+            </h1>
+            <p class="text-sm md:text-base text-slate-300 leading-relaxed max-w-3xl">
+              Synthesizing <strong>95.42+ Lakh citizen NCRP complaints</strong>, <strong>₹68,500 Crore in reported financial losses</strong>, and <strong>1.33+ Crore CERT-In technical security incidents</strong> across all 36 States and Union Territories of India.
+            </p>
+          </div>
+
+          <!-- Hero Connected Dynamic Stat Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+            
+            <div class="glass-card p-5 rounded-2xl space-y-2 border border-slate-800 bg-slate-900/80">
+              <div class="flex items-center justify-between text-xs font-bold text-amber-400 uppercase tracking-wider">
+                <span>Cumulative Loss</span>
+                <i class="fa-solid fa-indian-rupee-sign text-amber-400/80 text-sm"></i>
+              </div>
+              <div class="text-2xl md:text-3xl font-extrabold text-white font-outfit">₹<span class="count-up" data-target="68500">0</span> Cr</div>
+              <p class="text-[11px] text-slate-400 leading-tight">Direct economic damage across reported cases (2020–2026 YTD)</p>
+            </div>
+
+            <div class="glass-card p-5 rounded-2xl space-y-2 border border-slate-800 bg-slate-900/80">
+              <div class="flex items-center justify-between text-xs font-bold text-emerald-400 uppercase tracking-wider">
+                <span>Citizen Funds Frozen</span>
+                <i class="fa-solid fa-building-columns text-emerald-400/80 text-sm"></i>
+              </div>
+              <div class="text-2xl md:text-3xl font-extrabold text-white font-outfit">₹<span class="count-up" data-target="12958">0</span> Cr</div>
+              <p class="text-[11px] text-slate-400 leading-tight">Saved via MHA I4C Helpline 1930 real-time bank lien enforcement</p>
+            </div>
+
+            <div class="glass-card p-5 rounded-2xl space-y-2 border border-slate-800 bg-slate-900/80">
+              <div class="flex items-center justify-between text-xs font-bold text-sky-400 uppercase tracking-wider">
+                <span>NCRP Complaints</span>
+                <i class="fa-solid fa-file-shield text-sky-400/80 text-sm"></i>
+              </div>
+              <div class="text-2xl md:text-3xl font-extrabold text-white font-outfit"><span class="count-up" data-target="9542000">0</span></div>
+              <p class="text-[11px] text-slate-400 leading-tight">Verified financial cybercrime complaints registered on MHA portal</p>
+            </div>
+
+            <div class="glass-card p-5 rounded-2xl space-y-2 border border-slate-800 bg-slate-900/80">
+              <div class="flex items-center justify-between text-xs font-bold text-rose-400 uppercase tracking-wider">
+                <span>Infrastructure Severed</span>
+                <i class="fa-solid fa-sim-card text-rose-400/80 text-sm"></i>
+              </div>
+              <div class="text-2xl md:text-3xl font-extrabold text-white font-outfit">15.0+ Lakh</div>
+              <p class="text-[11px] text-slate-400 leading-tight">Malicious SIM cards & IMEI handsets blocked by MHA Telecom Security</p>
+            </div>
+
+          </div>
+
+          <!-- Hero Action CTAs -->
+          <div class="flex flex-wrap items-center gap-4 pt-4">
+            <button class="hero-launch-btn px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-sm shadow-xl hover:from-blue-500 hover:to-indigo-500 transition-all transform hover:-translate-y-0.5 flex items-center gap-2.5" data-target-tab="map">
+              <i class="fa-solid fa-earth-asia text-emerald-300 animate-pulse"></i>
+              <span>Launch ISRO Bhuvan Spatial Risk Engine</span>
+            </button>
+            
+            <button class="hero-pdf-btn px-6 py-3.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-200 font-bold text-sm hover:bg-slate-800 hover:text-white transition flex items-center gap-2.5 shadow-md">
+              <i class="fa-solid fa-file-pdf text-rose-400"></i>
+              <span>Export CEO Executive Brief (PDF)</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Interactive Feature Spotlight Cards -->
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xl font-bold font-outfit">Core Intelligence Modules</h3>
+          <span class="text-xs font-semibold text-slate-500">Click any card to launch module</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          
+          <div class="glass-card p-6 rounded-2xl space-y-3 cursor-pointer theme-card group border" data-target-tab="map">
+            <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xl font-bold group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-map-location-dot"></i>
+            </div>
+            <h4 class="text-lg font-bold font-outfit group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">ISRO Bhuvan Map</h4>
+            <p class="text-xs opacity-75 leading-relaxed">Spatial risk choropleth covering all 36 States/UTs with vulnerability index rankings and loss breakdown.</p>
+            <div class="text-xs font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1.5 pt-2">
+              <span>Open Geo-Map</span> <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
+            </div>
+          </div>
+
+          <div class="glass-card p-6 rounded-2xl space-y-3 cursor-pointer theme-card group border" data-target-tab="fraud">
+            <div class="w-12 h-12 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xl font-bold group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-user-ninja"></i>
+            </div>
+            <h4 class="text-lg font-bold font-outfit group-hover:text-rose-600 dark:group-hover:text-rose-400 transition-colors">Digital Arrest Spotlight</h4>
+            <p class="text-xs opacity-75 leading-relaxed">4-stage flowchart detailing organized cross-border extortion syndicates operating out of Southeast Asia compounds.</p>
+            <div class="text-xs font-bold text-rose-600 dark:text-rose-400 flex items-center gap-1.5 pt-2">
+              <span>Inspect Flowchart</span> <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
+            </div>
+          </div>
+
+          <div class="glass-card p-6 rounded-2xl space-y-3 cursor-pointer theme-card group border" data-target-tab="mitre">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xl font-bold group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-network-wired"></i>
+            </div>
+            <h4 class="text-lg font-bold font-outfit group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">MITRE ATT&CK Matrix</h4>
+            <p class="text-xs opacity-75 leading-relaxed">Enterprise threat mapping across initial access (T1566 Phishing), credential dumping, and ransomware execution.</p>
+            <div class="text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1.5 pt-2">
+              <span>View Threat Tactics</span> <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
+            </div>
+          </div>
+
+          <div class="glass-card p-6 rounded-2xl space-y-3 cursor-pointer theme-card group border" data-target-tab="repository">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl font-bold group-hover:scale-110 transition-transform">
+              <i class="fa-solid fa-table-list"></i>
+            </div>
+            <h4 class="text-lg font-bold font-outfit group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">Master Data Grid</h4>
+            <p class="text-xs opacity-75 leading-relaxed">Filterable grid of 114 verified OSINT intelligence records with multi-column sorting and instant Excel export.</p>
+            <div class="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 pt-2">
+              <span>Explore Dataset</span> <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- =========================================================================
          TAB 1: EXECUTIVE OVERVIEW
          ========================================================================= -->
-    <div id="tab-overview" class="tab-panel active space-y-6">
+    <div id="tab-overview" class="tab-panel space-y-6">
 
       <!-- CEO Executive Briefing Spotlight Box -->
       <div class="bg-slate-900 text-white p-6 rounded-2xl border border-slate-800 shadow-xl space-y-4">
@@ -116,7 +285,7 @@
             </div>
             <div>
               <h2 class="text-xl font-bold font-outfit text-white">CEO Executive Briefing: National Cyber Threat Summary</h2>
-              <p class="text-xs text-slate-300">2-Minute Strategic Executive Takeaways • Researched & Developed by <a href="https://github.com/tejassxo" target="_blank" class="underline text-amber-300 font-bold">M Tejas Yadav</a></p>
+              <p class="text-xs text-slate-300">2-Minute Strategic Executive Takeaways • Developed by <a href="https://github.com/tejassxo" target="_blank" class="underline text-amber-300 font-bold">M Tejas Yadav (@tejassxo)</a></p>
             </div>
           </div>
           <button id="print-ceo-report-btn" class="px-4 py-2 text-xs font-bold text-slate-900 bg-white hover:bg-slate-100 rounded-xl transition flex items-center gap-2 shadow-md">
@@ -148,305 +317,328 @@
       <!-- Executive KPI Cards -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         
-        <div class="p-5 rounded-2xl border border-slate-300 shadow-sm flex flex-col justify-between theme-card">
-          <div class="flex items-center justify-between opacity-75">
-            <span class="text-xs font-bold tracking-wider uppercase">CERT-In Incidents (2020-2026)</span>
-            <i class="fa-solid fa-shield-virus text-blue-500 text-base"></i>
+        <div class="p-5 rounded-2xl border border-slate-300 dark:border-slate-700 shadow-sm theme-card space-y-2">
+          <div class="text-xs font-bold uppercase tracking-wider opacity-75 flex items-center justify-between">
+            <span>Cumulative Loss (INR)</span>
+            <i class="fa-solid fa-indian-rupee-sign text-amber-500"></i>
           </div>
-          <div class="my-3">
-            <div class="text-3xl font-extrabold font-outfit count-up" data-target="13348374">0</div>
-            <span class="inline-block mt-2 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-700">1.33+ Crore Total Incidents</span>
+          <div class="text-2xl font-extrabold font-outfit text-amber-600 dark:text-amber-400">
+            ₹<span class="count-up" data-target="68500">0</span> Cr
           </div>
-          <p class="text-xs font-medium opacity-75">Source: CERT-In Annual Cyber Security Incidents</p>
+          <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 block"><i class="fa-solid fa-arrow-trend-up mr-1"></i> +12.2x 5-Year Growth Rate</span>
         </div>
 
-        <div class="p-5 rounded-2xl border border-slate-300 shadow-sm flex flex-col justify-between theme-card">
-          <div class="flex items-center justify-between opacity-75">
-            <span class="text-xs font-bold tracking-wider uppercase">NCRP Complaints (2020-2026)</span>
-            <i class="fa-solid fa-file-invoice text-purple-500 text-base"></i>
+        <div class="p-5 rounded-2xl border border-slate-300 dark:border-slate-700 shadow-sm theme-card space-y-2">
+          <div class="text-xs font-bold uppercase tracking-wider opacity-75 flex items-center justify-between">
+            <span>Citizen Funds Saved</span>
+            <i class="fa-solid fa-shield-heart text-emerald-500"></i>
           </div>
-          <div class="my-3">
-            <div class="text-3xl font-extrabold font-outfit count-up" data-target="9542000">0</div>
-            <span class="inline-block mt-2 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-700">95.42 Lakh Citizen Cases</span>
+          <div class="text-2xl font-extrabold font-outfit text-emerald-600 dark:text-emerald-400">
+            ₹<span class="count-up" data-target="12958">0</span> Cr
           </div>
-          <p class="text-xs font-medium opacity-75">Source: MHA I4C NCRP Portal (cybercrime.gov.in)</p>
+          <span class="text-[11px] font-semibold opacity-75 block">Frozen via Helpline 1930</span>
         </div>
 
-        <div class="p-5 rounded-2xl border border-slate-300 shadow-sm flex flex-col justify-between theme-card">
-          <div class="flex items-center justify-between opacity-75">
-            <span class="text-xs font-bold tracking-wider uppercase">Total Financial Loss</span>
-            <i class="fa-solid fa-indian-rupee-sign text-rose-500 text-base"></i>
+        <div class="p-5 rounded-2xl border border-slate-300 dark:border-slate-700 shadow-sm theme-card space-y-2">
+          <div class="text-xs font-bold uppercase tracking-wider opacity-75 flex items-center justify-between">
+            <span>NCRP Complaints</span>
+            <i class="fa-solid fa-headset text-blue-500"></i>
           </div>
-          <div class="my-3">
-            <div class="text-3xl font-extrabold text-rose-600 dark:text-rose-400 font-outfit">₹<span class="count-up" data-target="68500">0</span> Cr</div>
-            <span class="inline-block mt-2 px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-100 dark:bg-rose-950 text-rose-900 dark:text-rose-200 border border-rose-300 dark:border-rose-700">₹68,500 Crore Direct Impact</span>
+          <div class="text-2xl font-extrabold font-outfit text-blue-600 dark:text-blue-400">
+            <span class="count-up" data-target="9542000">0</span>
           </div>
-          <p class="text-xs font-medium opacity-75">Source: Parliamentary Disclosures & Police FIRs</p>
+          <span class="text-[11px] font-semibold opacity-75 block">Verified National Complaints</span>
         </div>
 
-        <div class="p-5 rounded-2xl border border-slate-300 shadow-sm flex flex-col justify-between theme-card">
-          <div class="flex items-center justify-between opacity-75">
-            <span class="text-xs font-bold tracking-wider uppercase">Helpline 1930 Saved</span>
-            <i class="fa-solid fa-hand-holding-dollar text-emerald-500 text-base"></i>
+        <div class="p-5 rounded-2xl border border-slate-300 dark:border-slate-700 shadow-sm theme-card space-y-2">
+          <div class="text-xs font-bold uppercase tracking-wider opacity-75 flex items-center justify-between">
+            <span>CERT-In Incidents</span>
+            <i class="fa-solid fa-bolt text-indigo-500"></i>
           </div>
-          <div class="my-3">
-            <div class="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400 font-outfit">₹<span class="count-up" data-target="12958">0</span> Cr</div>
-            <span class="inline-block mt-2 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-700">₹12,958 Cr Liens Enforced</span>
+          <div class="text-2xl font-extrabold font-outfit text-indigo-600 dark:text-indigo-400">
+            <span class="count-up" data-target="13348374">0</span>
           </div>
-          <p class="text-xs font-medium opacity-75">Source: CFCFRMS Real-time Bank Integration</p>
+          <span class="text-[11px] font-semibold opacity-75 block">Technical Security Probes</span>
         </div>
 
       </div>
 
-      <!-- Charts -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Charts Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        <div class="lg:col-span-8 p-6 rounded-2xl border border-slate-300 shadow-sm space-y-4 theme-card">
+        <!-- Chart 1: Financial & Complaint Trends -->
+        <div class="lg:col-span-2 p-6 rounded-2xl border border-slate-300 dark:border-slate-700 shadow-sm theme-card space-y-4">
           <div class="flex items-center justify-between">
             <div>
-              <h2 class="text-lg font-bold font-outfit">Annual Cybercrime Complaints & Financial Loss (2020–2026 YTD)</h2>
-              <p class="text-xs font-medium opacity-75">Dual-axis correlation of reported NCRP complaints vs financial loss (INR Crore)</p>
+              <h3 class="text-lg font-bold font-outfit">Financial Cyber Loss vs Complaint Growth (2020–2026 YTD)</h3>
+              <p class="text-xs opacity-75">Dual-axis annual metrics synthesized from MHA I4C and CERT-In annual reports</p>
             </div>
-            <a href="https://cybercrime.gov.in/" target="_blank" class="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"><i class="fa-solid fa-up-right-from-square"></i> Source: MHA I4C</a>
+            <span class="text-xs font-mono font-bold px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700">Official Data</span>
           </div>
-          <div class="h-72">
+          <div class="h-72 relative">
             <canvas id="trendChart"></canvas>
           </div>
         </div>
 
-        <div class="lg:col-span-4 p-6 rounded-2xl border border-slate-300 shadow-sm space-y-4 theme-card">
+        <!-- Chart 2: Fraud Category Pie -->
+        <div class="p-6 rounded-2xl border border-slate-300 dark:border-slate-700 shadow-sm theme-card space-y-4">
           <div>
-            <h2 class="text-lg font-bold font-outfit">Financial Loss by Fraud Vector</h2>
-            <p class="text-xs font-medium opacity-75">Distribution of ₹68,500 Cr reported damage</p>
+            <h3 class="text-lg font-bold font-outfit">Fraud Category Share (%)</h3>
+            <p class="text-xs opacity-75">Breakdown of reported financial losses by scam mechanism</p>
           </div>
-          <div class="h-60 flex items-center justify-center">
+          <div class="h-72 relative">
             <canvas id="fraudPieChart"></canvas>
           </div>
-          <div class="text-xs font-semibold text-center pt-2 border-t border-slate-200 dark:border-slate-700">
-            Digital Arrest & UPI Fraud account for over 47% of total loss.
-          </div>
         </div>
 
       </div>
 
     </div>
 
-
     <!-- =========================================================================
-         TAB 2: ISRO BHUVAN INDIA STATE MAP
+         TAB 2: ISRO BHUVAN MAP
          ========================================================================= -->
     <div id="tab-map" class="tab-panel space-y-6">
-      
-      <div class="p-6 rounded-2xl border border-slate-300 shadow-sm space-y-4 theme-card">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h2 class="text-lg font-bold font-outfit flex items-center gap-2">
-              <i class="fa-solid fa-earth-asia text-emerald-600 dark:text-emerald-400"></i>
-              ISRO Bhuvan Geo-Spatial Cyber Density Map (India Only)
-            </h2>
-            <p class="text-xs font-medium opacity-75">State choropleth risk coloring based on financial loss, NCRP complaints, and threat severity</p>
-          </div>
 
-          <!-- Interactive Sorting Buttons -->
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold mr-1">Sort Category:</span>
-            <button id="sort-loss-btn" class="px-3 py-1 text-xs font-bold bg-slate-900 text-white rounded-lg transition border border-slate-900 shadow-xs">Financial Loss (₹ Cr)</button>
-            <button id="sort-volume-btn" class="px-3 py-1 text-xs font-bold bg-slate-200 text-slate-800 rounded-lg hover:bg-slate-300 transition border border-slate-300">Complaint Volume</button>
-            <button id="sort-vuln-btn" class="px-3 py-1 text-xs font-bold bg-slate-200 text-slate-800 rounded-lg hover:bg-slate-300 transition border border-slate-300">Vulnerability Score</button>
-          </div>
-        </div>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Left: Map Container -->
+        <div class="lg:col-span-2 p-6 rounded-2xl border border-slate-300 dark:border-slate-700 shadow-sm theme-card space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h3 class="text-lg font-bold font-outfit flex items-center gap-2">
+                ISRO Bhuvan Spatial Cyber Risk Map
+                <span class="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700">India Boundary Strict</span>
+              </h3>
+              <p class="text-xs opacity-75">Interactive choropleth map. Click any state boundary to view granular intelligence details.</p>
+            </div>
 
-        <!-- Risk Color Legend -->
-        <div class="flex flex-wrap items-center justify-between gap-4 p-3 rounded-xl border border-slate-300 dark:border-slate-700 theme-subtle text-xs">
-          <div class="flex items-center gap-4 font-bold">
-            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-red-700"></span> Critical Risk (>88)</span>
-            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-red-500"></span> High Risk (80-88)</span>
-            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-amber-500"></span> Medium Risk (70-80)</span>
-            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded bg-emerald-600"></span> Low Risk (<70)</span>
-          </div>
-          <span class="font-mono text-[11px] opacity-75 font-semibold"><i class="fa-solid fa-lock"></i> Strict India Geographical Bounds (ISRO NRSC Reference)</span>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2">
-          
-          <!-- India Map Container -->
-          <div class="lg:col-span-2 rounded-xl border border-slate-300 dark:border-slate-700 overflow-hidden relative theme-subtle" style="height: 550px;">
-            <div id="india-map" class="w-full h-full"></div>
-          </div>
-
-          <!-- State Rankings Sidebar -->
-          <div class="p-4 rounded-xl border border-slate-300 dark:border-slate-700 flex flex-col h-[550px] theme-subtle">
-            <h3 class="text-sm font-bold font-outfit mb-3 flex items-center justify-between">
-              <span id="ranking-title">Top Targeted States (Sorted by Loss ₹ Cr)</span>
-              <span class="text-xs font-mono font-bold text-blue-600 dark:text-blue-400">ISRO Geo-Portal</span>
-            </h3>
-
-            <div id="state-ranking-list" class="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar">
-              <!-- Populated via JS -->
+            <!-- Sort By Control -->
+            <div class="flex items-center gap-2 text-xs font-semibold">
+              <span class="opacity-75">Sort States:</span>
+              <select id="state-sort-select" class="px-2.5 py-1 rounded-lg border border-slate-300 dark:border-slate-700 text-xs font-bold">
+                <option value="loss">Financial Loss (₹ Cr)</option>
+                <option value="complaints">NCRP Complaints</option>
+                <option value="vulnerability">Vulnerability Index</option>
+              </select>
             </div>
           </div>
 
+          <div id="map" class="h-[520px] w-full rounded-xl border border-slate-300 dark:border-slate-700 shadow-inner z-10"></div>
         </div>
+
+        <!-- Right: Selected State / State Leaderboard -->
+        <div class="p-6 rounded-2xl border border-slate-300 dark:border-slate-700 shadow-sm theme-card space-y-5 flex flex-col justify-between">
+          <div class="space-y-4">
+            <div class="border-b border-slate-200 dark:border-slate-700 pb-3">
+              <span class="text-xs font-bold text-amber-500 uppercase tracking-wider block">State Intelligence Spotlight</span>
+              <h3 id="selected-state-name" class="text-2xl font-extrabold font-outfit">Maharashtra</h3>
+              <span id="selected-state-threat" class="text-xs font-semibold text-rose-600 dark:text-rose-400 block pt-1">Primary Threat: Digital Arrest & Corporate Ransomware</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-xs font-medium">
+              <div class="p-3 rounded-xl border border-slate-200 dark:border-slate-700 theme-subtle">
+                <span class="opacity-75 block text-[11px] font-semibold">NCRP Complaints</span>
+                <span id="selected-state-complaints" class="text-lg font-extrabold font-outfit text-blue-600 dark:text-blue-400">12,10,000</span>
+              </div>
+              <div class="p-3 rounded-xl border border-slate-200 dark:border-slate-700 theme-subtle">
+                <span class="opacity-75 block text-[11px] font-semibold">Reported Loss</span>
+                <span id="selected-state-loss" class="text-lg font-extrabold font-outfit text-amber-600 dark:text-amber-400">₹10,450.00 Cr</span>
+              </div>
+              <div class="p-3 rounded-xl border border-slate-200 dark:border-slate-700 theme-subtle">
+                <span class="opacity-75 block text-[11px] font-semibold">Funds Saved</span>
+                <span id="selected-state-saved" class="text-lg font-extrabold font-outfit text-emerald-600 dark:text-emerald-400">₹2,350.00 Cr</span>
+              </div>
+              <div class="p-3 rounded-xl border border-slate-200 dark:border-slate-700 theme-subtle">
+                <span class="opacity-75 block text-[11px] font-semibold">Risk Index</span>
+                <span id="selected-state-vuln" class="text-lg font-extrabold font-outfit text-rose-600 dark:text-rose-400">94 / 100</span>
+              </div>
+            </div>
+
+            <!-- Top Jurisdictions Leaderboard -->
+            <div class="space-y-2 pt-2">
+              <span class="text-xs font-bold uppercase tracking-wider opacity-75">Top Risk Jurisdictions Leaderboard</span>
+              <div id="state-leaderboard-list" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </div>
 
-
     <!-- =========================================================================
-         TAB 3: SECTORS & RANSOMWARE LAB
+         TAB 3: SECTOR IMPACT
          ========================================================================= -->
     <div id="tab-sectors" class="tab-panel space-y-6">
-      
-      <div class="p-6 rounded-2xl border border-slate-300 shadow-sm space-y-4 theme-card">
-        <div>
-          <h2 class="text-lg font-bold font-outfit">Critical Infrastructure & Industry Vulnerability Analysis</h2>
-          <p class="text-xs font-medium opacity-75">Vulnerability exposure, ransomware risk levels, and compliance mandates across key Indian sectors</p>
-        </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="sector-cards-grid">
-          <!-- Populated via JS -->
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-xl font-bold font-outfit">Critical National Sector Intelligence</h3>
+          <p class="text-xs opacity-75">Comprehensive vulnerability profiles across high-risk economic sectors</p>
         </div>
       </div>
 
-      <div class="p-6 rounded-2xl border border-slate-300 shadow-sm space-y-4 theme-card">
-        <div>
-          <h2 class="text-lg font-bold font-outfit">Landmark Indian Cyber Incidents (2020–2026 YTD)</h2>
-          <p class="text-xs font-medium opacity-75">Detailed forensic intelligence on major cyberattacks targeting national assets</p>
+      <div id="sectors-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Populated via JS -->
+      </div>
+
+      <!-- Landmark Incident Spotlights -->
+      <div class="p-6 rounded-2xl border border-slate-300 dark:border-slate-700 shadow-sm theme-card space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-lg font-bold font-outfit">Landmark Critical Breach Case Studies</h3>
+          <span class="text-xs font-semibold opacity-75">Click incident to open full technical case file</span>
         </div>
 
-        <div class="space-y-3" id="landmark-incidents-container">
+        <div id="landmark-incidents-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <!-- Populated via JS -->
         </div>
       </div>
 
     </div>
 
-
     <!-- =========================================================================
-         TAB 4: DIGITAL ARREST & FRAUD SPOTLIGHT
+         TAB 4: DIGITAL ARREST & FRAUD TAXONOMY
          ========================================================================= -->
     <div id="tab-fraud" class="tab-panel space-y-6">
-      
-      <div class="bg-slate-900 text-white p-6 rounded-2xl border border-slate-800 shadow-xl space-y-5">
-        <div class="flex items-center justify-between">
+
+      <!-- Digital Arrest Spotlight Box -->
+      <div class="bg-slate-900 text-white p-6 rounded-2xl border border-slate-800 shadow-xl space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
           <div class="flex items-center gap-3.5">
-            <div class="w-10 h-10 rounded-xl bg-rose-600 text-white flex items-center justify-center font-bold text-lg shadow-md">
-              <i class="fa-solid fa-video"></i>
+            <div class="w-10 h-10 rounded-xl bg-rose-500 text-white flex items-center justify-center font-bold text-xl shadow-md">
+              <i class="fa-solid fa-user-ninja"></i>
             </div>
             <div>
-              <h2 class="text-lg font-bold font-outfit text-white">Special Threat Spotlight: Organized "Digital Arrest" Syndicates</h2>
-              <p class="text-xs text-slate-300">Cross-Border Cyber Extortion Operating Out of Sihanoukville (Cambodia) & KK Park (Myanmar)</p>
+              <h2 class="text-xl font-bold font-outfit text-white">Landmark Spotlight: "Digital Arrest" Cross-Border Extortion Flowchart</h2>
+              <p class="text-xs text-slate-300">Organized Southeast Asian Cyber-Compounds (Cambodia, Laos, Myanmar) Targeting Indian Citizens</p>
             </div>
           </div>
-          <span class="px-3 py-1 bg-rose-500/20 text-rose-300 border border-rose-500/40 text-xs font-bold rounded-full">₹17,800 Cr Loss</span>
+          <span class="text-xs font-mono font-bold px-3 py-1 bg-rose-950 text-rose-300 border border-rose-800 rounded-full">Dominant 2024–2026 Threat</span>
         </div>
 
+        <!-- Flowchart Steps Grid -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-            <div class="text-xs text-amber-400 font-bold uppercase tracking-wider">1. Initial Contact</div>
-            <p class="text-xs text-slate-200 mt-1.5 leading-relaxed">Automated IVR call or WhatsApp video from fake CBI / Customs officer claiming illegal drug parcel in victim's name.</p>
+          
+          <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-2 relative">
+            <div class="text-xs font-bold text-amber-400 font-mono">STAGE 01 • INITIAL CONTACT</div>
+            <h4 class="text-sm font-bold text-white">Spoofed IVR Call & Threat</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">Scammers impersonate Telecom (TRAI), Customs, CBI, or ED alleging illegal narcotics found in victim's parcel.</p>
           </div>
 
-          <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-            <div class="text-xs text-amber-400 font-bold uppercase tracking-wider">2. Video Confinement</div>
-            <p class="text-xs text-slate-200 mt-1.5 leading-relaxed">Coercing victim to remain on continuous camera call for hours/days. Displaying forged Supreme Court & ED notices.</p>
+          <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-2 relative">
+            <div class="text-xs font-bold text-rose-400 font-mono">STAGE 02 • VIDEO ISOLATION</div>
+            <h4 class="text-sm font-bold text-white">Simulated Interrogation</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">Target forced onto Skype/WhatsApp video call with impostors wearing authentic police/CBI uniforms in fake setup.</p>
           </div>
 
-          <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-            <div class="text-xs text-amber-400 font-bold uppercase tracking-wider">3. Financial Extortion</div>
-            <p class="text-xs text-slate-200 mt-1.5 leading-relaxed">Forcing victims to liquidate FDs, mutual funds, and transfer millions to RBI "Secret Verification Accounts" (Mule Accounts).</p>
+          <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-2 relative">
+            <div class="text-xs font-bold text-sky-400 font-mono">STAGE 03 • FINANCIAL DRAIN</div>
+            <h4 class="text-sm font-bold text-white">"Verification" Escrow Transfer</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">Victim coerced under psychological terror into transferring life savings into "Govt Verification Escrow Accounts".</p>
           </div>
 
-          <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-            <div class="text-xs text-amber-400 font-bold uppercase tracking-wider">4. Crypto Exfiltration</div>
-            <p class="text-xs text-slate-200 mt-1.5 leading-relaxed">Local mule networks convert funds into USDT crypto tokens, transferring assets to overseas syndicate wallets.</p>
+          <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-2 relative">
+            <div class="text-xs font-bold text-emerald-400 font-mono">STAGE 04 • EXFILTRATION</div>
+            <h4 class="text-sm font-bold text-white">Mule Laundering & Crypto</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">Funds immediately siphoned across domestic mule bank accounts, converted into USDT, and wired out of India.</p>
           </div>
-        </div>
 
-        <div class="bg-slate-800 p-3.5 rounded-xl text-xs text-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-2 border border-slate-700">
-          <span><strong class="text-amber-400 font-bold">Official Government Stance:</strong> There is NO legal provision for "Digital Arrest" in India. Law enforcement never conducts video arrests.</span>
-          <span class="font-mono text-emerald-400 font-bold text-sm">Report Immediately: Helpline 1930</span>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="fraud-taxonomy-container">
+      <!-- Fraud Vector Breakdown Cards -->
+      <div class="space-y-4">
+        <h3 class="text-lg font-bold font-outfit">Comprehensive Fraud Mechanism Taxonomy</h3>
+        <div id="fraud-taxonomy-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- =========================================================================
+         TAB 5: TIMELINE & MILESTONES
+         ========================================================================= -->
+    <div id="tab-timeline" class="tab-panel space-y-6">
+
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-xl font-bold font-outfit">Chronological National Cybercrime Timeline (2020–2026 YTD)</h3>
+          <p class="text-xs opacity-75">Landmark cyber incidents, policy enactments, legislative actions, and law enforcement operations</p>
+        </div>
+      </div>
+
+      <div id="timeline-container" class="space-y-4 relative pl-6 border-l-2 border-slate-300 dark:border-slate-700">
         <!-- Populated via JS -->
       </div>
 
     </div>
 
-
     <!-- =========================================================================
-         TAB 5: TIMELINE ANALYSIS
-         ========================================================================= -->
-    <div id="tab-timeline" class="tab-panel space-y-6">
-      
-      <div class="p-6 rounded-2xl border border-slate-300 shadow-sm space-y-4 theme-card">
-        <div>
-          <h2 class="text-lg font-bold font-outfit">Chronological Timeline of Key Cyber Events & Policy Milestones (2020–2026 YTD)</h2>
-          <p class="text-xs font-medium opacity-75">Historical evolution of cyber incidents, regulatory mandates, and legislative breakthroughs in India</p>
-        </div>
-
-        <div class="space-y-4 relative border-l-2 border-slate-300 dark:border-slate-700 ml-4 pl-6 py-2" id="timeline-container">
-          <!-- Populated via JS -->
-        </div>
-      </div>
-
-    </div>
-
-
-    <!-- =========================================================================
-         TAB 6: MITRE ATT&CK
+         TAB 6: MITRE ATT&CK MATRIX
          ========================================================================= -->
     <div id="tab-mitre" class="tab-panel space-y-6">
-      
-      <div class="p-6 rounded-2xl border border-slate-300 shadow-sm space-y-4 theme-card">
-        <div>
-          <h2 class="text-lg font-bold font-outfit">MITRE ATT&CK Enterprise Mapping for India</h2>
-          <p class="text-xs font-medium opacity-75">Frequency of attack tactics & techniques observed across Indian cyber incidents (2020–2026 YTD)</p>
-        </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="mitre-cards-container">
-          <!-- Populated via JS -->
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-xl font-bold font-outfit">MITRE ATT&CK Enterprise Threat Mapping for India</h3>
+          <p class="text-xs opacity-75">Empirical adversary tactics, techniques, and observed attack vectors</p>
         </div>
+      </div>
+
+      <div class="overflow-x-auto rounded-2xl border border-slate-300 dark:border-slate-700 shadow-sm theme-card">
+        <table class="stripe-table">
+          <thead>
+            <tr>
+              <th>Tactic ID & Name</th>
+              <th>Technique ID & Name</th>
+              <th class="text-center">Observed Frequency</th>
+              <th>Primary Attack Vector in India</th>
+            </tr>
+          </thead>
+          <tbody id="mitre-table-body">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
       </div>
 
     </div>
 
-
     <!-- =========================================================================
-         TAB 7: MASTER DATA REPOSITORY
+         TAB 7: REPOSITORY DATA GRID
          ========================================================================= -->
     <div id="tab-repository" class="tab-panel space-y-6">
-      
-      <div class="p-6 rounded-2xl border border-slate-300 shadow-sm space-y-4 theme-card">
+
+      <div class="p-6 rounded-2xl border border-slate-300 dark:border-slate-700 shadow-sm theme-card space-y-4">
+        
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h2 class="text-lg font-bold font-outfit">Master Intelligence Dataset Explorer</h2>
-            <p class="text-xs font-medium opacity-75">Searchable data grid of 114 verified intelligence records (2020–2026 YTD) synthesized from official CERT-In & MHA reports</p>
+            <h3 class="text-xl font-bold font-outfit">Master Cyber Incident Intelligence Grid (2020–2026 YTD)</h3>
+            <p class="text-xs opacity-75">Filtered OSINT intelligence dataset (114 verified incident records)</p>
           </div>
-          
-          <div class="flex items-center gap-3">
-            <input type="text" id="repo-search" placeholder="Search incidents, CVEs, state..." class="text-xs border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 w-56 font-medium focus:outline-none focus:ring-2 focus:ring-slate-900 transition theme-subtle">
 
-            <select id="filter-year" class="text-xs border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 font-bold focus:outline-none theme-subtle">
-              <option value="ALL">All Years (2020-2026)</option>
-              <option value="2026">2026 YTD</option>
-              <option value="2025">2025</option>
-              <option value="2024">2024</option>
-              <option value="2023">2023</option>
-              <option value="2022">2022</option>
-              <option value="2021">2021</option>
-              <option value="2020">2020</option>
+          <!-- Search & Filters -->
+          <div class="flex flex-wrap items-center gap-3">
+            <input type="text" id="grid-search-input" placeholder="Search entity, malware, CVE, state..." class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-300 dark:border-slate-700 w-64">
+            
+            <select id="grid-state-filter" class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-300 dark:border-slate-700">
+              <option value="ALL">All States</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Delhi">Delhi</option>
+              <option value="Karnataka">Karnataka</option>
+              <option value="Telangana">Telangana</option>
+              <option value="West Bengal">West Bengal</option>
             </select>
 
-            <select id="filter-sector" class="text-xs border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 font-bold focus:outline-none theme-subtle">
+            <select id="grid-sector-filter" class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-300 dark:border-slate-700">
               <option value="ALL">All Sectors</option>
               <option value="BFSI">BFSI</option>
               <option value="Healthcare">Healthcare</option>
               <option value="Government">Government</option>
               <option value="Critical Infrastructure">Critical Infrastructure</option>
-              <option value="Defense">Defense</option>
               <option value="IT / ITeS">IT / Cloud</option>
             </select>
           </div>
@@ -492,19 +684,65 @@
 
   </main>
 
-  <!-- Footer Data Citation & Author Attribution Disclaimer -->
-  <footer class="max-w-7xl mx-auto px-6 py-6 border-t border-slate-300 dark:border-slate-700 text-xs opacity-90 flex flex-col md:flex-row items-center justify-between gap-4">
-    <div class="flex items-center gap-2 font-medium">
-      <span>India Cybercrime Intelligence Initiative (2020–2026 YTD)</span>
-      <span>•</span>
-      <span>Researched & Developed by <a href="https://github.com/tejassxo" target="_blank" class="font-bold text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1"><i class="fa-brands fa-github text-sm"></i> M Tejas Yadav (tejassxo)</a></span>
-    </div>
-    <div class="flex items-center gap-4 text-xs font-semibold">
-      <a href="https://bhuvan.nrsc.gov.in/" target="_blank" class="hover:underline text-blue-600 dark:text-blue-400">ISRO Bhuvan</a>
-      <span>•</span>
-      <a href="https://cybercrime.gov.in/" target="_blank" class="hover:underline text-blue-600 dark:text-blue-400">cybercrime.gov.in</a>
-      <span>•</span>
-      <a href="https://www.cert-in.org.in/" target="_blank" class="hover:underline text-blue-600 dark:text-blue-400">cert-in.org.in</a>
+  <!-- Enhanced Enterprise Footer Section -->
+  <footer class="bg-slate-950 text-slate-300 border-t border-slate-800 mt-12 py-12 px-8 text-xs">
+    <div class="max-w-[1700px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+      
+      <!-- Col 1: Brand & Mission -->
+      <div class="space-y-3">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center font-bold font-outfit text-sm">
+            IN
+          </div>
+          <h4 class="text-sm font-bold text-white font-outfit">India Cybercrime Intelligence</h4>
+        </div>
+        <p class="text-[11px] text-slate-400 leading-relaxed">
+          National Cyber Threat Assessment & Master Data Repository synthesizing citizen complaints, incident disclosures, and geospatial risk telemetry across 36 States & UTs.
+        </p>
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-950/80 border border-emerald-800 text-[10px] font-mono text-emerald-300">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>ALL 36 STATE NODES ONLINE</span>
+        </div>
+      </div>
+
+      <!-- Col 2: Navigation Links -->
+      <div class="space-y-3">
+        <h5 class="text-xs font-bold uppercase tracking-wider text-white font-outfit">Portal Modules</h5>
+        <ul class="space-y-1.5 text-[11px] text-slate-400 font-medium">
+          <li><a href="#" class="hover:text-amber-400 transition nav-footer-link" data-tab="landing">Landing Showcase</a></li>
+          <li><a href="#" class="hover:text-amber-400 transition nav-footer-link" data-tab="overview">Executive Briefing</a></li>
+          <li><a href="#" class="hover:text-amber-400 transition nav-footer-link" data-tab="map">ISRO Bhuvan Spatial Map</a></li>
+          <li><a href="#" class="hover:text-amber-400 transition nav-footer-link" data-tab="fraud">Digital Arrest Spotlight</a></li>
+          <li><a href="#" class="hover:text-amber-400 transition nav-footer-link" data-tab="mitre">MITRE ATT&CK Matrix</a></li>
+          <li><a href="#" class="hover:text-amber-400 transition nav-footer-link" data-tab="repository">Master Data Grid</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Official Data Sources -->
+      <div class="space-y-3">
+        <h5 class="text-xs font-bold uppercase tracking-wider text-white font-outfit">Official References</h5>
+        <ul class="space-y-1.5 text-[11px] text-slate-400 font-medium">
+          <li><a href="https://bhuvan.nrsc.gov.in/" target="_blank" class="hover:text-blue-400 transition flex items-center gap-1"><i class="fa-solid fa-globe text-[10px]"></i> ISRO Bhuvan Portal</a></li>
+          <li><a href="https://cybercrime.gov.in/" target="_blank" class="hover:text-blue-400 transition flex items-center gap-1"><i class="fa-solid fa-shield-halved text-[10px]"></i> MHA I4C NCRP Portal</a></li>
+          <li><a href="https://www.cert-in.org.in/" target="_blank" class="hover:text-blue-400 transition flex items-center gap-1"><i class="fa-solid fa-lock text-[10px]"></i> CERT-In Advisories</a></li>
+          <li><a href="https://ncrb.gov.in/" target="_blank" class="hover:text-blue-400 transition flex items-center gap-1"><i class="fa-solid fa-file-lines text-[10px]"></i> NCRB Crime in India</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Author & Attribution -->
+      <div class="space-y-3 border-l border-slate-800 md:pl-6">
+        <h5 class="text-xs font-bold uppercase tracking-wider text-white font-outfit">Author & Attribution</h5>
+        <p class="text-[11px] text-slate-400 leading-relaxed">
+          Researched & Developed by <a href="https://github.com/tejassxo" target="_blank" class="font-bold text-amber-300 hover:underline">M Tejas Yadav</a> (`@tejassxo`).
+        </p>
+        <div class="flex items-center gap-3 pt-1">
+          <a href="https://github.com/tejassxo" target="_blank" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-white font-bold text-[11px] hover:bg-slate-800 transition flex items-center gap-1.5">
+            <i class="fa-brands fa-github text-amber-400"></i> GitHub Profile
+          </a>
+        </div>
+        <span class="text-[10px] font-mono text-slate-500 block pt-2">Version 2.6.0-YTD • MIT License</span>
+      </div>
+
     </div>
   </footer>
 

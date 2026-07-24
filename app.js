@@ -46,26 +46,54 @@ document.addEventListener("DOMContentLoaded", () => {
     if (themeText) themeText.innerText = "Executive Dark";
   }
 
-  // Segmented Navigation Tabs
-  const segBtns = document.querySelectorAll(".segmented-btn");
-  const tabPanels = document.querySelectorAll(".tab-panel");
+  // Segmented Navigation Tabs & Target Tab Triggers
+  const switchTab = (target) => {
+    const segBtns = document.querySelectorAll(".segmented-btn");
+    const tabPanels = document.querySelectorAll(".tab-panel");
 
-  segBtns.forEach(btn => {
+    segBtns.forEach(b => {
+      if (b.getAttribute("data-tab") === target) {
+        b.classList.add("active");
+      } else {
+        b.classList.remove("active");
+      }
+    });
+
+    tabPanels.forEach(p => p.classList.remove("active"));
+    const activePanel = document.getElementById(`tab-${target}`);
+    if (activePanel) {
+      activePanel.classList.add("active");
+
+      if (target === "map" && mapInstance) {
+        setTimeout(() => mapInstance.invalidateSize(), 100);
+      }
+      if (target === "landing" || target === "overview") {
+        animateCounters();
+      }
+    }
+  };
+
+  document.querySelectorAll(".segmented-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const target = btn.getAttribute("data-tab");
+      switchTab(target);
+    });
+  });
 
-      segBtns.forEach(b => b.classList.remove("active"));
-      tabPanels.forEach(p => p.classList.remove("active"));
-
-      btn.classList.add("active");
-      const activePanel = document.getElementById(`tab-${target}`);
-      if (activePanel) {
-        activePanel.classList.add("active");
-
-        if (target === "map" && mapInstance) {
-          setTimeout(() => mapInstance.invalidateSize(), 100);
-        }
+  document.querySelectorAll("[data-target-tab], .nav-footer-link").forEach(elem => {
+    elem.addEventListener("click", (e) => {
+      e.preventDefault();
+      const target = elem.getAttribute("data-target-tab") || elem.getAttribute("data-tab");
+      if (target) {
+        switchTab(target);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+    });
+  });
+
+  document.querySelectorAll(".hero-pdf-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      window.print();
     });
   });
 
@@ -111,8 +139,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderTrendChart(trends) {
-    const ctx = document.getElementById("trendChart").getContext("2d");
-    if (!trends || trends.length === 0) return;
+    const ctx = document.getElementById("trendChart")?.getContext("2d");
+    if (!ctx || !trends || trends.length === 0) return;
 
     const isDark = document.body.classList.contains("dark-mode");
     const textColor = isDark ? "#F8FAFC" : "#0F172A";
@@ -192,8 +220,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderFraudPieChart(fraudData) {
-    const ctx = document.getElementById("fraudPieChart").getContext("2d");
-    if (!fraudData || fraudData.length === 0) return;
+    const ctx = document.getElementById("fraudPieChart")?.getContext("2d");
+    if (!ctx || !fraudData || fraudData.length === 0) return;
 
     const isDark = document.body.classList.contains("dark-mode");
     const textColor = isDark ? "#F8FAFC" : "#0F172A";
@@ -228,15 +256,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Exclusive India Bounds & Bhuvan Map Engine (Strict MinZoom 5 Prevents World Tile Overlap)
+  // Exclusive India Bounds & Bhuvan Map Engine
   function initBhuvanISROMapOnly(states) {
+    const mapDiv = document.getElementById("map");
+    if (!mapDiv) return;
+
     const indiaBounds = L.latLngBounds(L.latLng(6.0, 68.0), L.latLng(37.5, 97.5));
 
     if (!mapInstance) {
-      mapInstance = L.map("india-map", {
+      mapInstance = L.map("map", {
         center: [22.5937, 78.9629],
         zoom: 5,
-        minZoom: 5,  // PREVENTS ZOOMING OUT TO SEE OTHER CONTINENTS
+        minZoom: 5,
         maxZoom: 8,
         maxBounds: indiaBounds,
         maxBoundsViscosity: 1.0,
@@ -305,6 +336,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  function updateSelectedStateCard(stData) {
+    if (!stData) return;
+    const nameElem = document.getElementById("selected-state-name");
+    const threatElem = document.getElementById("selected-state-threat");
+    const compElem = document.getElementById("selected-state-complaints");
+    const lossElem = document.getElementById("selected-state-loss");
+    const savedElem = document.getElementById("selected-state-saved");
+    const vulnElem = document.getElementById("selected-state-vuln");
+
+    if (nameElem) nameElem.innerText = stData.name;
+    if (threatElem) threatElem.innerText = `Primary Threat: ${stData.threat || "Cyber Phishing & Vishing"}`;
+    if (compElem) compElem.innerText = (stData.complaints || 0).toLocaleString();
+    if (lossElem) lossElem.innerText = `₹${(stData.loss_cr || 0).toLocaleString()} Cr`;
+    if (savedElem) savedElem.innerText = `₹${(stData.saved_cr || 0).toLocaleString()} Cr`;
+    if (vulnElem) vulnElem.innerText = `${stData.vulnerability_idx || 50} / 100`;
+  }
+
   function renderBhuvanStateChoropleth(states) {
     if (geoJsonLayer && mapInstance) {
       mapInstance.removeLayer(geoJsonLayer);
@@ -314,12 +362,16 @@ document.addEventListener("DOMContentLoaded", () => {
       states.sort((a, b) => b.loss_cr - a.loss_cr);
     } else if (currentSort === "volume") {
       states.sort((a, b) => b.complaints - a.complaints);
-    } else if (currentSort === "vuln") {
+    } else if (currentSort === "vulnerability" || currentSort === "vuln") {
       states.sort((a, b) => b.vulnerability_idx - a.vulnerability_idx);
     }
 
     const stateMap = {};
     states.forEach(st => stateMap[st.name] = st);
+
+    if (states.length > 0) {
+      updateSelectedStateCard(states[0]);
+    }
 
     if (window.indiaGeoJSON) {
       geoJsonLayer = L.geoJSON(window.indiaGeoJSON, {
@@ -338,7 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
             weight: 1.5,
             opacity: 1,
             color: '#FFFFFF',
-            fillOpacity: 0.60
+            fillOpacity: 0.65
           };
         },
         onEachFeature: function(feature, layer) {
@@ -360,12 +412,14 @@ document.addEventListener("DOMContentLoaded", () => {
               const l = e.target;
               l.setStyle({ weight: 3, color: '#0F172A', fillOpacity: 0.85 });
               l.bringToFront();
+              updateSelectedStateCard(stData);
             },
             mouseout: function(e) {
               geoJsonLayer.resetStyle(e.target);
             },
             click: function() {
               mapInstance.fitBounds(layer.getBounds(), { padding: [20, 20] });
+              updateSelectedStateCard(stData);
             }
           });
         }
@@ -376,7 +430,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderStateRankingsSidebar(states) {
-    const rankingContainer = document.getElementById("state-ranking-list");
+    const rankingContainer = document.getElementById("state-leaderboard-list");
+    if (!rankingContainer) return;
     rankingContainer.innerHTML = "";
 
     states.forEach((st, idx) => {
@@ -397,6 +452,7 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       item.addEventListener("click", () => {
+        updateSelectedStateCard(st);
         if (geoJsonLayer) {
           geoJsonLayer.eachLayer(l => {
             if (l.feature && l.feature.properties.name === st.name) {
@@ -412,52 +468,19 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function setupStateSorting(states) {
-    const btnLoss = document.getElementById("sort-loss-btn");
-    const btnVol = document.getElementById("sort-volume-btn");
-    const btnVuln = document.getElementById("sort-vuln-btn");
-    const title = document.getElementById("ranking-title");
-
-    function updateSortButtons(activeBtn) {
-      [btnLoss, btnVol, btnVuln].forEach(b => {
-        if (b) {
-          b.className = "px-3 py-1 text-xs font-bold bg-slate-200 text-slate-800 rounded-lg hover:bg-slate-300 transition border border-slate-300";
-        }
-      });
-      if (activeBtn) {
-        activeBtn.className = "px-3 py-1 text-xs font-bold bg-slate-900 text-white rounded-lg transition border border-slate-900 shadow-xs";
-      }
-    }
-
-    if (btnLoss) {
-      btnLoss.addEventListener("click", () => {
-        currentSort = "loss";
-        updateSortButtons(btnLoss);
-        if (title) title.innerText = "Top Targeted States (Sorted by Loss ₹ Cr)";
-        renderBhuvanStateChoropleth(states);
-      });
-    }
-
-    if (btnVol) {
-      btnVol.addEventListener("click", () => {
-        currentSort = "volume";
-        updateSortButtons(btnVol);
-        if (title) title.innerText = "Top Targeted States (Sorted by Complaints)";
-        renderBhuvanStateChoropleth(states);
-      });
-    }
-
-    if (btnVuln) {
-      btnVuln.addEventListener("click", () => {
-        currentSort = "vuln";
-        updateSortButtons(btnVuln);
-        if (title) title.innerText = "Top Targeted States (Sorted by Vulnerability)";
+    const sortSelect = document.getElementById("state-sort-select");
+    if (sortSelect) {
+      sortSelect.addEventListener("change", (e) => {
+        currentSort = e.target.value;
         renderBhuvanStateChoropleth(states);
       });
     }
   }
 
   function renderSectorCards() {
-    const container = document.getElementById("sector-cards-grid");
+    const container = document.getElementById("sectors-grid");
+    if (!container) return;
+
     const sectors = [
       { name: "BFSI & Capital Markets", risk: "Critical", icon: "fa-building-columns", threat: "IMPS Glitches, LockBit 3.0, Digital Arrest", loss: "₹24,500+ Cr", details: "Unpatched ADFS servers, exposed APIs, SWIFT log mismatches." },
       { name: "Healthcare & Pharma", risk: "Critical", icon: "fa-hospital", threat: "BlackCat Ransomware, Darknet PII Leaks", loss: "₹4,200+ Cr", details: "Legacy e-Hospital systems, unencrypted databases (AIIMS & ICMR breaches)." },
@@ -470,7 +493,7 @@ document.addEventListener("DOMContentLoaded", () => {
     container.innerHTML = "";
     sectors.forEach(s => {
       const card = document.createElement("div");
-      card.className = "theme-subtle p-5 rounded-xl border border-slate-300 space-y-3 shadow-xs";
+      card.className = "theme-card p-5 rounded-xl border border-slate-300 space-y-3 shadow-sm";
       card.innerHTML = `
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2.5">
@@ -479,10 +502,10 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
             <h3 class="font-bold text-sm font-outfit">${s.name}</h3>
           </div>
-          <span class="px-2.5 py-0.5 text-xs font-bold rounded-full ${s.risk === 'Critical' ? 'bg-rose-100 text-rose-900 border border-rose-300' : 'bg-amber-100 text-amber-900 border border-amber-300'}">${s.risk}</span>
+          <span class="px-2.5 py-0.5 text-xs font-bold rounded-full ${s.risk === 'Critical' ? 'bg-rose-100 dark:bg-rose-950 text-rose-900 dark:text-rose-200 border border-rose-300 dark:border-rose-800' : 'bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800'}">${s.risk}</span>
         </div>
         <p class="text-xs font-medium leading-relaxed opacity-90">${s.details}</p>
-        <div class="text-xs pt-2 border-t border-slate-200 flex justify-between opacity-75">
+        <div class="text-xs pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between opacity-75">
           <span>Primary Threat: <strong>${s.threat}</strong></span>
         </div>
       `;
@@ -491,49 +514,57 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderLandmarkIncidents(incidents) {
-    const container = document.getElementById("landmark-incidents-container");
-    const landmarks = incidents.filter(i => ["INC-2022-003", "INC-2022-004", "INC-2023-002", "INC-2023-003", "INC-2026-001", "INC-2026-002"].includes(i.id));
+    const container = document.getElementById("landmark-incidents-grid");
+    if (!container || !incidents) return;
+
+    const landmarkIDs = ["INC-2022-003", "INC-2022-004", "INC-2023-002", "INC-2023-003", "INC-2026-001", "INC-2026-002"];
+    const landmarks = incidents.filter(i => landmarkIDs.includes(i.id));
 
     container.innerHTML = "";
     landmarks.forEach(inc => {
-      const elem = document.createElement("div");
-      elem.className = "theme-subtle p-4 rounded-xl border border-slate-300 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs";
-      elem.innerHTML = `
-        <div class="space-y-1">
-          <div class="flex items-center gap-2">
+      const card = document.createElement("div");
+      card.className = "theme-subtle p-4 rounded-xl border border-slate-300 dark:border-slate-700 flex flex-col justify-between space-y-3 shadow-xs hover:border-blue-500 transition cursor-pointer group";
+      card.innerHTML = `
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
             <span class="text-xs font-mono font-bold px-2 py-0.5 bg-slate-900 text-white rounded">${inc.id}</span>
-            <span class="text-xs font-bold opacity-75">${inc.date}</span>
-            <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-rose-100 text-rose-900 border border-rose-300">${inc.severity}</span>
+            <span class="text-xs font-bold text-rose-600 dark:text-rose-400">₹${inc.loss_cr.toFixed(2)} Cr</span>
           </div>
-          <h4 class="font-bold text-sm font-outfit">${inc.target}</h4>
-          <p class="text-xs font-medium opacity-90">Category: <strong>${inc.category}</strong> | Threat Actor: <strong>${inc.threat_actor}</strong> | CVE: <strong>${inc.cve}</strong></p>
+          <h4 class="font-bold text-sm font-outfit group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">${inc.target}</h4>
+          <p class="text-xs font-medium opacity-85 leading-tight">${inc.category} (${inc.threat_actor})</p>
         </div>
-        <div class="text-right shrink-0">
-          <div class="text-base font-extrabold text-rose-600">₹${inc.loss_cr.toFixed(2)} Cr</div>
-          <div class="text-xs font-semibold opacity-75">Downtime: ${inc.downtime_hrs} hrs</div>
-          <button class="mt-1 text-xs underline font-bold view-detail-btn" data-id="${inc.id}">Inspect Record</button>
+        <div class="pt-2 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between text-xs font-bold text-blue-600 dark:text-blue-400">
+          <span>Inspect Case File</span>
+          <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
         </div>
       `;
-      container.appendChild(elem);
+
+      card.addEventListener("click", () => {
+        openModal(inc.id);
+      });
+
+      container.appendChild(card);
     });
   }
 
   function renderFraudTaxonomy(fraudList) {
-    const container = document.getElementById("fraud-taxonomy-container");
+    const container = document.getElementById("fraud-taxonomy-grid");
+    if (!container || !fraudList) return;
+
     container.innerHTML = "";
 
     fraudList.forEach(f => {
       const card = document.createElement("div");
-      card.className = "theme-card p-5 rounded-xl border border-slate-300 shadow-sm space-y-3";
+      card.className = "theme-card p-5 rounded-xl border border-slate-300 dark:border-slate-700 shadow-sm space-y-3";
       card.innerHTML = `
         <div class="flex items-center justify-between">
           <h3 class="font-bold text-sm font-outfit">${f.category}</h3>
-          <span class="text-xs font-extrabold text-rose-600">₹${f.loss_cr.toLocaleString()} Cr</span>
+          <span class="text-xs font-extrabold text-rose-600 dark:text-rose-400">₹${f.loss_cr.toLocaleString()} Cr</span>
         </div>
-        <p class="text-xs font-medium"><strong class="opacity-90">Vector / Channel:</strong> ${f.vector}</p>
-        <div class="grid grid-cols-2 gap-2 text-xs pt-2 border-t border-slate-200 font-medium opacity-85">
+        <p class="text-xs font-medium opacity-90"><strong class="font-bold opacity-100">Vector:</strong> ${f.vector}</p>
+        <div class="grid grid-cols-2 gap-2 text-xs pt-2 border-t border-slate-200 dark:border-slate-700 font-medium opacity-85">
           <div>Reported Cases: <strong>${f.cases.toLocaleString()}</strong></div>
-          <div>Avg Loss per Case: <strong>₹${Math.round(f.avg_loss_inr).toLocaleString()}</strong></div>
+          <div>Avg Loss: <strong>₹${Math.round(f.avg_loss_inr).toLocaleString()}</strong></div>
         </div>
       `;
       container.appendChild(card);
@@ -549,11 +580,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const item = document.createElement("div");
       item.className = "relative group";
       item.innerHTML = `
-        <div class="absolute -left-[31px] top-1.5 w-3.5 h-3.5 rounded-full bg-slate-900 border-2 border-white"></div>
-        <div class="theme-card p-4 rounded-xl border border-slate-300 shadow-xs space-y-1">
+        <div class="absolute -left-[31px] top-1.5 w-3.5 h-3.5 rounded-full bg-slate-900 dark:bg-amber-400 border-2 border-white dark:border-slate-900"></div>
+        <div class="theme-card p-4 rounded-xl border border-slate-300 dark:border-slate-700 shadow-xs space-y-1">
           <div class="flex items-center justify-between text-xs">
-            <span class="font-bold font-mono text-purple-600">${t.date}</span>
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300">${t.type}</span>
+            <span class="font-bold font-mono text-purple-600 dark:text-purple-400">${t.date}</span>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800">${t.type}</span>
           </div>
           <h4 class="font-bold text-sm font-outfit">${t.title}</h4>
           <p class="text-xs font-medium leading-relaxed opacity-90">${t.impact}</p>
@@ -564,33 +595,31 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderMitreMatrix(mitreData) {
-    const container = document.getElementById("mitre-cards-container");
+    const container = document.getElementById("mitre-table-body");
     if (!container || !mitreData) return;
 
     container.innerHTML = "";
     mitreData.forEach(m => {
-      const card = document.createElement("div");
-      card.className = "theme-card p-4 rounded-xl border border-slate-300 shadow-xs space-y-2";
-      card.innerHTML = `
-        <div class="flex items-center justify-between text-xs">
-          <span class="font-bold uppercase text-xs opacity-75">${m.tactic_name} (${m.tactic_id})</span>
-          <span class="font-bold bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md border border-slate-300 dark:border-slate-700">${m.frequency}</span>
-        </div>
-        <h4 class="font-bold text-xs font-outfit">${m.technique_name} (${m.technique_id})</h4>
-        <p class="text-xs font-medium leading-relaxed opacity-90">${m.vectors}</p>
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td class="font-bold font-mono">${m.tactic_name} (${m.tactic_id})</td>
+        <td class="font-semibold">${m.technique_name} (${m.technique_id})</td>
+        <td class="text-center font-bold"><span class="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs">${m.frequency}</span></td>
+        <td class="font-medium opacity-90">${m.vectors}</td>
       `;
-      container.appendChild(card);
+      container.appendChild(tr);
     });
   }
 
   function renderRepositoryGrid(incidents) {
     const tbody = document.getElementById("incidents-table-body");
+    if (!tbody || !incidents) return;
     tbody.innerHTML = "";
 
     incidents.forEach(inc => {
       const tr = document.createElement("tr");
       
-      const badgeClass = inc.severity === "Critical" ? "bg-rose-100 text-rose-900 border-rose-300" : (inc.severity === "High" ? "bg-amber-100 text-amber-900 border-amber-300" : "bg-emerald-100 text-emerald-900 border-emerald-300");
+      const badgeClass = inc.severity === "Critical" ? "bg-rose-100 dark:bg-rose-950 text-rose-900 dark:text-rose-200 border-rose-300 dark:border-rose-800" : (inc.severity === "High" ? "bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 border-amber-300 dark:border-amber-800" : "bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-200 border-emerald-300 dark:border-emerald-800");
 
       tr.innerHTML = `
         <td class="font-mono font-bold">${inc.id}</td>
@@ -600,7 +629,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <td class="font-medium">${inc.sector}</td>
         <td class="font-medium">${inc.category}</td>
         <td class="font-medium opacity-75">${inc.threat_actor}</td>
-        <td class="text-right font-extrabold text-rose-600">₹${inc.loss_cr.toFixed(2)}</td>
+        <td class="text-right font-extrabold text-rose-600 dark:text-rose-400">₹${inc.loss_cr.toFixed(2)}</td>
         <td class="text-center"><span class="px-2.5 py-0.5 text-xs font-bold rounded-full border ${badgeClass}">${inc.severity}</span></td>
         <td class="text-center">
           <button class="px-3 py-1 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-bold text-xs transition view-detail-btn" data-id="${inc.id}">View</button>
@@ -637,20 +666,23 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("incident-modal").classList.remove("hidden");
   }
 
-  document.getElementById("close-modal-btn").addEventListener("click", () => {
-    document.getElementById("incident-modal").classList.add("hidden");
-  });
+  const closeModalBtn = document.getElementById("close-modal-btn");
+  if (closeModalBtn) {
+    closeModalBtn.addEventListener("click", () => {
+      document.getElementById("incident-modal").classList.add("hidden");
+    });
+  }
 
   function setupSearchAndFilters() {
-    const repoSearch = document.getElementById("repo-search");
-    const yearFilter = document.getElementById("filter-year");
-    const sectorFilter = document.getElementById("filter-sector");
+    const repoSearch = document.getElementById("grid-search-input");
+    const stateFilter = document.getElementById("grid-state-filter");
+    const sectorFilter = document.getElementById("grid-sector-filter");
 
     function applyFilters() {
       if (!dashboardData) return;
       const query = (repoSearch ? repoSearch.value : "").toLowerCase();
-      const yr = yearFilter.value;
-      const sec = sectorFilter.value;
+      const stVal = stateFilter ? stateFilter.value : "ALL";
+      const secVal = sectorFilter ? sectorFilter.value : "ALL";
 
       const filtered = dashboardData.incidents.filter(inc => {
         const matchQuery = !query || 
@@ -660,27 +692,36 @@ document.addEventListener("DOMContentLoaded", () => {
           inc.category.toLowerCase().includes(query) ||
           inc.threat_actor.toLowerCase().includes(query);
 
-        const matchYr = yr === "ALL" || inc.year.toString() === yr;
-        const matchSec = sec === "ALL" || inc.sector === sec;
+        const matchSt = stVal === "ALL" || inc.state === stVal;
+        const matchSec = secVal === "ALL" || inc.sector === secVal;
 
-        return matchQuery && matchYr && matchSec;
+        return matchQuery && matchSt && matchSec;
       });
 
       renderRepositoryGrid(filtered);
-      document.getElementById("record-count-display").innerText = `Showing ${filtered.length} of ${dashboardData.incidents.length} verified intelligence records`;
+      const countDisplay = document.getElementById("record-count-display");
+      if (countDisplay) {
+        countDisplay.innerText = `Showing ${filtered.length} of ${dashboardData.incidents.length} verified intelligence records`;
+      }
     }
 
     if (repoSearch) repoSearch.addEventListener("input", applyFilters);
-    yearFilter.addEventListener("change", applyFilters);
-    sectorFilter.addEventListener("change", applyFilters);
+    if (stateFilter) stateFilter.addEventListener("change", applyFilters);
+    if (sectorFilter) sectorFilter.addEventListener("change", applyFilters);
 
-    document.getElementById("export-excel-btn").addEventListener("click", () => {
-      window.location.href = "master_cybercrime_intelligence_india_2020_2026.xlsx";
-    });
+    const exportExcel = document.getElementById("export-excel-btn");
+    if (exportExcel) {
+      exportExcel.addEventListener("click", () => {
+        window.location.href = "master_cybercrime_intelligence_india_2020_2026.xlsx";
+      });
+    }
 
-    document.getElementById("export-json-btn").addEventListener("click", () => {
-      window.location.href = "intelligence_dashboard_data.json";
-    });
+    const exportJson = document.getElementById("export-json-btn");
+    if (exportJson) {
+      exportJson.addEventListener("click", () => {
+        window.location.href = "intelligence_dashboard_data.json";
+      });
+    }
 
     const printBtn = document.getElementById("print-ceo-report-btn");
     if (printBtn) {
