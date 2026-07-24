@@ -1,0 +1,216 @@
+/* Comprehensive Theme System Syncing All Text in Light & Dark Mode */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
+:root {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-outfit: 'Outfit', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Light Theme Color Tokens */
+  --bg-main: #F1F5F9;
+  --bg-surface: #FFFFFF;
+  --bg-subtle: #F8FAFC;
+  --text-primary: #0F172A;
+  --text-secondary: #334155;
+  --text-muted: #64748B;
+  --border-color: #CBD5E1;
+  --header-bg: rgba(255, 255, 255, 0.95);
+  --segmented-bg: #E2E8F0;
+  --table-header-bg: #0F172A;
+  --table-header-text: #FFFFFF;
+  --input-bg: #FFFFFF;
+}
+
+/* Executive Dark Theme Color Tokens */
+body.dark-mode {
+  --bg-main: #1E293B;        /* Slate 800 */
+  --bg-surface: #334155;     /* Slate 700 */
+  --bg-subtle: #0F172A;      /* Slate 900 */
+  --text-primary: #F8FAFC;    /* Slate 50 */
+  --text-secondary: #E2E8F0;  /* Slate 200 */
+  --text-muted: #CBD5E1;      /* Slate 300 */
+  --border-color: #475569;    /* Slate 600 */
+  --header-bg: rgba(51, 65, 85, 0.95);
+  --segmented-bg: #0F172A;
+  --table-header-bg: #0F172A;
+  --table-header-text: #F8FAFC;
+  --input-bg: #1E293B;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-main) !important;
+  color: var(--text-primary) !important;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.font-outfit {
+  font-family: var(--font-outfit);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Dynamic Card Surfaces */
+.theme-card {
+  background-color: var(--bg-surface) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.theme-subtle {
+  background-color: var(--bg-subtle) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Automatic Text Synchronization across Card Surfaces */
+.theme-card h1, .theme-card h2, .theme-card h3, .theme-card h4, .theme-card h5, .theme-card h6,
+.theme-subtle h1, .theme-subtle h2, .theme-subtle h3, .theme-subtle h4, .theme-subtle h5, .theme-subtle h6,
+.theme-card label, .theme-subtle label {
+  color: var(--text-primary) !important;
+}
+
+.theme-card p, .theme-subtle p {
+  color: var(--text-secondary) !important;
+}
+
+.theme-card .text-muted-synced, .theme-subtle .text-muted-synced {
+  color: var(--text-muted) !important;
+}
+
+/* Input Fields Sync */
+input[type="text"], select {
+  background-color: var(--input-bg) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Segmented Control Buttons */
+.segmented-control {
+  background: var(--segmented-bg);
+  padding: 3px;
+  border-radius: 12px;
+  display: inline-flex;
+  gap: 2px;
+  border: 1px solid var(--border-color);
+}
+
+.segmented-btn {
+  padding: 0.5rem 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.segmented-btn:hover {
+  color: var(--text-primary);
+}
+
+.segmented-btn.active {
+  background: var(--text-primary) !important;
+  color: var(--bg-main) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Tab Panels */
+.tab-panel {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.tab-panel.active {
+  display: block;
+  opacity: 1;
+}
+
+/* Leaflet Container & Tooltip Styling */
+.leaflet-container {
+  background-color: var(--bg-subtle) !important;
+  font-family: var(--font-sans) !important;
+  border-radius: 12px;
+}
+
+.leaflet-control-attribution {
+  display: none !important;
+}
+
+.leaflet-tooltip {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Stripe Table Styling */
+.stripe-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  background-color: var(--bg-surface);
+}
+
+.stripe-table th {
+  background-color: var(--table-header-bg) !important;
+  color: var(--table-header-text) !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  letter-spacing: 0.05em;
+  padding: 0.875rem 1rem;
+  border-bottom: 2px solid var(--border-color);
+  text-align: left;
+}
+
+.stripe-table td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary) !important;
+  font-weight: 500;
+}
+
+.stripe-table tr:hover td {
+  background-color: var(--bg-subtle) !important;
+}
+
+/* Theme Switcher Button */
+.theme-toggle-btn {
+  padding: 0.5rem 0.875rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 10px;
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--border-color);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 9999px;
+}
