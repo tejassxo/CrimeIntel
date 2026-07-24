@@ -55,9 +55,8 @@ cd nifty-bell
 ```
 
 ### 2. Run the Data Pipeline (Optional)
-To regenerate the Master Excel Repository and Data API JSON payload:
+To regenerate the Master Excel Repository and Data API JSON payload in a single command:
 ```bash
-python build_excel_repository.py
 python analytics_engine.py
 ```
 
