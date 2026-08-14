@@ -82,35 +82,41 @@ flowchart TD
 
 | Layer | Technologies |
 | :--- | :--- |
-| **Frontend Core** | HTML5, Vanilla CSS3 (Custom Design Tokens), JavaScript (ES6+) |
+| **Framework & Engine** | Next.js 14, React 18, Edge Middleware (IP Sliding-Window Rate Limiting) |
+| **Cybersecurity** | OWASP Security Headers, Strict CSP, Anti-Scanner Shield, Anti-Injection |
+| **Frontend Core** | HTML5, Vanilla CSS3 (Custom Design Tokens), JavaScript (ES6+), Tailwind CSS |
 | **Motion & Charts** | GSAP 3.12 (Transitions), Chart.js 4 (Dual-Axis Trends & Doughnuts) |
 | **Geospatial Mapping** | Leaflet.js, ISRO Bhuvan Spatial Geometry, GeoJSON Polygon Engine |
-| **Backend & Analytics** | Python 3.11+, Pandas, OpenPyXL, Scikit-Learn, SocketServer |
-| **DevOps & Containers** | Docker (Multi-stage build), GitHub Actions CI/CD Pipeline |
+| **Backend & Analytics** | Python 3.11+, Pandas, OpenPyXL, Scikit-Learn |
+| **Deployment** | Vercel (Native Edge), Docker Multi-Stage, GitHub Actions CI/CD Pipeline |
 
 ---
 
 ## 🚀 Deployment & Local Execution
 
-### 1. Local Development
+### 1. Local Development (Next.js)
 ```bash
 # Clone the repository
-git clone https://github.com/tejassxo/CyberJagruti.git
-cd CyberJagruti
+git clone https://github.com/tejassxo/CrimeIntel.git
+cd CrimeIntel
 
-# Start the local server
-python server.py
+# Install dependencies
+npm install
+
+# Start local Next.js development server
+npm run dev
+# -> Accessible at http://localhost:3000
 ```
-Visit `http://localhost:8080` in your browser.
 
-### 2. Docker Container Deployment
+### 2. Production Build & Deployment (Vercel)
 ```bash
-# Build the production container image
-docker build -t cyber-jagruti:latest .
+# Build production bundle
+npm run build
 
-# Run the container
-docker run -d -p 8080:8080 --name cyber-jagruti-prod cyber-jagruti:latest
+# Start production server
+npm run start
 ```
+* **Deploy to Vercel**: Connect your GitHub repository to Vercel. Next.js preset will be auto-detected for instant deployment.
 
 ### 3. Regenerate Datasets & ML Projections (Optional)
 ```bash

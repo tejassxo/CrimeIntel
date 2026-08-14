@@ -2,29 +2,20 @@
   "name": "cyber-jagruti",
   "version": "2.6.0",
   "description": "Cyber Jagruti — India Cybercrime Intelligence & Spatial Risk Platform (2020-2026 YTD)",
-  "private": true,
+  "main": "server.py",
   "scripts": {
-    "dev": "next dev -p 3000",
-    "build": "next build",
-    "start": "next start -p 3000",
-    "lint": "next lint",
-    "generate-data": "python analytics_engine.py"
+    "dev": "python server.py",
+    "start": "python server.py",
+    "build": "python analytics_engine.py",
+    "validate": "python -m py_compile server.py analytics_engine.py"
   },
-  "dependencies": {
-    "next": "^14.2.5",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  },
-  "devDependencies": {},
   "keywords": [
     "cybercrime",
     "india",
     "threat-intelligence",
     "isro-bhuvan",
     "mha-i4c",
-    "cert-in",
-    "nextjs",
-    "security"
+    "cert-in"
   ],
   "author": "M Tejas Yadav (tejassxo)",
   "license": "MIT"

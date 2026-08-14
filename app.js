@@ -16,12 +16,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentScenarioIdx = 0;
   let solvedScenarios = new Set();
 
-  // Executive Theme Engine (Default: Light Mode / White Base)
+  // Executive Theme Engine (Default: Light Mode / Pure White Base)
   const themeToggleBtn = document.getElementById("theme-toggle-btn");
   const themeIcon = document.getElementById("theme-icon");
   const themeText = document.getElementById("theme-text");
 
-  // Force Light mode default unless explicitly dark in saved preferences
   const savedTheme = localStorage.getItem("india_cyber_theme");
   if (savedTheme === "dark") {
     enableDarkMode();
@@ -81,15 +80,20 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
+    // Fix: Invalidate Leaflet Map Size immediately when switching to Spatial Map
     if (target === "map" && mapInstance) {
       setTimeout(() => {
-        mapInstance.invalidateSize();
-      }, 150);
+        mapInstance.invalidateSize(true);
+        mapInstance.setView([22.5937, 78.9629], 5);
+      }, 50);
+      setTimeout(() => {
+        mapInstance.invalidateSize(true);
+      }, 250);
     }
   };
 
   document.querySelectorAll(".segmented-btn").forEach(btn => {
-    btn.addEventListener("click", (e) => {
+    btn.addEventListener("click", () => {
       const target = btn.getAttribute("data-tab");
       if (target) switchTab(target);
     });
@@ -189,19 +193,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (bgMap) gsap.set(bgMap, { opacity: 0, scale: 0.95 });
       if (heroCtaGroup) gsap.set(heroCtaGroup, { opacity: 0, y: 10 });
 
-      // 0.40s - Initiative label appears
       tl.to(initLabel, { opacity: 1, y: 0, duration: 0.5 }, 0.40);
-
-      // 0.80s - Indian flag begins rising
       tl.to(flag, { opacity: 1, y: 0, scale: 1, duration: 1.0, ease: "power3.out" }, 0.80);
       tl.to(tagline, { opacity: 1, y: 0, duration: 0.5 }, 1.30);
 
-      // 1.80s - Flag reaches reveal position
       tl.to(flag, { scale: 1.05, opacity: 0, duration: 0.35, ease: "power2.in" }, 1.85);
       tl.to(initLabel, { opacity: 0, duration: 0.25 }, 1.85);
       tl.to(tagline, { opacity: 0, duration: 0.25 }, 1.85);
 
-      // 2.00s - Interface unveils
       tl.to(curtain, {
         clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
         duration: 0.75,
@@ -211,7 +210,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }, 2.00);
 
-      // 2.40s - CYBER JAGRUTI title reveals
       if (heroTitle) tl.to(heroTitle, { opacity: 1, y: 0, duration: 0.45 }, 2.40);
       if (heroSubtitle) tl.to(heroSubtitle, { opacity: 1, y: 0, duration: 0.35 }, 2.65);
       if (heroDesc) tl.to(heroDesc, { opacity: 1, y: 0, duration: 0.35 }, 2.75);
@@ -366,13 +364,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (chartPie) chartPie.destroy();
 
     const vibrantPalette = [
-      "#EF4444", // Red: Digital Arrest
-      "#F59E0B", // Amber: Investment Fraud
-      "#8B5CF6", // Purple: Loan Apps
-      "#3B82F6", // Blue: Phishing
-      "#10B981", // Emerald: Part-Time Tasks
-      "#EC4899", // Pink: Sextortion
-      "#06B6D4"  // Cyan: Impersonation
+      "#EF4444",
+      "#F59E0B",
+      "#8B5CF6",
+      "#3B82F6",
+      "#10B981",
+      "#EC4899",
+      "#06B6D4"
     ];
 
     chartPie = new Chart(ctx, {
@@ -528,7 +526,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // Populate initial 3 items
     for (let i = 0; i < 3; i++) {
       addTickerItem();
     }
@@ -659,7 +656,7 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       cardContainer.querySelectorAll(".choice-btn").forEach(btn => {
-        btn.addEventListener("click", (e) => {
+        btn.addEventListener("click", () => {
           const cIdx = parseInt(btn.getAttribute("data-choice"), 10);
           const selectedChoice = sc.choices[cIdx];
           const verdictBox = document.getElementById("scenario-verdict-box");
@@ -710,7 +707,7 @@ document.addEventListener("DOMContentLoaded", () => {
     selectA.innerHTML = "";
     selectB.innerHTML = "";
 
-    states.forEach((st, idx) => {
+    states.forEach((st) => {
       const optA = document.createElement("option");
       optA.value = st.name;
       optA.innerText = `${st.name} (₹${st.loss_cr.toLocaleString()} Cr)`;
@@ -929,29 +926,29 @@ document.addEventListener("DOMContentLoaded", () => {
     const mapDiv = document.getElementById("map");
     if (!mapDiv) return;
 
-    const indiaBounds = L.latLngBounds(L.latLng(6.0, 68.0), L.latLng(37.5, 97.5));
-
     if (!mapInstance) {
       mapInstance = L.map("map", {
         center: [22.5937, 78.9629],
         zoom: 5,
-        minZoom: 5,
-        maxZoom: 8,
-        maxBounds: indiaBounds,
-        maxBoundsViscosity: 1.0,
+        minZoom: 4,
+        maxZoom: 9,
         attributionControl: false
       });
 
       L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
         attribution: 'ISRO Bhuvan Geo-Spatial Reference',
-        bounds: indiaBounds,
-        maxZoom: 8,
-        minZoom: 5
+        maxZoom: 9,
+        minZoom: 4
       }).addTo(mapInstance);
     }
 
     renderBhuvanStateChoropleth(states);
     renderPinpointLocations();
+
+    // Trigger invalidateSize after slight delay to ensure full rendering
+    setTimeout(() => {
+      if (mapInstance) mapInstance.invalidateSize();
+    }, 200);
   }
 
   function renderPinpointLocations() {
@@ -1244,7 +1241,6 @@ document.addEventListener("DOMContentLoaded", () => {
           <span class="text-sm font-mono font-bold text-black dark:text-white">₹${f.loss_cr.toLocaleString()} Cr</span>
         </div>
 
-        <!-- Visual Progress Bar Share -->
         <div class="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-1.5 overflow-hidden">
           <div class="h-1.5 rounded-full transition-all duration-500" style="width: ${sharePct}%; background-color: ${meta.color}"></div>
         </div>
