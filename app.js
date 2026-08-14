@@ -1,6 +1,6 @@
 // ==========================================================================
-// Cyber Jagruti — Intelligence Dashboard Engine & Interactive Logic
-// Architecture: Precision Data Pipeline & ISRO Bhuvan Spatial Risk Engine
+// CYBER JAGRUTI — APPLICATION LOGIC & INTERACTIVE SUITE
+// Architecture: Empirical Research Pipeline & ISRO Bhuvan Spatial Risk Engine
 // ==========================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -11,15 +11,12 @@ document.addEventListener("DOMContentLoaded", () => {
   let geoJsonLayer = null;
   let pinMarkersGroup = null;
   let currentSort = "loss";
-  let liveStreamInterval = null;
-  let isStreamPaused = false;
   let currentScenarioIdx = 0;
   let solvedScenarios = new Set();
 
   // Executive Theme Engine (Default: Light Mode / Pure White Base)
   const themeToggleBtn = document.getElementById("theme-toggle-btn");
   const themeIcon = document.getElementById("theme-icon");
-  const themeText = document.getElementById("theme-text");
 
   const savedTheme = localStorage.getItem("india_cyber_theme");
   if (savedTheme === "dark") {
@@ -46,72 +43,36 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add("dark-mode");
     localStorage.setItem("india_cyber_theme", "dark");
     if (themeIcon) themeIcon.className = "fa-solid fa-sun text-zinc-300 text-xs";
-    if (themeText) themeText.innerText = "Light";
   }
 
   function disableDarkMode() {
     document.body.classList.remove("dark-mode");
     localStorage.setItem("india_cyber_theme", "light");
     if (themeIcon) themeIcon.className = "fa-solid fa-moon text-zinc-600 text-xs";
-    if (themeText) themeText.innerText = "Dark";
   }
 
-  // Segmented Navigation & GSAP Layout Transitions
-  const switchTab = (target) => {
-    const segBtns = document.querySelectorAll(".segmented-btn, .mobile-nav-link");
-    const tabPanels = document.querySelectorAll(".tab-panel");
+  // Smooth Section Scrolling & Active Navigation Highlighting
+  const navLinks = document.querySelectorAll(".nav-link");
+  navLinks.forEach(link => {
+    link.addEventListener("click", (e) => {
+      const targetId = link.getAttribute("href");
+      if (targetId && targetId.startsWith("#")) {
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          e.preventDefault();
+          targetElement.scrollIntoView({ behavior: "smooth" });
+          
+          // Close mobile drawer if open
+          const mobileDrawer = document.getElementById("mobile-nav-drawer");
+          if (mobileDrawer && !mobileDrawer.classList.contains("hidden")) {
+            mobileDrawer.classList.add("hidden");
+          }
 
-    segBtns.forEach(b => {
-      if (b.getAttribute("data-tab") === target) {
-        b.classList.add("active");
-      } else {
-        b.classList.remove("active");
-      }
-    });
-
-    tabPanels.forEach(p => {
-      if (p.id === `tab-${target}`) {
-        p.classList.add("active");
-        if (window.gsap) {
-          gsap.fromTo(p, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" });
+          // Trigger map resize if scrolling to map
+          if (targetId === "#section-map" && mapInstance) {
+            setTimeout(() => { mapInstance.invalidateSize(true); }, 150);
+          }
         }
-      } else {
-        p.classList.remove("active");
-      }
-    });
-
-    // Close mobile drawer if open
-    const mobileDrawer = document.getElementById("mobile-nav-drawer");
-    if (mobileDrawer && !mobileDrawer.classList.contains("hidden")) {
-      mobileDrawer.classList.add("hidden");
-    }
-
-    // Invalidate Leaflet Map Size when switching to Spatial Map
-    if (target === "map" && mapInstance) {
-      setTimeout(() => {
-        mapInstance.invalidateSize(true);
-        mapInstance.setView([22.5937, 78.9629], 5);
-      }, 50);
-      setTimeout(() => {
-        mapInstance.invalidateSize(true);
-      }, 250);
-    }
-  };
-
-  document.querySelectorAll(".segmented-btn, .mobile-nav-link").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const target = btn.getAttribute("data-tab");
-      if (target) switchTab(target);
-    });
-  });
-
-  document.querySelectorAll("[data-target-tab], .nav-footer-link, [data-tab='overview']").forEach(elem => {
-    elem.addEventListener("click", (e) => {
-      e.preventDefault();
-      const target = elem.getAttribute("data-target-tab") || elem.getAttribute("data-tab");
-      if (target) {
-        switchTab(target);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });
   });
@@ -153,13 +114,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  document.querySelectorAll("#print-ceo-report-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
+  // PDF Export / Print Briefing
+  const printBtn = document.getElementById("print-ceo-report-btn");
+  if (printBtn) {
+    printBtn.addEventListener("click", () => {
       window.print();
     });
-  });
+  }
 
-  // Window Resize Listener for Responsive Leaflet Map
+  // Window Resize Listener for Leaflet Map
   window.addEventListener("resize", () => {
     if (mapInstance) {
       mapInstance.invalidateSize(true);
@@ -182,10 +145,8 @@ document.addEventListener("DOMContentLoaded", () => {
     renderTrendChart(data.yearly_trends);
     renderFraudPieChart(data.fraud_breakdown);
     initBhuvanISROMapOnly(data.states);
-    renderSectorCards();
     renderLandmarkIncidents(data.incidents);
     renderFraudTaxonomy(data.fraud_breakdown);
-    renderTimelineMilestones(data.timeline);
     renderMitreMatrix(data.mitre);
     renderRepositoryGrid(data.incidents);
     setupSearchAndFilters();
@@ -193,11 +154,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Interactive Suites
     initGoldenHourSimulator();
-    initLiveThreatStream(data.incidents);
     initScamSimulator();
     initStateComparisonSandbox(data.states);
     initCommandPalette(data);
-    initTiltCards();
   }
 
   // ==========================================================================
@@ -210,13 +169,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const tagline = document.getElementById("reveal-tagline");
     const skipBtn = document.getElementById("skip-reveal-btn");
     const replayBtn = document.getElementById("replay-reveal-btn");
-
-    const heroTitle = document.getElementById("hero-title");
-    const heroSubtitle = document.getElementById("hero-subtitle");
-    const heroDesc = document.getElementById("hero-desc");
-    const heroStats = document.getElementById("hero-stats");
-    const heroCtaGroup = document.getElementById("hero-cta-group");
-    const bgMap = document.querySelector(".sentinel-bg-map");
 
     if (!window.gsap || !curtain) {
       if (curtain) curtain.classList.add("revealed");
@@ -236,60 +188,41 @@ document.addEventListener("DOMContentLoaded", () => {
       gsap.set(flag, { opacity: 0, y: 70, scale: 0.94 });
       gsap.set(tagline, { opacity: 0, y: 10 });
 
-      if (heroTitle) gsap.set(heroTitle, { opacity: 0, y: 16 });
-      if (heroSubtitle) gsap.set(heroSubtitle, { opacity: 0, y: 12 });
-      if (heroDesc) gsap.set(heroDesc, { opacity: 0, y: 10 });
-      if (heroStats) gsap.set(heroStats.children, { opacity: 0, y: 14 });
-      if (bgMap) gsap.set(bgMap, { opacity: 0, scale: 0.95 });
-      if (heroCtaGroup) gsap.set(heroCtaGroup, { opacity: 0, y: 10 });
+      tl.to(initLabel, { opacity: 1, y: 0, duration: 0.45 }, 0.35);
+      tl.to(flag, { opacity: 1, y: 0, scale: 1, duration: 0.85, ease: "power3.out" }, 0.70);
+      tl.to(tagline, { opacity: 1, y: 0, duration: 0.45 }, 1.15);
 
-      tl.to(initLabel, { opacity: 1, y: 0, duration: 0.5 }, 0.40);
-      tl.to(flag, { opacity: 1, y: 0, scale: 1, duration: 1.0, ease: "power3.out" }, 0.80);
-      tl.to(tagline, { opacity: 1, y: 0, duration: 0.5 }, 1.30);
-
-      tl.to(flag, { scale: 1.05, opacity: 0, duration: 0.35, ease: "power2.in" }, 1.85);
-      tl.to(initLabel, { opacity: 0, duration: 0.25 }, 1.85);
-      tl.to(tagline, { opacity: 0, duration: 0.25 }, 1.85);
+      tl.to(flag, { scale: 1.05, opacity: 0, duration: 0.3, ease: "power2.in" }, 1.65);
+      tl.to(initLabel, { opacity: 0, duration: 0.2 }, 1.65);
+      tl.to(tagline, { opacity: 0, duration: 0.2 }, 1.65);
 
       tl.to(curtain, {
         clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
-        duration: 0.75,
+        duration: 0.65,
         ease: "power3.inOut",
         onComplete: () => {
           curtain.classList.add("revealed");
+          animateCounters();
+          if (mapInstance) mapInstance.invalidateSize(true);
         }
-      }, 2.00);
-
-      if (heroTitle) tl.to(heroTitle, { opacity: 1, y: 0, duration: 0.45 }, 2.40);
-      if (heroSubtitle) tl.to(heroSubtitle, { opacity: 1, y: 0, duration: 0.35 }, 2.65);
-      if (heroDesc) tl.to(heroDesc, { opacity: 1, y: 0, duration: 0.35 }, 2.75);
-      if (heroStats) tl.to(heroStats.children, { opacity: 1, y: 0, stagger: 0.1, duration: 0.45 }, 2.85);
-      if (bgMap) tl.to(bgMap, { opacity: document.body.classList.contains("dark-mode") ? 0.06 : 0.12, scale: 1, duration: 0.7 }, 3.20);
-      if (heroCtaGroup) tl.to(heroCtaGroup, { opacity: 1, y: 0, duration: 0.4 }, 3.80);
-
-      tl.add(() => {
-        animateCounters();
-      }, 4.10);
+      }, 1.80);
     }
 
     function skipSequence() {
       tl.kill();
       curtain.classList.add("revealed");
       gsap.set(curtain, { display: "none" });
-      if (heroTitle) gsap.set(heroTitle, { opacity: 1, y: 0 });
-      if (heroSubtitle) gsap.set(heroSubtitle, { opacity: 1, y: 0 });
-      if (heroDesc) gsap.set(heroDesc, { opacity: 1, y: 0 });
-      if (heroStats) gsap.set(heroStats.children, { opacity: 1, y: 0 });
-      if (bgMap) gsap.set(bgMap, { opacity: document.body.classList.contains("dark-mode") ? 0.06 : 0.12, scale: 1 });
-      if (heroCtaGroup) gsap.set(heroCtaGroup, { opacity: 1, y: 0 });
       animateCounters();
+      if (mapInstance) mapInstance.invalidateSize(true);
     }
 
     if (skipBtn) skipBtn.addEventListener("click", skipSequence);
     if (replayBtn) replayBtn.addEventListener("click", playSequence);
 
     window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") skipSequence();
+      if (e.key === "Escape" && !curtain.classList.contains("revealed")) {
+        skipSequence();
+      }
     });
 
     playSequence();
@@ -300,15 +233,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!window.gsap) return;
     document.querySelectorAll(".count-up").forEach(elem => {
       const targetVal = parseFloat(elem.getAttribute("data-target") || "0");
-      gsap.to(elem, {
-        innerText: targetVal,
-        duration: 1.2,
-        ease: "power2.out",
-        snap: { innerText: 1 },
-        onUpdate: function () {
-          elem.innerText = Math.floor(elem.innerText).toLocaleString();
-        }
-      });
+      if (targetVal > 1000000) {
+        elem.innerText = (targetVal / 100000).toFixed(2) + " Lakh";
+      } else if (targetVal > 1000) {
+        elem.innerText = "₹" + targetVal.toLocaleString() + " Cr";
+      }
     });
   }
 
@@ -338,7 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
             data: losses,
             backgroundColor: isDark ? "#3B82F6" : "#2563EB",
             borderRadius: 4,
-            barThickness: 20,
+            barThickness: 22,
             yAxisID: "yLoss"
           },
           {
@@ -363,7 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
         plugins: {
           legend: {
             position: "top",
-            labels: { color: textColor, font: { family: "Manrope", size: 11, weight: "600" }, usePointStyle: true, boxWidth: 6 }
+            labels: { color: textColor, font: { family: "Manrope", size: 12, weight: "600" }, usePointStyle: true, boxWidth: 8 }
           },
           tooltip: {
             backgroundColor: isDark ? "#0A0A0A" : "#FFFFFF",
@@ -373,27 +302,27 @@ document.addEventListener("DOMContentLoaded", () => {
             borderWidth: 1,
             padding: 10,
             cornerRadius: 6,
-            bodyFont: { family: "Manrope", size: 11 }
+            bodyFont: { family: "Manrope", size: 12 }
           }
         },
         scales: {
           x: {
             grid: { display: false },
-            ticks: { color: mutedColor, font: { family: "IBM Plex Mono", size: 11 } }
+            ticks: { color: mutedColor, font: { family: "IBM Plex Mono", size: 11, weight: "500" } }
           },
           yLoss: {
             type: "linear",
             position: "left",
             grid: { color: gridColor },
             title: { display: true, text: "Loss (INR Cr)", color: mutedColor, font: { family: "Manrope", size: 11, weight: "600" } },
-            ticks: { color: mutedColor, font: { family: "IBM Plex Mono", size: 11 }, callback: v => `₹${v}` }
+            ticks: { color: mutedColor, font: { family: "IBM Plex Mono", size: 11, weight: "500" }, callback: v => `₹${v}` }
           },
           yComplaints: {
             type: "linear",
             position: "right",
             grid: { display: false },
             title: { display: true, text: "Complaints (Lakhs)", color: mutedColor, font: { family: "Manrope", size: 11, weight: "600" } },
-            ticks: { color: mutedColor, font: { family: "IBM Plex Mono", size: 11 }, callback: v => `${v}L` }
+            ticks: { color: mutedColor, font: { family: "IBM Plex Mono", size: 11, weight: "500" }, callback: v => `${v}L` }
           }
         }
       }
@@ -413,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (chartPie) chartPie.destroy();
 
-    const vibrantPalette = [
+    const palette = [
       "#EF4444",
       "#F59E0B",
       "#8B5CF6",
@@ -429,8 +358,8 @@ document.addEventListener("DOMContentLoaded", () => {
         labels: labels,
         datasets: [{
           data: losses,
-          backgroundColor: vibrantPalette,
-          borderWidth: 1.5,
+          backgroundColor: palette,
+          borderWidth: 2,
           borderColor: isDark ? "#0A0A0A" : "#FFFFFF"
         }]
       },
@@ -440,7 +369,7 @@ document.addEventListener("DOMContentLoaded", () => {
         plugins: {
           legend: {
             position: "bottom",
-            labels: { color: textColor, font: { family: "Manrope", size: 11, weight: "600" }, boxWidth: 8, padding: 6 }
+            labels: { color: textColor, font: { family: "Manrope", size: 11, weight: "600" }, boxWidth: 8, padding: 8 }
           },
           tooltip: {
             backgroundColor: isDark ? "#0A0A0A" : "#FFFFFF",
@@ -458,7 +387,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           }
         },
-        cutout: "68%"
+        cutout: "66%"
       }
     });
   }
@@ -493,7 +422,7 @@ document.addEventListener("DOMContentLoaded", () => {
         badge.className = "px-2.5 py-1 text-xs font-mono font-bold rounded-md bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800";
         lienStatus.innerText = "INSTANT APB LIEN FREEZE";
         lienStatus.className = "text-xs font-bold text-emerald-600 dark:text-emerald-400 font-mono";
-        lienDesc.innerText = "Funds successfully held in recipient account before any ATM withdrawal or P2P transfer.";
+        lienDesc.innerText = "Funds held in recipient account before ATM withdrawal or P2P transfer.";
         layerCount.innerText = "1 / 5 Mule Layers Active";
         layerDesc.innerText = "Money is directly quarantined inside domestic banking clearing gateway.";
         actionCode.innerText = "DIAL 1930 / AUTO-REVERSAL";
@@ -535,63 +464,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================================================
-  // Live Threat Stream Ticker
-  // ==========================================================================
-  function initLiveThreatStream(incidents) {
-    const ticker = document.getElementById("live-threat-ticker");
-    const pauseBtn = document.getElementById("pause-stream-btn");
-    if (!ticker || !incidents || incidents.length === 0) return;
-
-    let idx = 0;
-    const streamFeed = incidents.slice(0, 15);
-
-    function addTickerItem() {
-      if (isStreamPaused) return;
-      const inc = streamFeed[idx % streamFeed.length];
-      idx++;
-
-      const item = document.createElement("div");
-      item.className = "p-2.5 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 flex items-center justify-between gap-2 text-xs font-sans";
-      item.innerHTML = `
-        <div class="space-y-0.5">
-          <div class="flex items-center gap-1.5">
-            <span class="text-[9px] font-mono px-1 py-0.2 bg-zinc-200 dark:bg-zinc-800 rounded font-bold">${inc.id}</span>
-            <span class="font-semibold text-zinc-900 dark:text-zinc-100">${inc.target}</span>
-          </div>
-          <div class="text-[11px] text-zinc-500">${inc.category} • ${inc.state}</div>
-        </div>
-        <div class="text-right shrink-0">
-          <div class="font-mono font-bold text-xs text-black dark:text-white">₹${inc.loss_cr.toFixed(1)} Cr</div>
-          <span class="text-[9px] font-mono font-bold text-rose-500 uppercase">${inc.severity}</span>
-        </div>
-      `;
-
-      ticker.prepend(item);
-      if (ticker.children.length > 5) {
-        ticker.removeChild(ticker.lastChild);
-      }
-
-      if (window.gsap) {
-        gsap.fromTo(item, { opacity: 0, y: -6 }, { opacity: 1, y: 0, duration: 0.3 });
-      }
-    }
-
-    for (let i = 0; i < 3; i++) {
-      addTickerItem();
-    }
-
-    liveStreamInterval = setInterval(addTickerItem, 4500);
-
-    if (pauseBtn) {
-      pauseBtn.addEventListener("click", () => {
-        isStreamPaused = !isStreamPaused;
-        pauseBtn.innerHTML = isStreamPaused ? `<i class="fa-solid fa-play text-[10px]"></i> Resume` : `<i class="fa-solid fa-pause text-[10px]"></i> Pause`;
-      });
-    }
-  }
-
-  // ==========================================================================
-  // Citizen Scam Defense & Interactive Simulator Lab
+  // Citizen Scam Defense Simulator
   // ==========================================================================
   function initScamSimulator() {
     const scenarios = [
@@ -606,7 +479,7 @@ document.addEventListener("DOMContentLoaded", () => {
           { text: "Ask them to send the arrest warrant on WhatsApp before paying the verification penalty.", correct: false, reason: "VULNERABILITY: Scammers forge official stamps, emblem logos, and FIR documents within minutes to intensify panic." }
         ],
         vector: "Authority Coercion & Psychological Isolation",
-        mitreCode: "T1566.002 • Phishing: Spearphishing Link / Social Engineering"
+        mitreCode: "T1566.002 • Phishing / Social Engineering"
       },
       {
         id: "scenario-1",
@@ -619,7 +492,7 @@ document.addEventListener("DOMContentLoaded", () => {
           { text: "Check SEBI registration number listed on their forged PDF certificate.", correct: false, reason: "DECEPTIVE PROOF: Fraudsters clone genuine SEBI registration numbers of legitimate institutional traders." }
         ],
         vector: "Greed Exploitation & Synthesized Social Proof",
-        mitreCode: "T1204.002 • User Execution: Malicious File / Fake Trading Portal"
+        mitreCode: "T1204.002 • Malicious APK Execution"
       },
       {
         id: "scenario-2",
@@ -632,7 +505,7 @@ document.addEventListener("DOMContentLoaded", () => {
           { text: "Ask customer care on Telegram why the money is locked.", correct: false, reason: "MANIPULATION: Telegram customer service bots are operated by the same extortion compound operators." }
         ],
         vector: "Micro-Reward Conditioning & Escalating Sunk Cost",
-        mitreCode: "T1586.002 • Compromised Accounts / Virtual UPI Siphoning"
+        mitreCode: "T1586.002 • Compromised Accounts / UPI Siphoning"
       },
       {
         id: "scenario-3",
@@ -645,7 +518,7 @@ document.addEventListener("DOMContentLoaded", () => {
           { text: "Reply to the SMS with your consumer number to get an updated bill receipt.", correct: false, reason: "RISK: Replying confirms your active phone line to automated phishing syndicates." }
         ],
         vector: "Artificial Urgency & Screen Sharing Exploitation",
-        mitreCode: "T1219 • Remote Access Software / Banking Trojan Injection"
+        mitreCode: "T1219 • Remote Access Software Trojan"
       }
     ];
 
@@ -661,9 +534,9 @@ document.addEventListener("DOMContentLoaded", () => {
       selectorButtons.forEach(btn => {
         const sIdx = parseInt(btn.getAttribute("data-scenario"), 10);
         if (sIdx === idx) {
-          btn.className = "scenario-btn active p-2.5 rounded-md border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 text-left transition cursor-pointer";
+          btn.className = "scenario-btn active p-3 rounded-md border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 text-left transition cursor-pointer";
         } else {
-          btn.className = "scenario-btn p-2.5 rounded-md border border-transparent bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left transition text-zinc-500 cursor-pointer";
+          btn.className = "scenario-btn p-3 rounded-md border border-transparent bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left transition text-zinc-500 cursor-pointer";
         }
       });
 
@@ -676,7 +549,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <span class="text-[10px] font-mono px-2 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded font-semibold text-zinc-700 dark:text-zinc-300">${sc.mitreCode}</span>
         </div>
 
-        <div class="p-3.5 rounded bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 space-y-2">
+        <div class="p-3.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 space-y-2">
           <div class="flex items-center gap-2 text-xs font-mono text-rose-500 font-semibold">
             <div class="waveform-container">
               <span class="waveform-bar"></span>
@@ -720,7 +593,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <p class="text-emerald-900 dark:text-emerald-200 font-sans leading-relaxed">${selectedChoice.reason}</p>
             `;
             solvedScenarios.add(idx);
-            if (scoreBadge) scoreBadge.innerText = `${solvedScenarios.size} / 4`;
+            if (scoreBadge) scoreBadge.innerText = `${solvedScenarios.size} / 4 Completed`;
           } else {
             verdictBox.className = "p-3.5 rounded border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950 text-xs space-y-1 block";
             verdictBox.innerHTML = `
@@ -782,37 +655,37 @@ document.addEventListener("DOMContentLoaded", () => {
         const lossDeltaColor = lossDelta >= 0 ? "text-rose-600 dark:text-rose-400" : "text-emerald-600 dark:text-emerald-400";
 
         return `
-          <div class="precision-card-subtle p-5 space-y-4 border border-zinc-300 dark:border-zinc-700">
-            <div class="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-2.5">
+          <div class="precision-card p-4 space-y-3">
+            <div class="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-2">
               <div>
                 <span class="text-[10px] font-mono uppercase font-bold text-zinc-500">${label}</span>
-                <h3 class="text-base font-bold text-zinc-900 dark:text-zinc-100 font-display">${st.name}</h3>
+                <h3 class="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-display">${st.name}</h3>
               </div>
               <span class="px-2 py-0.5 text-xs font-mono font-bold rounded ${st.vulnerability_idx >= 80 ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300' : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'}">
                 Risk: ${st.vulnerability_idx || 65}/100
               </span>
             </div>
 
-            <div class="space-y-3 text-xs">
-              <div class="p-3 rounded bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 space-y-1">
-                <div class="text-[11px] text-zinc-500 font-mono">Reported Financial Loss</div>
-                <div class="text-lg font-bold font-mono text-black dark:text-white">₹${st.loss_cr.toLocaleString()} Cr</div>
+            <div class="space-y-2 text-xs">
+              <div class="p-2.5 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 space-y-0.5">
+                <div class="text-[10px] text-zinc-500 font-mono">Reported Financial Loss</div>
+                <div class="text-base font-bold font-mono text-[#09090B] dark:text-white">₹${st.loss_cr.toLocaleString()} Cr</div>
                 <div class="text-[10px] font-mono ${lossDeltaColor}">${lossDeltaText}</div>
               </div>
 
               <div class="grid grid-cols-2 gap-2">
-                <div class="p-2.5 rounded bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 space-y-0.5">
-                  <div class="text-[10px] text-zinc-500 font-mono">Citizen Complaints</div>
-                  <div class="text-sm font-bold font-mono text-zinc-900 dark:text-zinc-100">${st.complaints.toLocaleString()}</div>
+                <div class="p-2 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+                  <div class="text-[9px] text-zinc-500 font-mono">Complaints</div>
+                  <div class="text-xs font-bold font-mono text-zinc-900 dark:text-zinc-100">${st.complaints.toLocaleString()}</div>
                 </div>
-                <div class="p-2.5 rounded bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 space-y-0.5">
-                  <div class="text-[10px] text-zinc-500 font-mono">1930 Funds Saved</div>
-                  <div class="text-sm font-bold font-mono text-emerald-600 dark:text-emerald-400">₹${(st.saved_cr || 0).toLocaleString()} Cr</div>
+                <div class="p-2 rounded bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
+                  <div class="text-[9px] text-zinc-500 font-mono">1930 Saved</div>
+                  <div class="text-xs font-bold font-mono text-emerald-600 dark:text-emerald-400">₹${(st.saved_cr || 0).toLocaleString()} Cr</div>
                 </div>
               </div>
 
-              <div class="pt-2 border-t border-zinc-200 dark:border-zinc-800 space-y-1">
-                <div class="text-[11px] font-mono font-semibold text-zinc-500">PRIMARY THREAT PROFILE:</div>
+              <div class="pt-1.5 border-t border-zinc-200 dark:border-zinc-800">
+                <div class="text-[10px] font-mono font-semibold text-zinc-500">PRIMARY THREAT PROFILE:</div>
                 <p class="text-xs text-zinc-700 dark:text-zinc-300 font-sans leading-relaxed">${st.dominant_threat || "Digital Arrest & Investment Fraud Syndicates"}</p>
               </div>
             </div>
@@ -867,17 +740,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
       if (e.key === "Escape") {
-        if (!modal.classList.contains("hidden")) {
-          closePalette();
-        }
+        if (!modal.classList.contains("hidden")) closePalette();
         const incModal = document.getElementById("incident-modal");
-        if (incModal && !incModal.classList.contains("hidden")) {
-          incModal.classList.add("hidden");
-        }
+        if (incModal && !incModal.classList.contains("hidden")) incModal.classList.add("hidden");
         const methModal = document.getElementById("methodology-modal");
-        if (methModal && !methModal.classList.contains("hidden")) {
-          methModal.classList.add("hidden");
-        }
+        if (methModal && !methModal.classList.contains("hidden")) methModal.classList.add("hidden");
       }
     });
 
@@ -921,7 +788,8 @@ document.addEventListener("DOMContentLoaded", () => {
           `;
           item.addEventListener("click", () => {
             closePalette();
-            switchTab("map");
+            const mapSection = document.getElementById("section-map");
+            if (mapSection) mapSection.scrollIntoView({ behavior: "smooth" });
             updateSelectedStateCard(st);
           });
           results.appendChild(item);
@@ -960,26 +828,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================================================
-  // 3D Card Hover Perspective Effect
-  // ==========================================================================
-  function initTiltCards() {
-    document.querySelectorAll(".tilt-card").forEach(card => {
-      card.addEventListener("mousemove", (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        const rotateX = (-y / rect.height) * 3;
-        const rotateY = (x / rect.width) * 3;
-        card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
-      });
-
-      card.addEventListener("mouseleave", () => {
-        card.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0)";
-      });
-    });
-  }
-
-  // ==========================================================================
   // ISRO Bhuvan Spatial Risk Engine
   // ==========================================================================
   function initBhuvanISROMapOnly(states) {
@@ -1006,7 +854,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderPinpointLocations();
 
     setTimeout(() => {
-      if (mapInstance) mapInstance.invalidateSize();
+      if (mapInstance) mapInstance.invalidateSize(true);
     }, 200);
   }
 
@@ -1029,10 +877,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     pinpointHubs.forEach(hub => {
       const pinHtml = `
-        <div class="relative flex items-center justify-center cursor-pointer group">
-          <div class="w-5 h-5 rounded bg-zinc-900 text-white flex items-center justify-center text-[10px] font-bold border border-white shadow-sm hover:scale-110 transition">
-            <i class="fa-solid ${hub.icon}"></i>
-          </div>
+        <div class="w-5 h-5 rounded bg-zinc-900 text-white flex items-center justify-center text-[10px] font-bold border border-white shadow-sm hover:scale-110 transition cursor-pointer">
+          <i class="fa-solid ${hub.icon}"></i>
         </div>
       `;
 
@@ -1046,7 +892,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const marker = L.marker(hub.coords, { icon: customIcon }).addTo(pinMarkersGroup);
 
       marker.bindPopup(`
-        <div class="p-3 space-y-1.5 font-sans">
+        <div class="p-3 space-y-1 font-sans">
           <div class="text-[10px] font-mono font-bold text-zinc-500 uppercase">ISRO Bhuvan Spatial Node</div>
           <div class="font-bold text-xs text-zinc-900 font-display">${hub.name}</div>
           <div class="text-xs text-zinc-600">Category: <strong>${hub.type}</strong></div>
@@ -1111,7 +957,7 @@ document.addEventListener("DOMContentLoaded", () => {
             weight: 1,
             opacity: 1,
             color: '#FFFFFF',
-            fillOpacity: 0.6
+            fillOpacity: 0.65
           };
         },
         onEachFeature: function(feature, layer) {
@@ -1151,7 +997,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!listContainer) return;
 
     listContainer.innerHTML = "";
-    states.slice(0, 10).forEach((st, idx) => {
+    states.slice(0, 8).forEach((st, idx) => {
       const item = document.createElement("div");
       item.className = "flex items-center justify-between p-2 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:border-zinc-400 transition cursor-pointer text-xs";
       
@@ -1162,7 +1008,6 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
         <div class="text-right font-mono">
           <span class="font-bold text-black dark:text-white">₹${st.loss_cr.toLocaleString()} Cr</span>
-          <span class="text-[10px] text-zinc-500 block">${st.complaints.toLocaleString()} cases</span>
         </div>
       `;
 
@@ -1191,45 +1036,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Sector Impact Cards
-  function renderSectorCards() {
-    const sectors = [
-      { name: "Banking & Financial Services (BFSI)", icon: "fa-building-columns", risk: "CRITICAL", loss: "₹24,800 Cr", threat: "Digital Arrest, Fake Demat Trading, AEPS Stencils", cve: "CVE-2023-38831", badge: "rose" },
-      { name: "Healthcare & MedTech Infrastructure", icon: "fa-hospital", risk: "HIGH", loss: "₹6,400 Cr", threat: "AIIMS-Style Ransomware & EHR Database Leaks", cve: "CVE-2022-26923", badge: "rose" },
-      { name: "Critical Power & Energy Dispatch Grids", icon: "fa-bolt", risk: "HIGH", loss: "₹8,200 Cr", threat: "RedEcho / ShadowPad State-Sponsored Probes", cve: "CVE-2021-44228", badge: "amber" },
-      { name: "E-Commerce, Logistics & Retail", icon: "fa-cart-shopping", risk: "MEDIUM", loss: "₹11,500 Cr", threat: "Part-Time Task Fraud & Fake Courier Customs IVR", cve: "CVE-2023-36884", badge: "amber" },
-      { name: "Government Digital Public Infrastructure", icon: "fa-landmark", risk: "HIGH", loss: "₹9,800 Cr", threat: "CoWIN / ICMR Scraping, Spear-Phishing", cve: "CVE-2023-23397", badge: "blue" },
-      { name: "IT, Telecom & Cloud Service Providers", icon: "fa-server", risk: "CRITICAL", loss: "₹7,800 Cr", threat: "SIM-Box Bypass, Unauthorized IMEI Cloning", cve: "CVE-2024-1709", badge: "rose" }
-    ];
-
-    const container = document.getElementById("sectors-grid");
-    if (!container) return;
-
-    container.innerHTML = "";
-    sectors.forEach(sec => {
-      const card = document.createElement("div");
-      card.className = "precision-card p-4 space-y-3 tilt-card";
-      card.innerHTML = `
-        <div class="flex items-center justify-between">
-          <div class="w-8 h-8 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 flex items-center justify-center text-xs">
-            <i class="fa-solid ${sec.icon}"></i>
-          </div>
-          <span class="status-badge ${sec.badge}">${sec.risk}</span>
-        </div>
-        <div>
-          <h4 class="font-bold text-xs text-zinc-900 dark:text-zinc-100 font-display">${sec.name}</h4>
-          <span class="text-xs font-mono font-bold text-black dark:text-white">${sec.loss} Total Loss</span>
-        </div>
-        <p class="text-xs text-zinc-500 font-sans leading-tight">Primary Vector: ${sec.threat}</p>
-        <div class="pt-2 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-[10px] font-mono text-zinc-400">
-          <span>Observed CVE:</span>
-          <strong class="text-zinc-700 dark:text-zinc-300">${sec.cve}</strong>
-        </div>
-      `;
-      container.appendChild(card);
-    });
-  }
-
   // Landmark Breaches Grid
   function renderLandmarkIncidents(incidents) {
     const container = document.getElementById("landmark-incidents-grid");
@@ -1239,14 +1045,14 @@ document.addEventListener("DOMContentLoaded", () => {
     container.innerHTML = "";
     landmarks.forEach(inc => {
       const card = document.createElement("div");
-      card.className = "precision-card-subtle p-3.5 flex flex-col justify-between space-y-2 cursor-pointer hover:border-zinc-400 transition group tilt-card";
+      card.className = "precision-card p-4 flex flex-col justify-between space-y-2 cursor-pointer hover:border-zinc-400 transition group";
       card.innerHTML = `
         <div class="space-y-1">
           <div class="flex items-center justify-between">
             <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 rounded">${inc.id}</span>
             <span class="text-xs font-mono font-bold text-zinc-900 dark:text-zinc-100">₹${inc.loss_cr.toFixed(2)} Cr</span>
           </div>
-          <h4 class="font-bold text-xs text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors font-display">${inc.target}</h4>
+          <h4 class="font-bold text-xs text-zinc-900 dark:text-zinc-100 font-display pt-1">${inc.target}</h4>
           <p class="text-[11px] text-zinc-500 leading-tight font-sans">${inc.category} (${inc.threat_actor})</p>
         </div>
         <div class="pt-2 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-[11px] font-semibold text-zinc-900 dark:text-zinc-100 font-mono">
@@ -1263,7 +1069,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Fraud Taxonomy Grid (Rich Visual Infographic Cards)
+  // Fraud Taxonomy Grid
   function renderFraudTaxonomy(fraudList) {
     const container = document.getElementById("fraud-taxonomy-grid");
     if (!container || !fraudList) return;
@@ -1285,7 +1091,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const sharePct = totalLoss > 0 ? ((f.loss_cr / totalLoss) * 100).toFixed(1) : "0";
 
       const card = document.createElement("div");
-      card.className = "precision-card p-4 space-y-3 tilt-card hover:border-zinc-400 transition";
+      card.className = "precision-card p-4 space-y-3";
       card.innerHTML = `
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2.5">
@@ -1321,30 +1127,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Timeline Milestones
-  function renderTimelineMilestones(timeline) {
-    const container = document.getElementById("timeline-container");
-    if (!container || !timeline) return;
-
-    container.innerHTML = "";
-    timeline.forEach(m => {
-      const item = document.createElement("div");
-      item.className = "relative pl-6 pb-6 last:pb-0";
-      item.innerHTML = `
-        <div class="absolute -left-[31px] top-0 w-3.5 h-3.5 rounded-full bg-zinc-900 dark:bg-zinc-100 border-2 border-white dark:border-zinc-900"></div>
-        <div class="precision-card-subtle p-3.5 space-y-1 tilt-card">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-mono font-bold text-black dark:text-white">${m.date}</span>
-            <span class="status-badge">${m.type}</span>
-          </div>
-          <h4 class="font-bold text-xs text-zinc-900 dark:text-zinc-100 font-display">${m.event}</h4>
-          <p class="text-xs text-zinc-500 font-sans leading-tight">${m.impact}</p>
-        </div>
-      `;
-      container.appendChild(item);
-    });
-  }
-
   // MITRE Matrix Table
   function renderMitreMatrix(mitreList) {
     const tbody = document.getElementById("mitre-table-body");
@@ -1371,7 +1153,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tbody.innerHTML = "";
     incidents.slice(0, 50).forEach(inc => {
       const tr = document.createElement("tr");
-      const badgeClass = inc.severity === "CRITICAL" ? "rose" : inc.severity === "HIGH" ? "amber" : "accent";
+      const badgeClass = inc.severity === "CRITICAL" ? "critical" : inc.severity === "HIGH" ? "warning" : "info";
 
       tr.innerHTML = `
         <td class="font-mono font-bold text-xs">${inc.id}</td>
@@ -1382,7 +1164,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <td class="text-xs font-sans">${inc.category}</td>
         <td class="text-xs text-zinc-500 font-mono">${inc.threat_actor}</td>
         <td class="text-right font-mono font-bold text-xs">₹${inc.loss_cr.toFixed(2)}</td>
-        <td class="text-center"><span class="status-badge ${badgeClass}">${inc.severity}</span></td>
+        <td class="text-center"><span class="status-pill ${badgeClass}">${inc.severity}</span></td>
         <td class="text-center">
           <button class="px-2 py-0.5 bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 rounded font-medium text-[11px] transition view-detail-btn font-mono cursor-pointer" data-id="${inc.id}">View</button>
         </td>
@@ -1418,13 +1200,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const modal = document.getElementById("incident-modal");
     modal.classList.remove("hidden");
-
-    if (window.gsap) {
-      gsap.fromTo(modal.querySelector(".precision-card"), 
-        { scale: 0.95, opacity: 0 }, 
-        { scale: 1, opacity: 1, duration: 0.2, ease: "power2.out" }
-      );
-    }
   }
 
   const closeModalBtn = document.getElementById("close-modal-btn");
