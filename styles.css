@@ -576,6 +576,13 @@ input[type="text"]:focus, select:focus {
   padding-top: 12vh;
 }
 
+#command-palette-modal.hidden,
+#incident-modal.hidden,
+#methodology-modal.hidden,
+.hidden {
+  display: none !important;
+}
+
 .command-palette-box {
   width: 100%;
   max-width: 600px;
