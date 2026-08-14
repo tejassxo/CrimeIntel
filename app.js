@@ -61,6 +61,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (targetElement) {
           e.preventDefault();
           targetElement.scrollIntoView({ behavior: "smooth" });
+
+          // Update active class immediately on click
+          navLinks.forEach(l => l.classList.remove("active"));
+          link.classList.add("active");
           
           // Close mobile drawer if open
           const mobileDrawer = document.getElementById("mobile-nav-drawer");
@@ -76,6 +80,31 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  // ScrollSpy: Automatically highlight the current section in the navbar
+  const sections = document.querySelectorAll("section[id]");
+  const observerOptions = {
+    root: null,
+    rootMargin: "-20% 0px -70% 0px",
+    threshold: 0
+  };
+
+  const scrollSpyObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute("id");
+        navLinks.forEach(link => {
+          if (link.getAttribute("href") === `#${id}`) {
+            link.classList.add("active");
+          } else {
+            link.classList.remove("active");
+          }
+        });
+      }
+    });
+  }, observerOptions);
+
+  sections.forEach(sec => scrollSpyObserver.observe(sec));
 
   // Mobile Menu Drawer Toggle
   const mobileMenuBtn = document.getElementById("mobile-menu-btn");
