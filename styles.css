@@ -366,3 +366,127 @@ input[type="text"]:focus, select:focus {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--border-strong);
 }
+
+/* ==========================================================================
+   The Republic Reveal Sequence & Digital Sentinel Hero
+   ========================================================================== */
+
+/* Fullscreen Reveal Curtain */
+#republic-reveal-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: var(--bg-main);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: all;
+  overflow: hidden;
+  will-change: transform, clip-path, opacity;
+}
+
+#republic-reveal-curtain.revealed {
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* Tricolour Flag Styling */
+.flag-container {
+  width: 220px;
+  height: 146px;
+  border-radius: 4px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  position: relative;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+.flag-stripe-saffron {
+  height: 33.333%;
+  background-color: #FF9933;
+}
+
+.flag-stripe-white {
+  height: 33.334%;
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.flag-stripe-green {
+  height: 33.333%;
+  background-color: #138808;
+}
+
+.ashoka-chakra {
+  width: 28px;
+  height: 28px;
+}
+
+/* Subtle Organic Flag Wave Animation */
+@keyframes flagWaving {
+  0% { transform: translateY(0) scaleY(1); filter: brightness(1); }
+  50% { transform: translateY(-2px) scaleY(0.985); filter: brightness(1.02); }
+  100% { transform: translateY(0) scaleY(1); filter: brightness(1); }
+}
+
+.flag-wave {
+  animation: flagWaving 3s ease-in-out infinite;
+}
+
+/* Digital Sentinel Hero Panel */
+.sentinel-hero {
+  position: relative;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  overflow: hidden;
+}
+
+.sentinel-bg-map {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 55%;
+  opacity: 0.14;
+  pointer-events: none;
+  z-index: 1;
+}
+
+body.dark-mode .sentinel-bg-map {
+  opacity: 0.08;
+}
+
+.sentinel-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* Replay & Skip Button */
+.reveal-skip-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  padding: 0.25rem 0.625rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  z-index: 101;
+}
+
+.reveal-skip-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+

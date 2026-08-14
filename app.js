@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   function initDashboard(data) {
-    animateCounters();
+    initRepublicReveal();
     renderTrendChart(data.yearly_trends);
     renderFraudPieChart(data.fraud_breakdown);
     initBhuvanISROMapOnly(data.states);
@@ -136,6 +136,127 @@ document.addEventListener("DOMContentLoaded", () => {
     renderRepositoryGrid(data.incidents);
     setupSearchAndFilters();
     setupStateSorting(data.states);
+  }
+
+  // ==========================================================================
+  // The Republic Reveal (GSAP Cinematic National Unveiling Sequence)
+  // ==========================================================================
+  function initRepublicReveal() {
+    const curtain = document.getElementById("republic-reveal-curtain");
+    const initLabel = document.getElementById("reveal-initiative-label");
+    const flag = document.getElementById("reveal-flag");
+    const tagline = document.getElementById("reveal-tagline");
+    const skipBtn = document.getElementById("skip-reveal-btn");
+    const replayBtn = document.getElementById("replay-reveal-btn");
+
+    const heroTitle = document.getElementById("hero-title");
+    const heroSubtitle = document.getElementById("hero-subtitle");
+    const heroDesc = document.getElementById("hero-desc");
+    const heroStats = document.getElementById("hero-stats");
+    const heroCtaGroup = document.getElementById("hero-cta-group");
+    const bgMap = document.querySelector(".sentinel-bg-map");
+
+    if (!window.gsap || !curtain) {
+      if (curtain) curtain.classList.add("revealed");
+      animateCounters();
+      return;
+    }
+
+    let tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+
+    function playSequence() {
+      tl.kill();
+      tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+
+      // Initial Canvas Reset
+      curtain.classList.remove("revealed");
+      gsap.set(curtain, { display: "flex", y: 0, opacity: 1, clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" });
+      gsap.set(initLabel, { opacity: 0, y: 12 });
+      gsap.set(flag, { opacity: 0, y: 70, scale: 0.94 });
+      gsap.set(tagline, { opacity: 0, y: 10 });
+
+      if (heroTitle) gsap.set(heroTitle, { opacity: 0, y: 16 });
+      if (heroSubtitle) gsap.set(heroSubtitle, { opacity: 0, y: 12 });
+      if (heroDesc) gsap.set(heroDesc, { opacity: 0, y: 10 });
+      if (heroStats) gsap.set(heroStats.children, { opacity: 0, y: 14 });
+      if (bgMap) gsap.set(bgMap, { opacity: 0, scale: 0.95 });
+      if (heroCtaGroup) gsap.set(heroCtaGroup, { opacity: 0, y: 10 });
+
+      // 0.40s - Initiative label appears
+      tl.to(initLabel, { opacity: 1, y: 0, duration: 0.5 }, 0.40);
+
+      // 0.80s - Indian flag begins rising
+      tl.to(flag, { opacity: 1, y: 0, scale: 1, duration: 1.0, ease: "power3.out" }, 0.80);
+      tl.to(tagline, { opacity: 1, y: 0, duration: 0.5 }, 1.30);
+
+      // 1.80s - Flag reaches reveal position, initiates curtain wipe
+      tl.to(flag, { scale: 1.05, opacity: 0, duration: 0.35, ease: "power2.in" }, 1.85);
+      tl.to(initLabel, { opacity: 0, duration: 0.25 }, 1.85);
+      tl.to(tagline, { opacity: 0, duration: 0.25 }, 1.85);
+
+      // 2.00s - Interface begins unveiling via clip-path
+      tl.to(curtain, {
+        clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
+        duration: 0.75,
+        ease: "power3.inOut",
+        onComplete: () => {
+          curtain.classList.add("revealed");
+        }
+      }, 2.00);
+
+      // 2.40s - CYBER JAGRUTI title reveals
+      if (heroTitle) {
+        tl.to(heroTitle, { opacity: 1, y: 0, duration: 0.45 }, 2.40);
+      }
+
+      // 2.70s - Subtitle + statistics stagger in
+      if (heroSubtitle) {
+        tl.to(heroSubtitle, { opacity: 1, y: 0, duration: 0.35 }, 2.65);
+      }
+      if (heroDesc) {
+        tl.to(heroDesc, { opacity: 1, y: 0, duration: 0.35 }, 2.75);
+      }
+      if (heroStats) {
+        tl.to(heroStats.children, { opacity: 1, y: 0, stagger: 0.1, duration: 0.45 }, 2.85);
+      }
+
+      // 3.20s - India map telemetry grid activates
+      if (bgMap) {
+        tl.to(bgMap, { opacity: document.body.classList.contains("dark-mode") ? 0.08 : 0.14, scale: 1, duration: 0.7 }, 3.20);
+      }
+
+      // 3.80s - CTA group interactive
+      if (heroCtaGroup) {
+        tl.to(heroCtaGroup, { opacity: 1, y: 0, duration: 0.4 }, 3.80);
+      }
+
+      // 4.20s - Settle and trigger KPI counter count-up
+      tl.add(() => {
+        animateCounters();
+      }, 4.10);
+    }
+
+    function skipSequence() {
+      tl.kill();
+      curtain.classList.add("revealed");
+      gsap.set(curtain, { display: "none" });
+      if (heroTitle) gsap.set(heroTitle, { opacity: 1, y: 0 });
+      if (heroSubtitle) gsap.set(heroSubtitle, { opacity: 1, y: 0 });
+      if (heroDesc) gsap.set(heroDesc, { opacity: 1, y: 0 });
+      if (heroStats) gsap.set(heroStats.children, { opacity: 1, y: 0 });
+      if (bgMap) gsap.set(bgMap, { opacity: document.body.classList.contains("dark-mode") ? 0.08 : 0.14, scale: 1 });
+      if (heroCtaGroup) gsap.set(heroCtaGroup, { opacity: 1, y: 0 });
+      animateCounters();
+    }
+
+    if (skipBtn) skipBtn.addEventListener("click", skipSequence);
+    if (replayBtn) replayBtn.addEventListener("click", playSequence);
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") skipSequence();
+    });
+
+    playSequence();
   }
 
   // Precision Metric Counters (GSAP)

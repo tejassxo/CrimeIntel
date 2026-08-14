@@ -24,8 +24,51 @@
   
   <!-- Signature UI Precision System Styles -->
   <link rel="stylesheet" href="styles.css">
-</head>
 <body class="antialiased">
+
+  <!-- =========================================================================
+       THE REPUBLIC REVEAL (GSAP Cinematic Opening Sequence)
+       ========================================================================= -->
+  <div id="republic-reveal-curtain">
+    <button id="skip-reveal-btn" class="reveal-skip-btn" title="Skip Sequence">SKIP SEQUENCE [ESC]</button>
+    
+    <div class="flex flex-col items-center justify-center space-y-6 text-center px-4 max-w-lg z-10">
+      <div id="reveal-initiative-label" class="font-mono text-[11px] font-semibold text-zinc-500 uppercase tracking-widest opacity-0">
+        A NATIONAL DIGITAL INTELLIGENCE INITIATIVE
+      </div>
+
+      <!-- The Indian Tricolour Flag -->
+      <div id="reveal-flag" class="flag-container flag-wave opacity-0">
+        <div class="flag-stripe-saffron"></div>
+        <div class="flag-stripe-white">
+          <!-- 24-Spoke Authentic Ashoka Chakra SVG -->
+          <svg class="ashoka-chakra" viewBox="0 0 24 24" fill="none" stroke="#000080" stroke-width="1.2">
+            <circle cx="12" cy="12" r="9" stroke-width="1.4"/>
+            <circle cx="12" cy="12" r="1.5" fill="#000080"/>
+            <g stroke-width="0.8">
+              <line x1="12" y1="3" x2="12" y2="21" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="5.64" y1="5.64" x2="18.36" y2="18.36" />
+              <line x1="5.64" y1="18.36" x2="18.36" y2="5.64" />
+              <line x1="8.53" y1="3.36" x2="15.47" y2="20.64" />
+              <line x1="3.36" y1="8.53" x2="20.64" y2="15.47" />
+              <line x1="15.47" y1="3.36" x2="8.53" y2="20.64" />
+              <line x1="20.64" y1="8.53" x2="3.36" y2="15.47" />
+              <line x1="4.2" y1="6.8" x2="19.8" y2="17.2" />
+              <line x1="6.8" y1="4.2" x2="17.2" y2="19.8" />
+              <line x1="19.8" y1="6.8" x2="4.2" y2="17.2" />
+              <line x1="17.2" y1="4.2" x2="6.8" y2="19.8" />
+            </g>
+          </svg>
+        </div>
+        <div class="flag-stripe-green"></div>
+      </div>
+
+      <div id="reveal-tagline" class="font-mono text-xs text-zinc-400 opacity-0">
+        SECURING INDIA'S DIGITAL HORIZON
+      </div>
+    </div>
+  </div>
 
   <!-- =========================================================================
        SYSTEM TELEMETRY BAR (Engineering Precision Status)
@@ -109,9 +152,81 @@
     </div>
 
     <!-- =========================================================================
-         TAB 1: EXECUTIVE OVERVIEW (Bento Grid & Core Intelligence)
+         TAB 1: EXECUTIVE OVERVIEW (Digital Sentinel Hero & Bento Intelligence)
          ========================================================================= -->
     <div id="tab-overview" class="tab-panel active space-y-6">
+
+      <!-- Hero Sentinel: The Digital Sentinel Awakens -->
+      <div id="hero-sentinel-panel" class="sentinel-hero">
+        <!-- Background India Geometric Telemetry Overlay -->
+        <svg class="sentinel-bg-map" viewBox="0 0 400 450" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M190 20 L220 50 L250 45 L270 70 L285 100 L320 120 L350 110 L370 130 L355 160 L320 165 L290 180 L280 210 L260 230 L240 270 L220 310 L200 360 L190 410 L180 360 L150 310 L135 260 L120 230 L110 180 L90 170 L80 140 L110 120 L130 90 L160 50 Z" stroke="var(--border-strong)" stroke-width="1.2" stroke-dasharray="3 3"/>
+          <g class="geo-connecting-lines" stroke="var(--accent-primary)" stroke-width="0.8" opacity="0.6">
+            <line x1="190" y1="120" x2="135" y2="230"/>
+            <line x1="135" y1="230" x2="170" y2="310"/>
+            <line x1="170" y1="310" x2="200" y2="250"/>
+            <line x1="200" y1="250" x2="290" y2="200"/>
+            <line x1="290" y1="200" x2="190" y2="120"/>
+          </g>
+          <circle cx="190" cy="120" r="3.5" fill="var(--accent-primary)"/>
+          <circle cx="135" cy="230" r="3" fill="var(--accent-primary)"/>
+          <circle cx="170" cy="310" r="3" fill="var(--accent-primary)"/>
+          <circle cx="200" cy="250" r="3" fill="var(--accent-primary)"/>
+          <circle cx="290" cy="200" r="3" fill="var(--accent-primary)"/>
+        </svg>
+
+        <div class="sentinel-content space-y-5 max-w-3xl">
+          <!-- Status Pill -->
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-[11px] font-mono text-zinc-600 dark:text-zinc-300">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>INTELLIGENCE REPOSITORY • 2020–2026 YTD • 35 STATES / UTs • 114 VERIFIED OSINT RECORDS</span>
+          </div>
+
+          <!-- Title & Subtitle -->
+          <div class="space-y-1.5">
+            <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 font-sans" id="hero-title">
+              CYBER JAGRUTI
+            </h1>
+            <h2 class="text-base sm:text-lg font-semibold text-zinc-700 dark:text-zinc-300 tracking-tight" id="hero-subtitle">
+              India Cybercrime Intelligence Observatory
+            </h2>
+            <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 font-normal leading-relaxed" id="hero-desc">
+              Understanding India's Cyber Threat Landscape • 2020 — 2026 YTD
+            </p>
+          </div>
+
+          <!-- 3 Key Sentinel Metrics -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-1" id="hero-stats">
+            <div class="precision-card-subtle p-3 space-y-0.5">
+              <div class="text-[10px] font-mono text-zinc-500 uppercase">Citizen Complaints</div>
+              <div class="text-lg font-bold font-mono text-zinc-900 dark:text-zinc-100">95.42+ Lakh</div>
+              <div class="text-[10px] text-zinc-500 font-sans">MHA I4C NCRP Portal</div>
+            </div>
+            <div class="precision-card-subtle p-3 space-y-0.5">
+              <div class="text-[10px] font-mono text-zinc-500 uppercase">Security Incidents</div>
+              <div class="text-lg font-bold font-mono text-zinc-900 dark:text-zinc-100">1.33+ Crore</div>
+              <div class="text-[10px] text-zinc-500 font-sans">CERT-In Security Probes</div>
+            </div>
+            <div class="precision-card-subtle p-3 space-y-0.5">
+              <div class="text-[10px] font-mono text-zinc-500 uppercase">Reported Losses</div>
+              <div class="text-lg font-bold font-mono text-blue-600 dark:text-blue-400">₹68,500 Cr+</div>
+              <div class="text-[10px] text-zinc-500 font-sans">Direct Economic Impact</div>
+            </div>
+          </div>
+
+          <!-- CTAs -->
+          <div class="flex flex-wrap items-center gap-3 pt-1" id="hero-cta-group">
+            <button class="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 rounded-md font-mono text-xs font-semibold tracking-wider transition flex items-center gap-2" data-target-tab="map">
+              <i class="fa-solid fa-map-location-dot text-blue-400 dark:text-blue-600"></i>
+              <span>[ EXPLORE INTELLIGENCE ]</span>
+            </button>
+            <button id="replay-reveal-btn" class="px-3 py-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 rounded-md font-mono text-xs font-medium border border-zinc-200 dark:border-zinc-700 transition flex items-center gap-1.5" title="Replay 'The Republic Reveal' Sequence">
+              <i class="fa-solid fa-rotate text-[11px]"></i>
+              <span>REPLAY UNVEILING</span>
+            </button>
+          </div>
+        </div>
+      </div>
 
       <!-- Executive KPI Metric Blocks (4-Col Grid) -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
