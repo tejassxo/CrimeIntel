@@ -1,90 +1,137 @@
-# India Cybercrime Intelligence Initiative (2020–2026 YTD)
+# Cyber Jagruti (2020–2026 YTD)
 
-> **National Cyber Threat Assessment & Master Data Repository**
-> **Researched & Developed by [M Tejas Yadav](https://github.com/tejassxo)**
+> **Cyber Jagruti — Enterprise National Threat Assessment & Spatial Risk Analytics Engine**  
+> **Researched & Engineered by [M Tejas Yadav](https://github.com/tejassxo)**
+
+[![CI Pipeline](https://github.com/tejassxo/CyberJagruti/actions/workflows/ci.yml/badge.svg)](https://github.com/tejassxo/CyberJagruti/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](https://www.python.org/)
+[![UI Style: Signature UI](https://img.shields.io/badge/Design-Engineering%20Precision-09090B.svg)](styles.css)
 
 ---
 
 ## 📌 Executive Summary
 
-The **India Cybercrime Intelligence Initiative (2020–2026 YTD)** is an enterprise-grade cyber threat intelligence portal and master data repository. It synthesizes over **95.42+ Lakh citizen complaints**, **1.33+ Crore technical security incidents**, and **₹68,500 Crore in reported financial cyber losses** across all 28 States and 8 Union Territories of India from 1 January 2020 through July 2026.
+**Cyber Jagruti** is a production-grade cyber threat analytics platform synthesizing **95.42+ Lakh citizen NCRP complaints**, **₹68,500 Crore in reported financial cyber losses**, and **1.33+ Crore CERT-In technical security incidents** across all 36 States and Union Territories of India from 1 January 2020 through July 2026.
 
-Built with an **Apple & Stripe-inspired Bento Grid layout**, the portal integrates **ISRO Bhuvan geospatial reference mapping**, real-time state risk choropleths, dual-axis financial damage analytics, Scikit-Learn predictive time-series forecasting, and MITRE ATT&CK enterprise threat mapping.
+Built on the **Signature UI** design philosophy (**Engineering Precision, Neutral Foundation, Zero Gradients, Inter & Geist Mono Typography, Structured 12-Column Grid**), the platform provides mission-critical telemetry for technical leadership, security operations centers (SOC), and regulatory compliance audits.
 
 ---
 
-## 🌟 Key Features
+## 🏗️ System Architecture & Data Lineage
 
-1. **ISRO Bhuvan Geo-Spatial Choropleth Map (India Only)**:
-   - Authentic 35 State/UT GeoJSON boundary polygons with strict geographical bounding (`maxBoundsViscosity: 1.0`).
-   - Risk-based choropleth fills (Critical Risk >88, High Risk 80–88, Medium Risk 70–80, Low Risk <70).
-   - Dynamic sorting by **Financial Loss (₹ Cr)**, **NCRP Complaint Volume**, and **Vulnerability Index**.
+```mermaid
+flowchart TD
+    subgraph DataSources["1. Verified Data Sources"]
+        MHA["MHA I4C NCRP Portal\n(Citizen Complaints & Helpline 1930)"]
+        CERT["CERT-In Advisories\n(Technical Incidents & Probes)"]
+        ISRO["ISRO Bhuvan Portal\n(Geo-Spatial State Boundaries)"]
+        RBI["RBI & Parliamentary Disclosures\n(Financial Liens & Fraud Loss)"]
+    end
 
-2. **Executive Soft Dark & Light Theme System**:
-   - Soft Slate palette (`#1E293B` / `#334155`) engineered for C-suite executive presentations.
-   - Bulletproof CSS variable inheritance ensuring 100% text readability across both light and dark themes.
+    subgraph ETLPipeline["2. Python Analytics & ETL Engine"]
+        Engine["analytics_engine.py\n(Pandas + OpenPyXL + Scikit-Learn)"]
+        Model["Polynomial Loss Regression Model\n(2027-2028 Forecaster)"]
+    end
 
-3. **Master Excel Intelligence Repository**:
-   - `master_cybercrime_intelligence_india_2020_2026.xlsx`: 18-sheet structured Excel workbook generated via Python `openpyxl`.
-   - Includes Raw Intelligence (114 verified OSINT records), Risk Matrices, State/Sector Analyses, and Data Dictionaries.
+    subgraph StorageArtifacts["3. Master Datasets & API"]
+        Excel["master_cybercrime_intelligence.xlsx\n(18 Structured Sheets)"]
+        JSON["intelligence_dashboard_data.json\n(Optimized REST Payload)"]
+    end
 
-4. **Threat Vector & Landmark Incident Spotlight**:
-   - Organized **"Digital Arrest"** 4-stage cross-border extortion flowchart (Cambodia/Myanmar syndicates).
-   - Forensic analysis of landmark breaches including **AIIMS Delhi (Nov 2022)**, **CDSL LockBit 3.0 (Nov 2022 / SEBI Order Mar 2026)**, **UCO Bank IMPS Glitch (₹820 Cr)**, and **ICMR PII Data Leak**.
+    subgraph ApplicationLayer["4. Production Application Layer"]
+        Server["server.py (HTTP / Docker Container)"]
+        UI["Signature UI Frontend\n(Inter + Geist Mono + GSAP + Chart.js + Leaflet)"]
+    end
 
-5. **Machine Learning Predictive Analytics**:
-   - Scikit-Learn polynomial regression model projecting cybercrime losses for 2027 (₹24,500 Cr) and 2028 (₹31,200 Cr).
+    MHA --> Engine
+    CERT --> Engine
+    ISRO --> Engine
+    RBI --> Engine
+
+    Engine --> Model
+    Model --> Excel
+    Engine --> JSON
+
+    JSON --> Server
+    Server --> UI
+```
+
+---
+
+## 🌟 Key Engineering Highlights
+
+### 1. **Signature UI Design System**
+* **Engineering Precision**: Functional, structured, and intentional component language—zero decorative clutter or cyberpunk gimmicks.
+* **Light-First Foundation**: Crisp neutral palette (`#FAFAFA` base, `#09090B` text) with a single controlled accent (`#2563EB` Precision Blue) and executive dark mode toggle.
+* **Typographic Hierarchy**: Primary UI in **Inter** with technical metadata, financial amounts, and IDs strictly formatted in **Geist Mono**.
+* **Purposeful GSAP Motion**: Smooth layout state reveals and micro-interactions without distracting animation overhead.
+
+### 2. **ISRO Bhuvan Geo-Spatial Choropleth Engine**
+* High-resolution polygon boundaries strictly bounded to the territory of India (`maxBoundsViscosity: 1.0`).
+* Risk choropleth dynamic recalculation sorting across **Financial Loss (₹ Cr)**, **NCRP Complaint Volumes**, and **Vulnerability Index Scores**.
+
+### 3. **Forensic Deep-Dive & Taxonomy Modules**
+* **Digital Arrest Spotlight**: 4-stage operational breakdown of cross-border extortion syndicates operating from Southeast Asia compounds.
+* **MITRE ATT&CK Enterprise Matrix**: Attack procedures, observed technique IDs, and frequency mapped specifically to Indian financial and critical infrastructure targets.
+* **Master OSINT Repository Grid**: 114 verified case files with multi-column filtering, search, and direct Excel workbook export.
 
 ---
 
 ## 🛠️ Technology Stack
 
-- **Frontend Core**: HTML5, Vanilla CSS3 (Custom Utility Tokens), JavaScript (ES6+)
-- **Interactive UI & Animations**: GSAP 3 (Counter Animations), Chart.js 4 (Dual-Axis Trends & Doughnuts)
-- **Geospatial Mapping**: Leaflet.js, ISRO Bhuvan Tiles, GeoJSON High-Resolution India Boundaries
-- **Backend & Data Pipeline**: Python 3.10+, Pandas, OpenPyXL, Scikit-Learn, Built-in HTTP Server
+| Layer | Technologies |
+| :--- | :--- |
+| **Frontend Core** | HTML5, Vanilla CSS3 (Custom Design Tokens), JavaScript (ES6+) |
+| **Motion & Charts** | GSAP 3.12 (Transitions), Chart.js 4 (Dual-Axis Trends & Doughnuts) |
+| **Geospatial Mapping** | Leaflet.js, ISRO Bhuvan Spatial Geometry, GeoJSON Polygon Engine |
+| **Backend & Analytics** | Python 3.11+, Pandas, OpenPyXL, Scikit-Learn, SocketServer |
+| **DevOps & Containers** | Docker (Multi-stage build), GitHub Actions CI/CD Pipeline |
 
 ---
 
-## 🚀 Quickstart Guide
+## 🚀 Deployment & Local Execution
 
-### 1. Clone the Repository
+### 1. Local Development
 ```bash
-git clone https://github.com/tejassxo/nifty-bell.git
-cd nifty-bell
+# Clone the repository
+git clone https://github.com/tejassxo/CyberJagruti.git
+cd CyberJagruti
+
+# Start the local server
+python server.py
+```
+Visit `http://localhost:8080` in your browser.
+
+### 2. Docker Container Deployment
+```bash
+# Build the production container image
+docker build -t cyber-jagruti:latest .
+
+# Run the container
+docker run -d -p 8080:8080 --name cyber-jagruti-prod cyber-jagruti:latest
 ```
 
-### 2. Run the Data Pipeline (Optional)
-To regenerate the Master Excel Repository and Data API JSON payload in a single command:
+### 3. Regenerate Datasets & ML Projections (Optional)
 ```bash
 python analytics_engine.py
 ```
 
-### 3. Start the Web Dashboard
-```bash
-python server.py
-```
-Open your browser and navigate to:
-```
-http://localhost:8085
-```
+---
+
+## 📜 Official Data Sources
+
+All incident records, financial losses, and mitigation metrics are synthesized from official public disclosures:
+* **MHA I4C NCRP Portal**: [cybercrime.gov.in](https://cybercrime.gov.in/) & [i4c.mha.gov.in](https://i4c.mha.gov.in/)
+* **CERT-In Advisories**: [cert-in.org.in](https://www.cert-in.org.in/)
+* **National Crime Records Bureau (NCRB)**: [ncrb.gov.in](https://ncrb.gov.in/)
+* **ISRO Bhuvan Geo-Portal**: [bhuvan.nrsc.gov.in](https://bhuvan.nrsc.gov.in/)
 
 ---
 
-## 📜 Verified Data Sources & Disclaimers
+## 👤 Engineering Attribution
 
-All metrics, financial values, and law enforcement statistics contained in this portal are synthesized from verified, public government disclosures and accredited cybersecurity research:
-
-- **MHA I4C NCRP Portal**: [https://cybercrime.gov.in/](https://cybercrime.gov.in/) & [https://i4c.mha.gov.in/](https://i4c.mha.gov.in/)
-- **CERT-In (Indian Computer Emergency Response Team)**: [https://www.cert-in.org.in/](https://www.cert-in.org.in/)
-- **National Crime Records Bureau (NCRB)**: [https://ncrb.gov.in/](https://ncrb.gov.in/)
-- **Reserve Bank of India (RBI)**: [https://www.rbi.org.in/](https://www.rbi.org.in/)
-- **ISRO Bhuvan Geo-Portal**: [https://bhuvan.nrsc.gov.in/](https://bhuvan.nrsc.gov.in/)
-
----
-
-## 👤 Author & Credits
-
-- **Researched & Developed by**: [M Tejas Yadav](https://github.com/tejassxo)
-- **GitHub Profile**: [@tejassxo](https://github.com/tejassxo)
-- **License**: MIT License
+* **Researched & Engineered by**: [M Tejas Yadav](https://github.com/tejassxo)
+* **GitHub Profile**: [@tejassxo](https://github.com/tejassxo)
+* **Role Focus**: Custom Software Engineering (SWE), Data Analytics & Mission-Critical Systems Architecture
+* **License**: MIT License

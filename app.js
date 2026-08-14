@@ -1,4 +1,8 @@
-// India Cybercrime Intelligence Dashboard - ISRO Bhuvan Map Engine (2020–2026 YTD)
+// ==========================================================================
+// Cyber Jagruti — Intelligence Dashboard Engine & Interactive Logic
+// Architecture: Precision Data Pipeline & ISRO Bhuvan Spatial Risk Engine
+// ==========================================================================
+
 document.addEventListener("DOMContentLoaded", () => {
   let dashboardData = null;
   let chartTrend = null;
@@ -8,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let pinMarkersGroup = null;
   let currentSort = "loss";
 
-  // Executive Dark/Light Theme Switcher Setup
+  // Executive Theme Engine (Default: Light Mode)
   const themeToggleBtn = document.getElementById("theme-toggle-btn");
   const themeIcon = document.getElementById("theme-icon");
   const themeText = document.getElementById("theme-text");
@@ -16,6 +20,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const savedTheme = localStorage.getItem("india_cyber_theme");
   if (savedTheme === "dark") {
     enableDarkMode();
+  } else {
+    disableDarkMode();
   }
 
   if (themeToggleBtn) {
@@ -35,18 +41,18 @@ document.addEventListener("DOMContentLoaded", () => {
   function enableDarkMode() {
     document.body.classList.add("dark-mode");
     localStorage.setItem("india_cyber_theme", "dark");
-    if (themeIcon) themeIcon.className = "fa-solid fa-sun text-amber-400";
-    if (themeText) themeText.innerText = "Light Mode";
+    if (themeIcon) themeIcon.className = "fa-solid fa-sun text-zinc-300 text-xs";
+    if (themeText) themeText.innerText = "Light";
   }
 
   function disableDarkMode() {
     document.body.classList.remove("dark-mode");
     localStorage.setItem("india_cyber_theme", "light");
-    if (themeIcon) themeIcon.className = "fa-solid fa-moon text-amber-500";
-    if (themeText) themeText.innerText = "Executive Dark";
+    if (themeIcon) themeIcon.className = "fa-solid fa-moon text-zinc-600 text-xs";
+    if (themeText) themeText.innerText = "Dark";
   }
 
-  // Segmented Navigation Tabs & Target Tab Triggers
+  // Segmented Navigation & GSAP Layout Transitions
   const switchTab = (target) => {
     const segBtns = document.querySelectorAll(".segmented-btn");
     const tabPanels = document.querySelectorAll(".tab-panel");
@@ -64,10 +70,19 @@ document.addEventListener("DOMContentLoaded", () => {
     if (activePanel) {
       activePanel.classList.add("active");
 
-      if (target === "map" && mapInstance) {
-        setTimeout(() => mapInstance.invalidateSize(), 100);
+      // GSAP Purposeful Reveal Transition
+      if (window.gsap) {
+        gsap.fromTo(
+          activePanel,
+          { opacity: 0, y: 6 },
+          { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }
+        );
       }
-      if (target === "landing" || target === "overview") {
+
+      if (target === "map" && mapInstance) {
+        setTimeout(() => mapInstance.invalidateSize(), 150);
+      }
+      if (target === "overview") {
         animateCounters();
       }
     }
@@ -91,13 +106,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  document.querySelectorAll(".hero-pdf-btn").forEach(btn => {
+  document.querySelectorAll("#print-ceo-report-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       window.print();
     });
   });
 
-  // Fetch JSON payload
+  // Fetch JSON Payload
   fetch("intelligence_dashboard_data.json")
     .then(res => res.json())
     .then(data => {
@@ -123,12 +138,14 @@ document.addEventListener("DOMContentLoaded", () => {
     setupStateSorting(data.states);
   }
 
+  // Precision Metric Counters (GSAP)
   function animateCounters() {
+    if (!window.gsap) return;
     document.querySelectorAll(".count-up").forEach(elem => {
       const targetVal = parseFloat(elem.getAttribute("data-target") || "0");
       gsap.to(elem, {
         innerText: targetVal,
-        duration: 1.5,
+        duration: 1.2,
         ease: "power2.out",
         snap: { innerText: 1 },
         onUpdate: function () {
@@ -138,12 +155,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Analytical Dual-Axis Trend Chart (Chart.js)
   function renderTrendChart(trends) {
     const ctx = document.getElementById("trendChart")?.getContext("2d");
     if (!ctx || !trends || trends.length === 0) return;
 
     const isDark = document.body.classList.contains("dark-mode");
-    const textColor = isDark ? "#F8FAFC" : "#0F172A";
+    const textColor = isDark ? "#FAFAFA" : "#09090B";
+    const mutedColor = isDark ? "#A1A1AA" : "#71717A";
+    const gridColor = isDark ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.05)";
 
     const labels = trends.map(t => t.year === 2026 ? "2026 YTD" : t.year);
     const complaints = trends.map(t => t.ncrp / 100000);
@@ -159,22 +179,22 @@ document.addEventListener("DOMContentLoaded", () => {
           {
             label: "Reported Loss (INR Cr)",
             data: losses,
-            backgroundColor: isDark ? "#38BDF8" : "#0F172A",
-            borderRadius: 6,
-            barThickness: 24,
+            backgroundColor: isDark ? "#3B82F6" : "#18181B",
+            borderRadius: 4,
+            barThickness: 20,
             yAxisID: "yLoss"
           },
           {
             label: "NCRP Complaints (Lakhs)",
             data: complaints,
             type: "line",
-            borderColor: "#EF4444",
-            backgroundColor: "rgba(239, 68, 68, 0.15)",
-            borderWidth: 3,
-            pointRadius: 6,
-            pointBackgroundColor: "#EF4444",
+            borderColor: "#DC2626",
+            backgroundColor: "rgba(220, 38, 38, 0.08)",
+            borderWidth: 2.5,
+            pointRadius: 4,
+            pointBackgroundColor: "#DC2626",
             fill: true,
-            tension: 0.3,
+            tension: 0.2,
             yAxisID: "yComplaints"
           }
         ]
@@ -186,45 +206,50 @@ document.addEventListener("DOMContentLoaded", () => {
         plugins: {
           legend: {
             position: "top",
-            labels: { color: textColor, font: { family: "Inter", size: 12, weight: "bold" }, usePointStyle: true }
+            labels: { color: textColor, font: { family: "Geist", size: 11, weight: "500" }, usePointStyle: true, boxWidth: 6 }
           },
           tooltip: {
-            backgroundColor: isDark ? "#1E293B" : "#0F172A",
-            titleColor: "#FFFFFF",
-            bodyColor: "#FFFFFF",
-            padding: 12,
-            cornerRadius: 8
+            backgroundColor: isDark ? "#18181B" : "#FFFFFF",
+            titleColor: isDark ? "#FAFAFA" : "#09090B",
+            bodyColor: isDark ? "#D4D4D8" : "#52525B",
+            borderColor: isDark ? "#27272A" : "#E4E4E7",
+            borderWidth: 1,
+            padding: 10,
+            cornerRadius: 6,
+            bodyFont: { family: "Geist Mono", size: 11 }
           }
         },
         scales: {
           x: {
             grid: { display: false },
-            ticks: { color: textColor, font: { family: "Inter", size: 11, weight: "bold" } }
+            ticks: { color: mutedColor, font: { family: "Geist Mono", size: 11 } }
           },
           yLoss: {
             type: "linear",
             position: "left",
-            title: { display: true, text: "Loss (INR Cr)", color: textColor, font: { family: "Inter", size: 12, weight: "bold" } },
-            ticks: { color: textColor, font: { family: "Inter", size: 11, weight: "bold" }, callback: v => `₹${v}` }
+            grid: { color: gridColor },
+            title: { display: true, text: "Loss (INR Cr)", color: mutedColor, font: { family: "Geist", size: 11, weight: "500" } },
+            ticks: { color: mutedColor, font: { family: "Geist Mono", size: 11 }, callback: v => `₹${v}` }
           },
           yComplaints: {
             type: "linear",
             position: "right",
             grid: { display: false },
-            title: { display: true, text: "Complaints (Lakhs)", color: textColor, font: { family: "Inter", size: 12, weight: "bold" } },
-            ticks: { color: textColor, font: { family: "Inter", size: 11, weight: "bold" }, callback: v => `${v}L` }
+            title: { display: true, text: "Complaints (Lakhs)", color: mutedColor, font: { family: "Geist", size: 11, weight: "500" } },
+            ticks: { color: mutedColor, font: { family: "Geist Mono", size: 11 }, callback: v => `${v}L` }
           }
         }
       }
     });
   }
 
+  // Fraud Distribution Doughnut Chart
   function renderFraudPieChart(fraudData) {
     const ctx = document.getElementById("fraudPieChart")?.getContext("2d");
     if (!ctx || !fraudData || fraudData.length === 0) return;
 
     const isDark = document.body.classList.contains("dark-mode");
-    const textColor = isDark ? "#F8FAFC" : "#0F172A";
+    const textColor = isDark ? "#FAFAFA" : "#09090B";
 
     const labels = fraudData.map(f => f.category);
     const losses = fraudData.map(f => f.loss_cr);
@@ -237,9 +262,9 @@ document.addEventListener("DOMContentLoaded", () => {
         labels: labels,
         datasets: [{
           data: losses,
-          backgroundColor: ["#EF4444", "#F97316", "#F59E0B", "#10B981", "#3B82F6", "#6366F1", "#8B5CF6"],
-          borderWidth: 2,
-          borderColor: isDark ? "#334155" : "#FFFFFF"
+          backgroundColor: ["#2563EB", "#DC2626", "#D97706", "#059669", "#7C3AED", "#0891B2", "#475569"],
+          borderWidth: 1.5,
+          borderColor: isDark ? "#18181B" : "#FFFFFF"
         }]
       },
       options: {
@@ -248,15 +273,30 @@ document.addEventListener("DOMContentLoaded", () => {
         plugins: {
           legend: {
             position: "bottom",
-            labels: { color: textColor, font: { family: "Inter", size: 10, weight: "bold" }, boxWidth: 10, padding: 8 }
+            labels: { color: textColor, font: { family: "Geist", size: 10, weight: "500" }, boxWidth: 8, padding: 6 }
+          },
+          tooltip: {
+            backgroundColor: isDark ? "#18181B" : "#FFFFFF",
+            titleColor: isDark ? "#FAFAFA" : "#09090B",
+            bodyColor: isDark ? "#D4D4D8" : "#52525B",
+            borderColor: isDark ? "#27272A" : "#E4E4E7",
+            borderWidth: 1,
+            padding: 8,
+            cornerRadius: 6,
+            bodyFont: { family: "Geist Mono", size: 11 },
+            callbacks: {
+              label: function(context) {
+                return ` ${context.label}: ₹${context.raw.toLocaleString()} Cr`;
+              }
+            }
           }
         },
-        cutout: "60%"
+        cutout: "68%"
       }
     });
   }
 
-  // Exclusive India Bounds & Bhuvan Map Engine
+  // ISRO Bhuvan Spatial Risk Engine
   function initBhuvanISROMapOnly(states) {
     const mapDiv = document.getElementById("map");
     if (!mapDiv) return;
@@ -294,43 +334,40 @@ document.addEventListener("DOMContentLoaded", () => {
     pinMarkersGroup = L.layerGroup().addTo(mapInstance);
 
     const pinpointHubs = [
-      { name: "Mumbai (Financial Hub)", coords: [19.0760, 72.8777], type: "Critical Cyber Extortion & Banking Hub", loss: "₹10,450 Cr", threat: "Digital Arrest & Corporate Ransomware", icon: "fa-building-columns" },
-      { name: "Hyderabad (Cyberabad)", coords: [17.3850, 78.4867], type: "Investment Fraud & Crypto Hub", loss: "₹7,800 Cr", threat: "Part-time Job & Crypto Fraud", icon: "fa-microchip" },
-      { name: "Bengaluru (Tech Capital)", coords: [12.9716, 77.5946], type: "AI Deepfake & Cloud Breach Hub", loss: "₹7,200 Cr", threat: "AI Deepfake Voice Cloning & AD Breach", icon: "fa-robot" },
-      { name: "New Delhi (National Capital)", coords: [28.6139, 77.2090], type: "Government & AIIMS Cyber Target", loss: "₹6,100 Cr", threat: "AIIMS Ransomware & Ministry Espionage", icon: "fa-landmark" },
-      { name: "Mewat / Nuh Syndicate Hub", coords: [28.1000, 77.0000], type: "Sextortion & QR Spoofing Syndicate", loss: "₹3,400 Cr", threat: "Mewat QR Code & OLX Fraud Ring", icon: "fa-crosshairs" },
-      { name: "Jamtara Cyber Hub", coords: [23.9622, 86.8021], type: "Vishing & Banking OTP Origin Hub", loss: "₹1,850 Cr", threat: "Phishing & Fake Customer Helpline", icon: "fa-phone-slash" },
-      { name: "Nawada Fake Loan Hub", coords: [24.8872, 85.5441], type: "Biometric & Loan App Syndicate", loss: "₹1,150 Cr", threat: "AEPS Biometric Stencil Fraud", icon: "fa-fingerprint" },
-      { name: "Gurugram Cyber Cell", coords: [28.4595, 77.0266], type: "Digital Arrest Target Zone", loss: "₹3,400 Cr", threat: "WhatsApp Video Extortion", icon: "fa-video" },
-      { name: "Kolkata Cyber Cell", coords: [22.5726, 88.3639], type: "IMPS Glitch & Tech Support Hub", loss: "₹2,800 Cr", threat: "UCO Bank IMPS Glitch Theft", icon: "fa-headset" }
+      { name: "Mumbai (Financial Hub)", coords: [19.0760, 72.8777], type: "Critical Extortion & Banking Target", loss: "₹10,450 Cr", threat: "Digital Arrest & Corporate Ransomware", icon: "fa-building-columns" },
+      { name: "Hyderabad (Cyberabad)", coords: [17.3850, 78.4867], type: "Investment Fraud & Crypto Hub", loss: "₹7,800 Cr", threat: "Task Scams & High-Return Investment Fraud", icon: "fa-microchip" },
+      { name: "Bengaluru (Tech Hub)", coords: [12.9716, 77.5946], type: "AI Deepfake & Cloud Breach Hub", loss: "₹7,200 Cr", threat: "AI Deepfake Voice Cloning & Active Directory Leaks", icon: "fa-robot" },
+      { name: "New Delhi (National Capital)", coords: [28.6139, 77.2090], type: "Govt & Critical Health Target", loss: "₹6,100 Cr", threat: "AIIMS Ransomware & Ministry Phishing", icon: "fa-landmark" },
+      { name: "Mewat / Nuh Syndicate Hub", coords: [28.1000, 77.0000], type: "QR Spoofing & Sextortion Ring", loss: "₹3,400 Cr", threat: "Mewat QR Code & OLX Fraud Ring", icon: "fa-crosshairs" },
+      { name: "Jamtara Origin Hub", coords: [23.9622, 86.8021], type: "Vishing & Banking OTP Origin Hub", loss: "₹1,850 Cr", threat: "Phishing & Fake Customer Helpline", icon: "fa-phone-slash" },
+      { name: "Nawada Fake Loan Ring", coords: [24.8872, 85.5441], type: "Biometric & Loan App Ring", loss: "₹1,150 Cr", threat: "AEPS Biometric Stencil Fraud", icon: "fa-fingerprint" }
     ];
 
     pinpointHubs.forEach(hub => {
       const pinHtml = `
         <div class="relative flex items-center justify-center cursor-pointer group">
-          <div class="w-6 h-6 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs font-bold border-2 border-white shadow-lg z-10 hover:scale-125 transition transform">
-            <i class="fa-solid ${hub.icon} text-[10px]"></i>
+          <div class="w-5 h-5 rounded bg-zinc-900 text-white flex items-center justify-center text-[10px] font-bold border border-white shadow-sm hover:scale-110 transition">
+            <i class="fa-solid ${hub.icon}"></i>
           </div>
-          <div class="absolute w-10 h-10 bg-rose-500/40 rounded-full animate-ping pointer-events-none"></div>
         </div>
       `;
 
       const customIcon = L.divIcon({
         html: pinHtml,
         className: 'custom-pinpoint-marker',
-        iconSize: [24, 24],
-        iconAnchor: [12, 12]
+        iconSize: [20, 20],
+        iconAnchor: [10, 10]
       });
 
       const marker = L.marker(hub.coords, { icon: customIcon }).addTo(pinMarkersGroup);
 
       marker.bindPopup(`
-        <div class="p-2 space-y-1 font-sans">
-          <div class="text-xs font-mono font-bold text-rose-600 uppercase">ISRO Bhuvan Pinpoint Intelligence</div>
-          <h4 class="font-outfit font-extrabold text-sm text-slate-950">${hub.name}</h4>
-          <p class="text-xs text-slate-700">Category: <strong>${hub.type}</strong></p>
-          <p class="text-xs text-rose-700 font-extrabold">Reported Damage: ${hub.loss}</p>
-          <p class="text-[11px] text-slate-600 italic">Primary Threat: ${hub.threat}</p>
+        <div class="p-3 space-y-1.5 font-sans">
+          <div class="text-[10px] font-mono font-bold text-zinc-500 uppercase">ISRO Bhuvan Spatial Node</div>
+          <div class="font-bold text-xs text-zinc-900">${hub.name}</div>
+          <div class="text-xs text-zinc-600">Category: <strong>${hub.type}</strong></div>
+          <div class="text-xs text-blue-600 font-mono font-bold">Reported Loss: ${hub.loss}</div>
+          <div class="text-[11px] text-zinc-500 italic">Threat: ${hub.threat}</div>
         </div>
       `);
     });
@@ -360,9 +397,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (currentSort === "loss") {
       states.sort((a, b) => b.loss_cr - a.loss_cr);
-    } else if (currentSort === "volume") {
+    } else if (currentSort === "complaints") {
       states.sort((a, b) => b.complaints - a.complaints);
-    } else if (currentSort === "vulnerability" || currentSort === "vuln") {
+    } else if (currentSort === "vulnerability") {
       states.sort((a, b) => b.vulnerability_idx - a.vulnerability_idx);
     }
 
@@ -380,17 +417,17 @@ document.addEventListener("DOMContentLoaded", () => {
           const stData = stateMap[stName] || feature.properties;
           const vuln = stData.vulnerability_idx || 55;
 
-          const fillColor = vuln >= 88 ? '#B91C1C' :
+          const fillColor = vuln >= 88 ? '#991B1B' :
                           vuln >= 80 ? '#DC2626' :
                           vuln >= 70 ? '#EA580C' :
                           vuln >= 60 ? '#D97706' : '#059669';
 
           return {
             fillColor: fillColor,
-            weight: 1.5,
+            weight: 1,
             opacity: 1,
             color: '#FFFFFF',
-            fillOpacity: 0.65
+            fillOpacity: 0.6
           };
         },
         onEachFeature: function(feature, layer) {
@@ -398,19 +435,17 @@ document.addEventListener("DOMContentLoaded", () => {
           const stData = stateMap[stName] || feature.properties;
 
           layer.bindTooltip(`
-            <div class="p-1 font-sans">
-              <div class="font-outfit font-extrabold text-sm text-slate-950">${stName}</div>
-              <div class="text-xs text-slate-700 mt-0.5">Complaints: <strong>${(stData.complaints || 45000).toLocaleString()}</strong></div>
-              <div class="text-xs text-rose-700 font-extrabold">Loss: ₹${(stData.loss_cr || 280.0).toLocaleString()} Cr</div>
-              <div class="text-xs text-emerald-700 font-bold">1930 Saved: ₹${(stData.saved_cr || 55.0).toLocaleString()} Cr</div>
-              <div class="text-[11px] text-slate-500 italic mt-1">${stData.threat || "Cyber Fraud"}</div>
+            <div class="font-sans text-xs">
+              <div class="font-bold text-zinc-900">${stName}</div>
+              <div class="font-mono text-zinc-600 mt-0.5">Complaints: ${(stData.complaints || 45000).toLocaleString()}</div>
+              <div class="font-mono text-zinc-900 font-semibold">Loss: ₹${(stData.loss_cr || 280.0).toLocaleString()} Cr</div>
             </div>
           `, { sticky: true });
 
           layer.on({
             mouseover: function(e) {
               const l = e.target;
-              l.setStyle({ weight: 3, color: '#0F172A', fillOpacity: 0.85 });
+              l.setStyle({ weight: 2, color: '#09090B', fillOpacity: 0.85 });
               l.bringToFront();
               updateSelectedStateCard(stData);
             },
@@ -436,18 +471,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     states.forEach((st, idx) => {
       const item = document.createElement("div");
-      item.className = "theme-card p-3 rounded-xl border border-slate-300 hover:border-slate-500 transition cursor-pointer flex items-center justify-between text-xs shadow-sm";
+      item.className = "precision-card-subtle p-2.5 rounded-md hover:border-zinc-400 transition cursor-pointer flex items-center justify-between text-xs";
       item.innerHTML = `
-        <div class="flex items-center gap-2.5">
-          <span class="w-5 h-5 rounded-full bg-slate-900 text-white font-bold text-[10px] flex items-center justify-center">${idx + 1}</span>
+        <div class="flex items-center gap-2">
+          <span class="w-4 h-4 rounded bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-mono font-bold text-[10px] flex items-center justify-center">${idx + 1}</span>
           <div>
-            <div class="font-bold text-xs">${st.name}</div>
-            <div class="text-[11px] font-semibold opacity-75">${st.complaints.toLocaleString()} complaints</div>
+            <div class="font-semibold text-zinc-900 dark:text-zinc-100">${st.name}</div>
+            <div class="text-[10px] font-mono text-zinc-500">${st.complaints.toLocaleString()} cases</div>
           </div>
         </div>
-        <div class="text-right">
-          <div class="font-bold text-rose-600">₹${st.loss_cr.toLocaleString()} Cr</div>
-          <div class="text-[10px] font-semibold opacity-75">Vuln Index: ${st.vulnerability_idx}/100</div>
+        <div class="text-right font-mono">
+          <div class="font-bold text-zinc-900 dark:text-zinc-100">₹${st.loss_cr.toLocaleString()} Cr</div>
+          <div class="text-[10px] text-zinc-500">Idx: ${st.vulnerability_idx}</div>
         </div>
       `;
 
@@ -477,6 +512,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Sector Intelligence Cards
   function renderSectorCards() {
     const container = document.getElementById("sectors-grid");
     if (!container) return;
@@ -493,26 +529,27 @@ document.addEventListener("DOMContentLoaded", () => {
     container.innerHTML = "";
     sectors.forEach(s => {
       const card = document.createElement("div");
-      card.className = "theme-card p-5 rounded-xl border border-slate-300 space-y-3 shadow-sm";
+      card.className = "precision-card p-4 space-y-2.5";
       card.innerHTML = `
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2.5">
-            <div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center text-sm">
+          <div class="flex items-center gap-2">
+            <div class="w-7 h-7 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 flex items-center justify-center text-xs">
               <i class="fa-solid ${s.icon}"></i>
             </div>
-            <h3 class="font-bold text-sm font-outfit">${s.name}</h3>
+            <h3 class="font-bold text-xs text-zinc-900 dark:text-zinc-100">${s.name}</h3>
           </div>
-          <span class="px-2.5 py-0.5 text-xs font-bold rounded-full ${s.risk === 'Critical' ? 'bg-rose-100 dark:bg-rose-950 text-rose-900 dark:text-rose-200 border border-rose-300 dark:border-rose-800' : 'bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800'}">${s.risk}</span>
+          <span class="status-badge ${s.risk === 'Critical' ? 'accent' : ''}">${s.risk}</span>
         </div>
-        <p class="text-xs font-medium leading-relaxed opacity-90">${s.details}</p>
-        <div class="text-xs pt-2 border-t border-slate-200 dark:border-slate-700 flex justify-between opacity-75">
-          <span>Primary Threat: <strong>${s.threat}</strong></span>
+        <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed font-sans">${s.details}</p>
+        <div class="text-xs pt-2 border-t border-zinc-200 dark:border-zinc-800 flex justify-between text-zinc-500 font-mono text-[11px]">
+          <span>Threat: <strong class="text-zinc-700 dark:text-zinc-300 font-sans">${s.threat}</strong></span>
         </div>
       `;
       container.appendChild(card);
     });
   }
 
+  // Landmark Incidents Grid
   function renderLandmarkIncidents(incidents) {
     const container = document.getElementById("landmark-incidents-grid");
     if (!container || !incidents) return;
@@ -523,19 +560,19 @@ document.addEventListener("DOMContentLoaded", () => {
     container.innerHTML = "";
     landmarks.forEach(inc => {
       const card = document.createElement("div");
-      card.className = "theme-subtle p-4 rounded-xl border border-slate-300 dark:border-slate-700 flex flex-col justify-between space-y-3 shadow-xs hover:border-blue-500 transition cursor-pointer group";
+      card.className = "precision-card-subtle p-3.5 flex flex-col justify-between space-y-2 cursor-pointer hover:border-zinc-400 transition group";
       card.innerHTML = `
-        <div class="space-y-1.5">
+        <div class="space-y-1">
           <div class="flex items-center justify-between">
-            <span class="text-xs font-mono font-bold px-2 py-0.5 bg-slate-900 text-white rounded">${inc.id}</span>
-            <span class="text-xs font-bold text-rose-600 dark:text-rose-400">₹${inc.loss_cr.toFixed(2)} Cr</span>
+            <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 rounded">${inc.id}</span>
+            <span class="text-xs font-mono font-bold text-zinc-900 dark:text-zinc-100">₹${inc.loss_cr.toFixed(2)} Cr</span>
           </div>
-          <h4 class="font-bold text-sm font-outfit group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">${inc.target}</h4>
-          <p class="text-xs font-medium opacity-85 leading-tight">${inc.category} (${inc.threat_actor})</p>
+          <h4 class="font-bold text-xs text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">${inc.target}</h4>
+          <p class="text-[11px] text-zinc-500 leading-tight font-sans">${inc.category} (${inc.threat_actor})</p>
         </div>
-        <div class="pt-2 border-t border-slate-200 dark:border-slate-700 flex items-center justify-between text-xs font-bold text-blue-600 dark:text-blue-400">
-          <span>Inspect Case File</span>
-          <i class="fa-solid fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
+        <div class="pt-2 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-[11px] font-semibold text-blue-600 dark:text-blue-400 font-mono">
+          <span>Inspect Case</span>
+          <i class="fa-solid fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
         </div>
       `;
 
@@ -547,6 +584,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Fraud Taxonomy Grid
   function renderFraudTaxonomy(fraudList) {
     const container = document.getElementById("fraud-taxonomy-grid");
     if (!container || !fraudList) return;
@@ -555,22 +593,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     fraudList.forEach(f => {
       const card = document.createElement("div");
-      card.className = "theme-card p-5 rounded-xl border border-slate-300 dark:border-slate-700 shadow-sm space-y-3";
+      card.className = "precision-card p-4 space-y-2.5";
       card.innerHTML = `
         <div class="flex items-center justify-between">
-          <h3 class="font-bold text-sm font-outfit">${f.category}</h3>
-          <span class="text-xs font-extrabold text-rose-600 dark:text-rose-400">₹${f.loss_cr.toLocaleString()} Cr</span>
+          <h3 class="font-bold text-xs text-zinc-900 dark:text-zinc-100">${f.category}</h3>
+          <span class="text-xs font-mono font-bold text-blue-600 dark:text-blue-400">₹${f.loss_cr.toLocaleString()} Cr</span>
         </div>
-        <p class="text-xs font-medium opacity-90"><strong class="font-bold opacity-100">Vector:</strong> ${f.vector}</p>
-        <div class="grid grid-cols-2 gap-2 text-xs pt-2 border-t border-slate-200 dark:border-slate-700 font-medium opacity-85">
-          <div>Reported Cases: <strong>${f.cases.toLocaleString()}</strong></div>
-          <div>Avg Loss: <strong>₹${Math.round(f.avg_loss_inr).toLocaleString()}</strong></div>
+        <p class="text-xs text-zinc-600 dark:text-zinc-400 font-sans"><strong class="font-semibold text-zinc-900 dark:text-zinc-100">Vector:</strong> ${f.vector}</p>
+        <div class="grid grid-cols-2 gap-2 text-[11px] font-mono pt-2 border-t border-zinc-200 dark:border-zinc-800 text-zinc-500">
+          <div>Cases: <strong class="text-zinc-700 dark:text-zinc-300">${f.cases.toLocaleString()}</strong></div>
+          <div>Avg Loss: <strong class="text-zinc-700 dark:text-zinc-300">₹${Math.round(f.avg_loss_inr).toLocaleString()}</strong></div>
         </div>
       `;
       container.appendChild(card);
     });
   }
 
+  // Chronological Timeline Milestones
   function renderTimelineMilestones(timelineData) {
     const container = document.getElementById("timeline-container");
     if (!container || !timelineData) return;
@@ -580,20 +619,21 @@ document.addEventListener("DOMContentLoaded", () => {
       const item = document.createElement("div");
       item.className = "relative group";
       item.innerHTML = `
-        <div class="absolute -left-[31px] top-1.5 w-3.5 h-3.5 rounded-full bg-slate-900 dark:bg-amber-400 border-2 border-white dark:border-slate-900"></div>
-        <div class="theme-card p-4 rounded-xl border border-slate-300 dark:border-slate-700 shadow-xs space-y-1">
+        <div class="absolute -left-[31px] top-2 w-2.5 h-2.5 rounded-full bg-zinc-900 dark:bg-zinc-100 border-2 border-white dark:border-zinc-900"></div>
+        <div class="precision-card p-3.5 space-y-1">
           <div class="flex items-center justify-between text-xs">
-            <span class="font-bold font-mono text-purple-600 dark:text-purple-400">${t.date}</span>
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 border border-amber-300 dark:border-amber-800">${t.type}</span>
+            <span class="font-bold font-mono text-zinc-900 dark:text-zinc-100">${t.date}</span>
+            <span class="status-badge">${t.type}</span>
           </div>
-          <h4 class="font-bold text-sm font-outfit">${t.title}</h4>
-          <p class="text-xs font-medium leading-relaxed opacity-90">${t.impact}</p>
+          <h4 class="font-bold text-xs text-zinc-900 dark:text-zinc-100">${t.title}</h4>
+          <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed font-sans">${t.impact}</p>
         </div>
       `;
       container.appendChild(item);
     });
   }
 
+  // MITRE ATT&CK Matrix Table
   function renderMitreMatrix(mitreData) {
     const container = document.getElementById("mitre-table-body");
     if (!container || !mitreData) return;
@@ -602,15 +642,16 @@ document.addEventListener("DOMContentLoaded", () => {
     mitreData.forEach(m => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td class="font-bold font-mono">${m.tactic_name} (${m.tactic_id})</td>
-        <td class="font-semibold">${m.technique_name} (${m.technique_id})</td>
-        <td class="text-center font-bold"><span class="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs">${m.frequency}</span></td>
-        <td class="font-medium opacity-90">${m.vectors}</td>
+        <td class="font-bold font-mono text-xs">${m.tactic_name} <span class="text-zinc-500">(${m.tactic_id})</span></td>
+        <td class="font-semibold text-xs">${m.technique_name} <span class="text-zinc-500 font-mono text-[11px]">(${m.technique_id})</span></td>
+        <td class="text-center font-bold font-mono text-xs"><span class="status-badge">${m.frequency}</span></td>
+        <td class="text-xs text-zinc-600 dark:text-zinc-400 font-sans">${m.vectors}</td>
       `;
       container.appendChild(tr);
     });
   }
 
+  // Master Repository Grid
   function renderRepositoryGrid(incidents) {
     const tbody = document.getElementById("incidents-table-body");
     if (!tbody || !incidents) return;
@@ -618,21 +659,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     incidents.forEach(inc => {
       const tr = document.createElement("tr");
-      
-      const badgeClass = inc.severity === "Critical" ? "bg-rose-100 dark:bg-rose-950 text-rose-900 dark:text-rose-200 border-rose-300 dark:border-rose-800" : (inc.severity === "High" ? "bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-200 border-amber-300 dark:border-amber-800" : "bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-200 border-emerald-300 dark:border-emerald-800");
+      const badgeClass = inc.severity === "Critical" ? "accent" : "";
 
       tr.innerHTML = `
-        <td class="font-mono font-bold">${inc.id}</td>
-        <td class="whitespace-nowrap font-medium">${inc.date}</td>
-        <td class="font-medium">${inc.state}</td>
-        <td class="font-bold">${inc.target}</td>
-        <td class="font-medium">${inc.sector}</td>
-        <td class="font-medium">${inc.category}</td>
-        <td class="font-medium opacity-75">${inc.threat_actor}</td>
-        <td class="text-right font-extrabold text-rose-600 dark:text-rose-400">₹${inc.loss_cr.toFixed(2)}</td>
-        <td class="text-center"><span class="px-2.5 py-0.5 text-xs font-bold rounded-full border ${badgeClass}">${inc.severity}</span></td>
+        <td class="font-mono font-bold text-xs">${inc.id}</td>
+        <td class="whitespace-nowrap font-mono text-xs text-zinc-500">${inc.date}</td>
+        <td class="text-xs">${inc.state}</td>
+        <td class="font-bold text-xs">${inc.target}</td>
+        <td class="text-xs text-zinc-600 dark:text-zinc-400">${inc.sector}</td>
+        <td class="text-xs">${inc.category}</td>
+        <td class="text-xs text-zinc-500 font-mono">${inc.threat_actor}</td>
+        <td class="text-right font-mono font-bold text-xs">₹${inc.loss_cr.toFixed(2)}</td>
+        <td class="text-center"><span class="status-badge ${badgeClass}">${inc.severity}</span></td>
         <td class="text-center">
-          <button class="px-3 py-1 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-bold text-xs transition view-detail-btn" data-id="${inc.id}">View</button>
+          <button class="px-2 py-0.5 bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 rounded font-medium text-[11px] transition view-detail-btn font-mono" data-id="${inc.id}">View</button>
         </td>
       `;
 
@@ -647,6 +687,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Forensic Modal Drawer
   function openModal(id) {
     if (!dashboardData) return;
     const inc = dashboardData.incidents.find(i => i.id === id);
@@ -663,7 +704,15 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("modal-summary").innerText = `Attack Category: ${inc.category} | MITRE Technique: ${inc.mitre_technique} | Records Compromised: ${inc.records_comp.toLocaleString()} | Downtime: ${inc.downtime_hrs} hours. Primary source reference: ${inc.reference}`;
     document.getElementById("modal-ref").innerText = inc.reference;
 
-    document.getElementById("incident-modal").classList.remove("hidden");
+    const modal = document.getElementById("incident-modal");
+    modal.classList.remove("hidden");
+
+    if (window.gsap) {
+      gsap.fromTo(modal.querySelector(".precision-card"), 
+        { scale: 0.95, opacity: 0 }, 
+        { scale: 1, opacity: 1, duration: 0.2, ease: "power2.out" }
+      );
+    }
   }
 
   const closeModalBtn = document.getElementById("close-modal-btn");
@@ -673,6 +722,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Search & Filter Listeners
   function setupSearchAndFilters() {
     const repoSearch = document.getElementById("grid-search-input");
     const stateFilter = document.getElementById("grid-state-filter");
@@ -720,13 +770,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (exportJson) {
       exportJson.addEventListener("click", () => {
         window.location.href = "intelligence_dashboard_data.json";
-      });
-    }
-
-    const printBtn = document.getElementById("print-ceo-report-btn");
-    if (printBtn) {
-      printBtn.addEventListener("click", () => {
-        window.print();
       });
     }
   }

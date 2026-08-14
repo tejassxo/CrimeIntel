@@ -1,0 +1,38 @@
+name: Production CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  validate-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Codebase
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Validate Python Syntax & Server Script
+      run: |
+        python -m py_compile server.py analytics_engine.py
+        echo "Python syntax validation passed."
+
+    - name: Test Server Startup & Healthcheck
+      run: |
+        python server.py &
+        SERVER_PID=$!
+        sleep 2
+        curl --fail http://localhost:8080 || exit 1
+        kill $SERVER_PID
+        echo "Server startup and HTTP endpoint validation passed."
+
+    - name: Validate Data API Payload
+      run: |
+        python -c "import json; data = json.load(open('intelligence_dashboard_data.json')); assert 'states' in data; assert len(data['states']) > 0; print('JSON payload verified:', len(data['states']), 'states found.')"

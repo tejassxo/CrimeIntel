@@ -22,7 +22,7 @@ def run_server():
     for port in [8080, 8085, 8090]:
         try:
             with ReusableTCPServer(("", port), Handler) as httpd:
-                print(f"India Cybercrime Intelligence Portal running at http://localhost:{port}")
+                print(f"Cyber Jagruti Portal running at http://localhost:{port}")
                 httpd.serve_forever()
                 break
         except OSError:

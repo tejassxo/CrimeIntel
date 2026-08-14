@@ -2,7 +2,6 @@ import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
 import pandas as pd
-import numpy as np
 import json
 import os
 
@@ -42,7 +41,7 @@ def create_master_excel():
     ws1 = wb.create_sheet(title="Executive Summary")
     ws1.views.sheetView[0].showGridLines = True
     
-    ws1.cell(row=2, column=2, value="INDIA CYBERCRIME INTELLIGENCE INITIATIVE (2020–2026 YTD)").font = title_font
+    ws1.cell(row=2, column=2, value="CYBER JAGRUTI — INDIA CYBERCRIME INTELLIGENCE INITIATIVE (2020–2026 YTD)").font = title_font
     ws1.cell(row=3, column=2, value="Master Threat Assessment & National Cybercrime Intelligence Repository").font = subtitle_font
     ws1.cell(row=4, column=2, value="Report Generated: July 2026 | Classification: Executive Intelligence Brief | Period Covered: 1 Jan 2020 – 24 July 2026").font = Font(name=font_family, size=9, italic=True, color="64748B")
 

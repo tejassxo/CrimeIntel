@@ -1,0 +1,20 @@
+{
+  "name": "cyber-jagruti",
+  "version": "1.0.0",
+  "description": "Cyber Jagruti — India Cybercrime Intelligence Initiative (2020-2026 YTD) Portal",
+  "main": "server.py",
+  "scripts": {
+    "dev": "python server.py",
+    "start": "python server.py",
+    "build": "python analytics_engine.py",
+    "validate": "python -m py_compile server.py analytics_engine.py"
+  },
+  "keywords": [
+    "cybercrime",
+    "india",
+    "intelligence",
+    "dashboard"
+  ],
+  "author": "M Tejas Yadav (tejassxo)",
+  "license": "MIT"
+}
