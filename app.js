@@ -300,7 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
           {
             label: "Reported Loss (INR Cr)",
             data: losses,
-            backgroundColor: isDark ? "#3B82F6" : "#18181B",
+            backgroundColor: isDark ? "#3B82F6" : "#2563EB",
             borderRadius: 4,
             barThickness: 20,
             yAxisID: "yLoss"
@@ -327,37 +327,37 @@ document.addEventListener("DOMContentLoaded", () => {
         plugins: {
           legend: {
             position: "top",
-            labels: { color: textColor, font: { family: "Geist", size: 11, weight: "500" }, usePointStyle: true, boxWidth: 6 }
+            labels: { color: textColor, font: { family: "Inter", size: 11, weight: "500" }, usePointStyle: true, boxWidth: 6 }
           },
           tooltip: {
-            backgroundColor: isDark ? "#18181B" : "#FFFFFF",
-            titleColor: isDark ? "#FAFAFA" : "#09090B",
-            bodyColor: isDark ? "#D4D4D8" : "#52525B",
+            backgroundColor: isDark ? "#0A0A0A" : "#FFFFFF",
+            titleColor: isDark ? "#FFFFFF" : "#000000",
+            bodyColor: isDark ? "#E4E4E7" : "#27272A",
             borderColor: isDark ? "#27272A" : "#E4E4E7",
             borderWidth: 1,
             padding: 10,
             cornerRadius: 6,
-            bodyFont: { family: "Geist Mono", size: 11 }
+            bodyFont: { family: "Inter", size: 11 }
           }
         },
         scales: {
           x: {
             grid: { display: false },
-            ticks: { color: mutedColor, font: { family: "Geist Mono", size: 11 } }
+            ticks: { color: mutedColor, font: { family: "Inter", size: 11 } }
           },
           yLoss: {
             type: "linear",
             position: "left",
             grid: { color: gridColor },
-            title: { display: true, text: "Loss (INR Cr)", color: mutedColor, font: { family: "Geist", size: 11, weight: "500" } },
-            ticks: { color: mutedColor, font: { family: "Geist Mono", size: 11 }, callback: v => `₹${v}` }
+            title: { display: true, text: "Loss (INR Cr)", color: mutedColor, font: { family: "Inter", size: 11, weight: "500" } },
+            ticks: { color: mutedColor, font: { family: "Inter", size: 11 }, callback: v => `₹${v}` }
           },
           yComplaints: {
             type: "linear",
             position: "right",
             grid: { display: false },
-            title: { display: true, text: "Complaints (Lakhs)", color: mutedColor, font: { family: "Geist", size: 11, weight: "500" } },
-            ticks: { color: mutedColor, font: { family: "Geist Mono", size: 11 }, callback: v => `${v}L` }
+            title: { display: true, text: "Complaints (Lakhs)", color: mutedColor, font: { family: "Inter", size: 11, weight: "500" } },
+            ticks: { color: mutedColor, font: { family: "Inter", size: 11 }, callback: v => `${v}L` }
           }
         }
       }
@@ -370,12 +370,22 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!ctx || !fraudData || fraudData.length === 0) return;
 
     const isDark = document.body.classList.contains("dark-mode");
-    const textColor = isDark ? "#FAFAFA" : "#09090B";
+    const textColor = isDark ? "#FFFFFF" : "#000000";
 
     const labels = fraudData.map(f => f.category);
     const losses = fraudData.map(f => f.loss_cr);
 
     if (chartPie) chartPie.destroy();
+
+    const vibrantPalette = [
+      "#EF4444", // Red: Digital Arrest
+      "#F59E0B", // Amber: Investment Fraud
+      "#8B5CF6", // Purple: Loan Apps
+      "#3B82F6", // Blue: Phishing
+      "#10B981", // Emerald: Part-Time Tasks
+      "#EC4899", // Pink: Sextortion
+      "#06B6D4"  // Cyan: Impersonation
+    ];
 
     chartPie = new Chart(ctx, {
       type: "doughnut",
@@ -383,9 +393,9 @@ document.addEventListener("DOMContentLoaded", () => {
         labels: labels,
         datasets: [{
           data: losses,
-          backgroundColor: ["#2563EB", "#DC2626", "#D97706", "#059669", "#7C3AED", "#0891B2", "#475569"],
+          backgroundColor: vibrantPalette,
           borderWidth: 1.5,
-          borderColor: isDark ? "#18181B" : "#FFFFFF"
+          borderColor: isDark ? "#0A0A0A" : "#FFFFFF"
         }]
       },
       options: {
@@ -394,17 +404,17 @@ document.addEventListener("DOMContentLoaded", () => {
         plugins: {
           legend: {
             position: "bottom",
-            labels: { color: textColor, font: { family: "Geist", size: 10, weight: "500" }, boxWidth: 8, padding: 6 }
+            labels: { color: textColor, font: { family: "Inter", size: 11, weight: "500" }, boxWidth: 8, padding: 6 }
           },
           tooltip: {
-            backgroundColor: isDark ? "#18181B" : "#FFFFFF",
-            titleColor: isDark ? "#FAFAFA" : "#09090B",
-            bodyColor: isDark ? "#D4D4D8" : "#52525B",
+            backgroundColor: isDark ? "#0A0A0A" : "#FFFFFF",
+            titleColor: isDark ? "#FFFFFF" : "#000000",
+            bodyColor: isDark ? "#E4E4E7" : "#27272A",
             borderColor: isDark ? "#27272A" : "#E4E4E7",
             borderWidth: 1,
             padding: 8,
             cornerRadius: 6,
-            bodyFont: { family: "Geist Mono", size: 11 },
+            bodyFont: { family: "Inter", size: 11 },
             callbacks: {
               label: function(context) {
                 return ` ${context.label}: ₹${context.raw.toLocaleString()} Cr`;
@@ -487,7 +497,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="text-[10px] font-mono font-bold text-zinc-500 uppercase">ISRO Bhuvan Spatial Node</div>
           <div class="font-bold text-xs text-zinc-900">${hub.name}</div>
           <div class="text-xs text-zinc-600">Category: <strong>${hub.type}</strong></div>
-          <div class="text-xs text-blue-600 font-mono font-bold">Reported Loss: ${hub.loss}</div>
+          <div class="text-xs text-zinc-900 font-mono font-bold">Reported Loss: ${hub.loss}</div>
           <div class="text-[11px] text-zinc-500 italic">Threat: ${hub.threat}</div>
         </div>
       `);
@@ -688,10 +698,10 @@ document.addEventListener("DOMContentLoaded", () => {
             <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 rounded">${inc.id}</span>
             <span class="text-xs font-mono font-bold text-zinc-900 dark:text-zinc-100">₹${inc.loss_cr.toFixed(2)} Cr</span>
           </div>
-          <h4 class="font-bold text-xs text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">${inc.target}</h4>
+          <h4 class="font-bold text-xs text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">${inc.target}</h4>
           <p class="text-[11px] text-zinc-500 leading-tight font-sans">${inc.category} (${inc.threat_actor})</p>
         </div>
-        <div class="pt-2 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-[11px] font-semibold text-blue-600 dark:text-blue-400 font-mono">
+        <div class="pt-2 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-[11px] font-semibold text-zinc-900 dark:text-zinc-100 font-mono">
           <span>Inspect Case</span>
           <i class="fa-solid fa-arrow-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
         </div>
@@ -718,7 +728,7 @@ document.addEventListener("DOMContentLoaded", () => {
       card.innerHTML = `
         <div class="flex items-center justify-between">
           <h3 class="font-bold text-xs text-zinc-900 dark:text-zinc-100">${f.category}</h3>
-          <span class="text-xs font-mono font-bold text-blue-600 dark:text-blue-400">₹${f.loss_cr.toLocaleString()} Cr</span>
+          <span class="text-xs font-mono font-bold text-zinc-900 dark:text-zinc-100">₹${f.loss_cr.toLocaleString()} Cr</span>
         </div>
         <p class="text-xs text-zinc-600 dark:text-zinc-400 font-sans"><strong class="font-semibold text-zinc-900 dark:text-zinc-100">Vector:</strong> ${f.vector}</p>
         <div class="grid grid-cols-2 gap-2 text-[11px] font-mono pt-2 border-t border-zinc-200 dark:border-zinc-800 text-zinc-500">

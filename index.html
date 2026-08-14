@@ -6,12 +6,10 @@
   <title>Cyber Jagruti — India Cybercrime Intelligence Portal (2020–2026 YTD)</title>
   <meta name="description" content="Cyber Jagruti: National Cyber Threat Intelligence Assessment & Master Data Repository for India (2020–2026)">
   
-  <!-- Precision Typography: Geist Sans & Geist Mono -->
+  <!-- Professional Typography: Inter Font System -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-mono/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -22,8 +20,9 @@
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   
-  <!-- Signature UI Precision System Styles -->
+  <!-- Enterprise Theme Styles -->
   <link rel="stylesheet" href="styles.css">
+</head>
 <body class="antialiased">
 
   <!-- =========================================================================
@@ -110,9 +109,18 @@
 
       <!-- Navigation & Controls -->
       <div class="flex items-center gap-3 shrink-0">
+        <!-- Quick Search Palette Trigger -->
+        <button id="open-command-palette-btn" class="px-2.5 py-1.5 text-xs font-mono text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-md flex items-center gap-2 transition cursor-pointer" title="Search Intel (Ctrl+K)">
+          <i class="fa-solid fa-magnifying-glass text-[10px] text-zinc-500"></i>
+          <span class="hidden sm:inline">Search Intel</span>
+          <kbd class="px-1 py-0.5 text-[9px] font-mono font-bold bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded text-zinc-600 dark:text-zinc-400">Ctrl K</kbd>
+        </button>
+
         <!-- Segmented Tab Navigation -->
         <div class="segmented-control no-scrollbar">
           <button class="segmented-btn active" data-tab="overview"><i class="fa-solid fa-chart-pie text-xs"></i><span>Overview</span></button>
+          <button class="segmented-btn" data-tab="simulator"><i class="fa-solid fa-gamepad text-xs text-rose-500"></i><span>Threat Simulator</span></button>
+          <button class="segmented-btn" data-tab="compare"><i class="fa-solid fa-code-compare text-xs text-blue-500"></i><span>State Sandbox</span></button>
           <button class="segmented-btn" data-tab="map"><i class="fa-solid fa-map-location-dot text-xs"></i><span>ISRO Map</span></button>
           <button class="segmented-btn" data-tab="sectors"><i class="fa-solid fa-building-shield text-xs"></i><span>Sectors</span></button>
           <button class="segmented-btn" data-tab="fraud"><i class="fa-solid fa-user-ninja text-xs"></i><span>Digital Arrest</span></button>
@@ -143,11 +151,11 @@
         <span class="text-zinc-600 dark:text-zinc-400 font-medium">State boundaries rendered via <strong>ISRO Bhuvan Geo-Spatial Reference</strong> standards. Data synchronized from MHA I4C NCRP & CERT-In disclosures.</span>
       </div>
       <div class="flex items-center gap-3 text-[11px] font-mono text-zinc-500 shrink-0 hidden md:flex">
-        <a href="https://bhuvan.nrsc.gov.in/" target="_blank" class="hover:text-blue-600 dark:hover:text-blue-400 underline">Bhuvan</a>
+        <a href="https://bhuvan.nrsc.gov.in/" target="_blank" class="hover:text-black dark:hover:text-white underline">Bhuvan</a>
         <span>•</span>
-        <a href="https://cybercrime.gov.in/" target="_blank" class="hover:text-blue-600 dark:hover:text-blue-400 underline">MHA NCRP</a>
+        <a href="https://cybercrime.gov.in/" target="_blank" class="hover:text-black dark:hover:text-white underline">MHA NCRP</a>
         <span>•</span>
-        <a href="https://www.cert-in.org.in/" target="_blank" class="hover:text-blue-600 dark:hover:text-blue-400 underline">CERT-In</a>
+        <a href="https://www.cert-in.org.in/" target="_blank" class="hover:text-black dark:hover:text-white underline">CERT-In</a>
       </div>
     </div>
 
@@ -209,15 +217,15 @@
             </div>
             <div class="precision-card-subtle p-3 space-y-0.5">
               <div class="text-[10px] font-mono text-zinc-500 uppercase">Reported Losses</div>
-              <div class="text-lg font-bold font-mono text-blue-600 dark:text-blue-400">₹68,500 Cr+</div>
+              <div class="text-lg font-bold font-mono text-black dark:text-white">₹68,500 Cr+</div>
               <div class="text-[10px] text-zinc-500 font-sans">Direct Economic Impact</div>
             </div>
           </div>
 
           <!-- CTAs -->
           <div class="flex flex-wrap items-center gap-3 pt-1" id="hero-cta-group">
-            <button class="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 rounded-md font-mono text-xs font-semibold tracking-wider transition flex items-center gap-2" data-target-tab="map">
-              <i class="fa-solid fa-map-location-dot text-blue-400 dark:text-blue-600"></i>
+            <button class="px-4 py-2 bg-black hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-200 text-white dark:text-black rounded-md font-mono text-xs font-semibold tracking-wider transition flex items-center gap-2" data-target-tab="map">
+              <i class="fa-solid fa-map-location-dot"></i>
               <span>[ EXPLORE INTELLIGENCE ]</span>
             </button>
             <button id="replay-reveal-btn" class="px-3 py-2 bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 rounded-md font-mono text-xs font-medium border border-zinc-200 dark:border-zinc-700 transition flex items-center gap-1.5" title="Replay 'The Republic Reveal' Sequence">
@@ -378,7 +386,7 @@
         <div class="precision-card p-5 space-y-5 flex flex-col justify-between">
           <div class="space-y-4">
             <div class="border-b border-zinc-200 dark:border-zinc-800 pb-3">
-              <span class="text-xs font-mono uppercase text-blue-600 dark:text-blue-400 font-semibold block">State Telemetry Inspector</span>
+              <span class="text-xs font-mono uppercase text-black dark:text-white font-semibold block">State Telemetry Inspector</span>
               <h3 id="selected-state-name" class="text-xl font-bold text-zinc-900 dark:text-zinc-100">Maharashtra</h3>
               <span id="selected-state-threat" class="text-xs text-zinc-500 dark:text-zinc-400 block pt-0.5">Primary Threat: Digital Arrest & Corporate Ransomware</span>
             </div>
@@ -390,7 +398,7 @@
               </div>
               <div class="precision-card-subtle p-3 space-y-1">
                 <span class="text-zinc-500 font-mono text-[11px] block">Reported Loss</span>
-                <span id="selected-state-loss" class="text-base font-bold font-mono text-blue-600 dark:text-blue-400">₹10,450.00 Cr</span>
+                <span id="selected-state-loss" class="text-base font-bold font-mono text-black dark:text-white">₹10,450.00 Cr</span>
               </div>
               <div class="precision-card-subtle p-3 space-y-1">
                 <span class="text-zinc-500 font-mono text-[11px] block">Funds Saved (1930)</span>
@@ -458,7 +466,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3">
           <div>
             <h2 class="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 font-mono flex items-center gap-2">
-              <i class="fa-solid fa-user-ninja text-blue-600 dark:text-blue-400"></i>
+              <i class="fa-solid fa-user-ninja"></i>
               Spotlight: "Digital Arrest" Cross-Border Extortion Syndicate Model
             </h2>
             <p class="text-xs text-zinc-500">Organized cyber compound operations (Cambodia, Laos, Myanmar) targeting Indian citizens</p>
@@ -628,7 +636,7 @@
               <i class="fa-solid fa-file-excel text-emerald-600"></i> Excel Workbook
             </button>
             <button id="export-json-btn" class="px-2.5 py-1 text-xs font-medium text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded hover:bg-zinc-200 transition flex items-center gap-1.5">
-              <i class="fa-solid fa-code text-blue-600"></i> JSON API
+              <i class="fa-solid fa-code"></i> JSON API
             </button>
           </div>
         </div>
