@@ -188,6 +188,83 @@ document.addEventListener("DOMContentLoaded", () => {
     initScamSimulator();
     initStateComparisonSandbox(data.states);
     initCommandPalette(data);
+
+    // GSAP Micro-Interactions Suite
+    initGSAPMicrointeractions();
+  }
+
+  // ==========================================================================
+  // GSAP Micro-Interactions Suite (Tactile Physics, Magnetic Pull & Stagger)
+  // ==========================================================================
+  function initGSAPMicrointeractions() {
+    if (!window.gsap) return;
+
+    // 1. Subtle 3D Perspective Tilt on Interactive Cards
+    const tiltCards = document.querySelectorAll(".precision-card, .hero-metric-card, .hero-intel-panel");
+    tiltCards.forEach(card => {
+      card.addEventListener("mousemove", (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        gsap.to(card, {
+          rotationY: (x / rect.width) * 4,
+          rotationX: (-y / rect.height) * 4,
+          transformPerspective: 800,
+          ease: "power1.out",
+          duration: 0.25
+        });
+      });
+
+      card.addEventListener("mouseleave", () => {
+        gsap.to(card, {
+          rotationY: 0,
+          rotationX: 0,
+          ease: "power2.out",
+          duration: 0.45
+        });
+      });
+    });
+
+    // 2. Magnetic Button Micro-Scale & Press Tactility
+    const interactiveBtns = document.querySelectorAll(".btn-primary, .btn-secondary, .helpline-capsule, #theme-toggle-btn, #open-command-palette-btn, #open-methodology-btn");
+    interactiveBtns.forEach(btn => {
+      btn.addEventListener("mouseenter", () => {
+        gsap.to(btn, { scale: 1.025, duration: 0.2, ease: "power1.out" });
+      });
+
+      btn.addEventListener("mouseleave", () => {
+        gsap.to(btn, { scale: 1, duration: 0.25, ease: "power2.out" });
+      });
+
+      btn.addEventListener("mousedown", () => {
+        gsap.to(btn, { scale: 0.95, duration: 0.1 });
+      });
+
+      btn.addEventListener("mouseup", () => {
+        gsap.to(btn, { scale: 1.025, duration: 0.15 });
+      });
+    });
+
+    // 3. Staggered Scroll Entrance Reveal for Sections
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.dataset.animated) {
+          entry.target.dataset.animated = "true";
+          const elements = entry.target.querySelectorAll(".precision-card, .hero-metric-card, .intel-table-container, .section-intro-block");
+          if (elements.length > 0) {
+            gsap.from(elements, {
+              opacity: 0,
+              y: 16,
+              stagger: 0.05,
+              duration: 0.45,
+              ease: "power2.out"
+            });
+          }
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll("section[id]").forEach(sec => sectionObserver.observe(sec));
   }
 
   // ==========================================================================
