@@ -40,13 +40,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function enableDarkMode() {
-    document.body.classList.add("dark-mode");
+    document.documentElement.classList.add("dark", "dark-mode");
+    document.body.classList.add("dark-mode", "dark");
     localStorage.setItem("india_cyber_theme", "dark");
-    if (themeIcon) themeIcon.className = "fa-solid fa-sun text-zinc-300 text-xs";
+    if (themeIcon) themeIcon.className = "fa-solid fa-sun text-amber-400 text-xs";
   }
 
   function disableDarkMode() {
-    document.body.classList.remove("dark-mode");
+    document.documentElement.classList.remove("dark", "dark-mode");
+    document.body.classList.remove("dark-mode", "dark");
     localStorage.setItem("india_cyber_theme", "light");
     if (themeIcon) themeIcon.className = "fa-solid fa-moon text-zinc-600 text-xs";
   }
@@ -251,7 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function skipSequence() {
-      tl.kill();
+      if (tl) tl.kill();
       curtain.classList.add("revealed");
       gsap.set(curtain, { display: "none" });
       animateCounters();
@@ -260,6 +262,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (skipBtn) skipBtn.addEventListener("click", skipSequence);
     if (replayBtn) replayBtn.addEventListener("click", playSequence);
+
+    // Tap or click anywhere on curtain to dismiss immediately on mobile/desktop
+    if (curtain) {
+      curtain.addEventListener("click", skipSequence);
+      curtain.addEventListener("touchstart", skipSequence, { passive: true });
+    }
+
+    // Safety fallback: Ensure curtain never stays stuck under any condition
+    setTimeout(() => {
+      if (curtain && !curtain.classList.contains("revealed")) {
+        skipSequence();
+      }
+    }, 3000);
 
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && !curtain.classList.contains("revealed")) {

@@ -113,36 +113,37 @@
     <div class="site-container flex items-center justify-between">
       <div class="flex items-center gap-2">
         <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
-        <span class="font-mono font-semibold uppercase tracking-wider text-[10.5px]">
-          CYBER JAGRUTI • INDIA CYBER THREAT INTELLIGENCE • 2020–2026 YTD
+        <span class="font-mono font-bold uppercase tracking-wider text-[11px] text-zinc-900 dark:text-zinc-100">
+          CYBER JAGRUTI OBSERVATORY • NATIONAL THREAT INTELLIGENCE • 2020–2026 YTD
         </span>
       </div>
-      <div class="hidden sm:flex items-center gap-4 text-[10.5px] font-mono text-zinc-500">
-        <span>36 JURISDICTIONS</span>
-        <span>•</span>
-        <span>114 VERIFIED INCIDENTS</span>
-        <span>•</span>
-        <span class="text-zinc-700 dark:text-zinc-300 font-semibold">RESEARCH DATASET • OSINT • PUBLIC SOURCES</span>
+      <div class="hidden md:flex items-center gap-3">
+        <span class="telemetry-pill"><i class="fa-solid fa-map-location-dot text-blue-500 text-[9px]"></i> 36 JURISDICTIONS</span>
+        <span class="telemetry-pill"><i class="fa-solid fa-shield-halved text-rose-500 text-[9px]"></i> 114 VERIFIED OSINT RECORDS</span>
+        <span class="telemetry-pill"><i class="fa-solid fa-graduation-cap text-emerald-500 text-[9px]"></i> PUBLIC RESEARCH INITIATIVE</span>
       </div>
     </div>
   </div>
 
   <!-- Sticky Navbar -->
-  <header class="sticky-navbar py-2.5 px-4">
+  <header class="sticky-navbar py-2 px-4 shadow-sm">
     <div class="site-container flex items-center justify-between gap-4">
-      <!-- Logo & Brand -->
-      <a href="#hero-section" class="flex items-center gap-2.5 text-decoration-none">
-        <div class="w-8 h-8 rounded-lg bg-[#09090B] dark:bg-white text-white dark:text-[#09090B] flex items-center justify-center font-display font-extrabold text-sm shadow-sm">
+      <!-- Logo & Brand Identity -->
+      <a href="#hero-section" class="flex items-center gap-2.5 text-decoration-none group">
+        <div class="w-8 h-8 rounded-lg bg-[#09090B] dark:bg-white text-white dark:text-[#09090B] flex items-center justify-center font-display font-extrabold text-sm shadow-md group-hover:scale-105 transition-transform">
           CJ
         </div>
         <div class="flex flex-col">
-          <span class="font-display font-extrabold text-sm tracking-tight text-[#09090B] dark:text-white leading-tight">CYBER JAGRUTI</span>
-          <span class="font-sans text-[10px] text-zinc-500 dark:text-zinc-400 font-medium leading-none">India Observatory</span>
+          <div class="flex items-center gap-1.5">
+            <span class="font-display font-extrabold text-sm tracking-tight text-[#09090B] dark:text-white leading-tight">CYBER JAGRUTI</span>
+            <span class="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">v3.2</span>
+          </div>
+          <span class="font-sans text-[10px] text-zinc-500 dark:text-zinc-400 font-medium leading-none">India Cybercrime Observatory</span>
         </div>
       </a>
 
       <!-- Desktop Navigation Menu -->
-      <nav class="hidden lg:flex items-center gap-1">
+      <nav class="desktop-nav-menu items-center gap-0.5">
         <a href="#section-overview" class="nav-link">Overview</a>
         <a href="#section-threats" class="nav-link">Threats</a>
         <a href="#section-map" class="nav-link">India Map</a>
@@ -156,23 +157,28 @@
 
       <!-- Action Tools (Right) -->
       <div class="flex items-center gap-2">
-        <button id="open-command-palette-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-md border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:border-zinc-400 text-xs font-sans text-zinc-700 dark:text-zinc-300 transition" title="Search intelligence records (Ctrl+K)">
+        <button id="open-command-palette-btn" class="flex items-center gap-2 px-2.5 py-1.5 rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 hover:border-zinc-500 text-xs font-sans font-semibold text-zinc-800 dark:text-zinc-200 shadow-sm transition" title="Search intelligence records (Ctrl+K)">
           <i class="fa-solid fa-magnifying-glass text-[11px] text-zinc-400"></i>
-          <span class="hidden sm:inline">Search...</span>
-          <kbd class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-semibold">⌘K</kbd>
+          <span class="hidden xl:inline">Search...</span>
+          <kbd class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-semibold border border-zinc-200 dark:border-zinc-700">⌘K</kbd>
         </button>
 
-        <button id="open-methodology-btn" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-sans font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 transition" title="View Data Methodology & Provenance">
-          <i class="fa-solid fa-book-bookmark text-[11px] text-zinc-400"></i>
+        <button id="open-methodology-btn" class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-xs font-sans font-semibold text-zinc-800 dark:text-zinc-200 hover:border-zinc-500 shadow-sm transition" title="View Data Governance & Provenance">
+          <i class="fa-solid fa-book-open text-[11px] text-zinc-500"></i>
           <span>Methodology</span>
         </button>
 
-        <button id="theme-toggle-btn" class="w-8 h-8 rounded-md border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center text-xs text-zinc-700 dark:text-zinc-300 hover:border-zinc-400 transition" title="Switch Theme">
+        <a href="tel:1930" class="hidden md:inline-flex helpline-capsule" title="Emergency Citizen Cybercrime Helpline">
+          <i class="fa-solid fa-phone text-[10px] animate-pulse"></i>
+          <span>1930 Helpline</span>
+        </a>
+
+        <button id="theme-toggle-btn" class="w-8 h-8 rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 flex items-center justify-center text-xs text-zinc-800 dark:text-zinc-200 hover:border-zinc-500 shadow-sm transition" title="Switch Theme (Light / Dark)">
           <i id="theme-icon" class="fa-solid fa-moon"></i>
         </button>
 
         <!-- Mobile Menu Hamburger Button -->
-        <button id="mobile-menu-btn" class="lg:hidden w-8 h-8 rounded-md border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-xs text-zinc-700 dark:text-zinc-300">
+        <button id="mobile-menu-btn" class="desktop-nav-menu:hidden flex lg:hidden w-8 h-8 rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 items-center justify-center text-xs text-zinc-800 dark:text-zinc-200">
           <i class="fa-solid fa-bars"></i>
         </button>
       </div>
@@ -929,24 +935,99 @@
 
   </main>
 
-  <!-- Footer -->
-  <footer class="border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#0A0A0A] py-10 text-xs font-sans">
-    <div class="site-container flex flex-col md:flex-row items-center justify-between gap-6">
-      <div class="space-y-1 text-center md:text-left">
-        <div class="flex items-center justify-center md:justify-start gap-2">
-          <span class="font-display font-extrabold text-sm text-zinc-900 dark:text-white">CYBER JAGRUTI</span>
-          <span class="font-mono text-[10px] px-1.5 py-0.2 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded">v3.2.0</span>
+  <!-- Institutional Multi-Column Footer -->
+  <footer class="site-footer pt-14 pb-10 text-xs font-sans mt-20">
+    <div class="site-container space-y-12">
+      <!-- 4-Column Master Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pb-10 border-b border-zinc-200 dark:border-zinc-800">
+        
+        <!-- Column 1: Observatory Identity & Mission (4 cols) -->
+        <div class="lg:col-span-4 space-y-4">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-[#09090B] dark:bg-white text-white dark:text-[#09090B] flex items-center justify-center font-display font-extrabold text-sm shadow-md">
+              CJ
+            </div>
+            <div class="flex flex-col">
+              <span class="font-display font-extrabold text-sm tracking-tight text-[#09090B] dark:text-white leading-tight">CYBER JAGRUTI</span>
+              <span class="font-sans text-[10px] text-zinc-500 font-medium leading-none">India Cybercrime Intelligence Observatory</span>
+            </div>
+          </div>
+
+          <p class="text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-sm">
+            Empirical national cybercrime research platform tracking financial loss trends, threat vectors, spatial risk indices, and defensive citizen protocols across India.
+          </p>
+
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 text-[11px] font-mono text-zinc-700 dark:text-zinc-300">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>Status: Fully Operational • Public Research Node</span>
+          </div>
         </div>
-        <p class="text-zinc-500">India Cybercrime Intelligence Observatory • 2020 — 2026 YTD</p>
-        <p class="text-[11px] text-zinc-400">Dedicated to public cyber hygiene and national digital resilience.</p>
+
+        <!-- Column 2: Observatory Modules (3 cols) -->
+        <div class="lg:col-span-3 space-y-3">
+          <h4 class="footer-heading">Observatory Modules</h4>
+          <ul class="space-y-2 list-none p-0 m-0">
+            <li><a href="#section-overview" class="footer-link"><i class="fa-solid fa-angle-right text-[10px] text-zinc-400"></i> Strategic Executive Briefing</a></li>
+            <li><a href="#section-threats" class="footer-link"><i class="fa-solid fa-angle-right text-[10px] text-zinc-400"></i> Threat Matrix & Loss Trends</a></li>
+            <li><a href="#section-map" class="footer-link"><i class="fa-solid fa-angle-right text-[10px] text-zinc-400"></i> ISRO Bhuvan Spatial Risk Engine</a></li>
+            <li><a href="#section-golden-hour" class="footer-link"><i class="fa-solid fa-angle-right text-[10px] text-zinc-400"></i> 1930 "Golden Hour" Simulator</a></li>
+            <li><a href="#section-threats-flow" class="footer-link"><i class="fa-solid fa-angle-right text-[10px] text-zinc-400"></i> Digital Arrest Compound Flow</a></li>
+            <li><a href="#section-scam-lab" class="footer-link"><i class="fa-solid fa-angle-right text-[10px] text-zinc-400"></i> Citizen Scam Defense Lab</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Technical & Frameworks (2 cols) -->
+        <div class="lg:col-span-2 space-y-3">
+          <h4 class="footer-heading">Data & Frameworks</h4>
+          <ul class="space-y-2 list-none p-0 m-0">
+            <li><a href="#section-mitre" class="footer-link"><i class="fa-solid fa-angle-right text-[10px] text-zinc-400"></i> MITRE ATT&CK Matrix</a></li>
+            <li><a href="#section-incidents" class="footer-link"><i class="fa-solid fa-angle-right text-[10px] text-zinc-400"></i> Landmark Exploit Logs</a></li>
+            <li><a href="#section-forecast" class="footer-link"><i class="fa-solid fa-angle-right text-[10px] text-zinc-400"></i> Modelled Forecast (2027)</a></li>
+            <li><a href="#section-repository" class="footer-link"><i class="fa-solid fa-angle-right text-[10px] text-zinc-400"></i> Master OSINT Repo (114)</a></li>
+            <li><a href="#section-methodology" class="footer-link"><i class="fa-solid fa-angle-right text-[10px] text-zinc-400"></i> Data Provenance Standards</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Emergency Response Channels (3 cols) -->
+        <div class="lg:col-span-3 space-y-3">
+          <h4 class="footer-heading">Emergency & Reporting</h4>
+          <ul class="space-y-2 list-none p-0 m-0 text-zinc-600 dark:text-zinc-400">
+            <li class="flex items-center gap-2">
+              <i class="fa-solid fa-phone text-rose-500 text-xs"></i>
+              <span>National Helpline: <a href="tel:1930" class="font-mono font-bold text-rose-600 dark:text-rose-400 hover:underline">1930 (Toll Free)</a></span>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fa-solid fa-globe text-blue-500 text-xs"></i>
+              <a href="https://cybercrime.gov.in" target="_blank" rel="noopener noreferrer" class="hover:underline">cybercrime.gov.in (NCRP)</a>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fa-solid fa-shield text-emerald-500 text-xs"></i>
+              <a href="https://sancharsaathi.gov.in" target="_blank" rel="noopener noreferrer" class="hover:underline">sancharsaathi.gov.in (Chakshu)</a>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fa-solid fa-server text-amber-500 text-xs"></i>
+              <a href="https://www.cert-in.org.in" target="_blank" rel="noopener noreferrer" class="hover:underline">cert-in.org.in (CERT-In)</a>
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fa-solid fa-building-columns text-purple-500 text-xs"></i>
+              <a href="https://sachet.rbi.org.in" target="_blank" rel="noopener noreferrer" class="hover:underline">sachet.rbi.org.in (RBI Sachet)</a>
+            </li>
+          </ul>
+        </div>
+
       </div>
 
-      <div class="flex flex-wrap items-center justify-center gap-4 text-zinc-600 dark:text-zinc-400 font-semibold">
-        <a href="#hero-section" class="hover:text-zinc-900 dark:hover:text-white transition">Top</a>
-        <a href="#section-overview" class="hover:text-zinc-900 dark:hover:text-white transition">Overview</a>
-        <a href="#section-map" class="hover:text-zinc-900 dark:hover:text-white transition">Spatial Map</a>
-        <a href="#section-repository" class="hover:text-zinc-900 dark:hover:text-white transition">Repository</a>
-        <button id="footer-methodology-btn" class="hover:text-zinc-900 dark:hover:text-white transition cursor-pointer">Methodology</button>
+      <!-- Footer Sub-Bar: Copyright, Provenance Disclaimer & Quick Utilities -->
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-zinc-500 text-[11px] font-sans">
+        <div class="space-y-1 text-center md:text-left">
+          <p>© 2020–2026 Cyber Jagruti — India Cybercrime Intelligence Observatory. Open Research Edition.</p>
+          <p class="text-[10.5px] text-zinc-400 font-mono">Synthesized from public MHA Parliamentary disclosures, CERT-In bulletins, and verified OSINT datasets.</p>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-semibold">
+          <button id="footer-methodology-btn" class="hover:text-zinc-900 dark:hover:text-white transition cursor-pointer">Methodology</button>
+          <a href="#hero-section" class="hover:text-zinc-900 dark:hover:text-white transition">Back to Top ↑</a>
+        </div>
       </div>
     </div>
   </footer>
