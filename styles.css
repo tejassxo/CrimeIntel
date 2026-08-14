@@ -588,17 +588,17 @@ body {
   background-color: var(--bg-subtle);
 }
 
-/* Republic Reveal Opening Curtain & Cinematic Indian Flag */
+/* Republic Reveal Opening Curtain & Cinematic Indian Flag (Off-White Foundation) */
 #republic-reveal-curtain {
   position: fixed;
   inset: 0;
   z-index: 3000;
-  background: radial-gradient(circle at center, #111115 0%, #000000 100%);
+  background: radial-gradient(circle at center, #FFFFFF 0%, #F4F4F6 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #FFFFFF;
+  color: #09090B;
   overflow: hidden;
 }
 
@@ -611,12 +611,12 @@ body {
   width: 260px;
   height: 160px;
   border-radius: 10px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 153, 51, 0.15), 0 0 30px rgba(19, 136, 8, 0.15);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12), 0 0 30px rgba(255, 153, 51, 0.2), 0 0 30px rgba(19, 136, 8, 0.2);
   overflow: hidden;
   position: relative;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   transform-style: preserve-3d;
 }
 
