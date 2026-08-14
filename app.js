@@ -866,8 +866,18 @@ document.addEventListener("DOMContentLoaded", () => {
           closePalette();
         }
       }
-      if (e.key === "Escape" && !modal.classList.contains("hidden")) {
-        closePalette();
+      if (e.key === "Escape") {
+        if (!modal.classList.contains("hidden")) {
+          closePalette();
+        }
+        const incModal = document.getElementById("incident-modal");
+        if (incModal && !incModal.classList.contains("hidden")) {
+          incModal.classList.add("hidden");
+        }
+        const methModal = document.getElementById("methodology-modal");
+        if (methModal && !methModal.classList.contains("hidden")) {
+          methModal.classList.add("hidden");
+        }
       }
     });
 
