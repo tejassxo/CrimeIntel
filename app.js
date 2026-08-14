@@ -126,7 +126,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const dismissMethBtn = document.getElementById("dismiss-methodology-btn");
 
   function openMethodology() {
-    if (methodologyModal) methodologyModal.classList.remove("hidden");
+    if (methodologyModal) {
+      methodologyModal.classList.remove("hidden");
+      const box = methodologyModal.querySelector(".precision-card");
+      if (window.gsap && box) {
+        gsap.fromTo(box, { scale: 0.94, opacity: 0, y: -12 }, { scale: 1, opacity: 1, y: 0, duration: 0.25, ease: "power2.out" });
+      }
+    }
   }
 
   function closeMethodology() {
@@ -549,6 +555,10 @@ document.addEventListener("DOMContentLoaded", () => {
         timeText = `${hrs} Hours`;
       }
 
+      if (window.gsap && badge) {
+        gsap.fromTo(badge, { scale: 0.92 }, { scale: 1, duration: 0.25, ease: "back.out(2)", overwrite: "auto" });
+      }
+
       if (minutes <= 30) {
         timeDisplay.innerText = `${timeText} (Golden Recovery Window)`;
         timeDisplay.className = "font-bold text-emerald-600 dark:text-emerald-400 font-mono";
@@ -728,6 +738,9 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
             solvedScenarios.add(idx);
             if (scoreBadge) scoreBadge.innerText = `${solvedScenarios.size} / 4 Completed`;
+            if (window.gsap) {
+              gsap.fromTo(verdictBox, { scale: 0.95, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.35, ease: "back.out(1.7)" });
+            }
           } else {
             verdictBox.className = "p-3.5 rounded border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950 text-xs space-y-1 block";
             verdictBox.innerHTML = `
@@ -736,6 +749,9 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
               <p class="text-rose-900 dark:text-rose-200 font-sans leading-relaxed">${selectedChoice.reason}</p>
             `;
+            if (window.gsap) {
+              gsap.fromTo(verdictBox, { x: -8, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4, ease: "elastic.out(1.2, 0.3)" });
+            }
           }
         });
       });
@@ -855,6 +871,10 @@ document.addEventListener("DOMContentLoaded", () => {
       input.value = "";
       renderResults("");
       input.focus();
+      const box = modal.querySelector(".command-palette-box");
+      if (window.gsap && box) {
+        gsap.fromTo(box, { scale: 0.94, opacity: 0, y: -12 }, { scale: 1, opacity: 1, y: 0, duration: 0.25, ease: "power2.out" });
+      }
     }
 
     function closePalette() {
