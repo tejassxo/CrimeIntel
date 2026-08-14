@@ -70,69 +70,58 @@
   </div>
 
   <!-- =========================================================================
-       SYSTEM TELEMETRY BAR (Engineering Precision Status)
+       SYSTEM TELEMETRY BAR (Ultra-Clean Precision Bar)
        ========================================================================= -->
-  <div class="bg-zinc-900 text-zinc-300 text-xs py-2 px-6 flex items-center justify-between border-b border-zinc-800 font-mono">
-    <div class="flex items-center gap-3">
-      <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
-      <span class="font-semibold text-zinc-200 tracking-wider text-[11px]">CYBER JAGRUTI PIPELINE: OPERATIONAL</span>
-      <span class="text-zinc-600">|</span>
-      <span class="text-zinc-400 text-[11px]">MHA I4C NCRP & CERT-IN TELEMETRY</span>
-      <span class="text-zinc-600 hidden sm:inline">|</span>
-      <span class="text-zinc-400 text-[11px] hidden sm:inline">36/36 STATE NODES SYNCED</span>
+  <div class="bg-black text-zinc-300 text-[11px] py-1.5 px-6 flex items-center justify-between font-mono">
+    <div class="flex items-center gap-2">
+      <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+      <span class="text-zinc-200 font-semibold tracking-wide">NATIONAL CYBER THREAT OBSERVATORY • 2020–2026</span>
     </div>
-    <div class="flex items-center gap-4 text-[11px] text-zinc-400">
-      <span class="hidden md:inline">BUILD v2.6.0</span>
-      <span>ENG: <a href="https://github.com/tejassxo" target="_blank" class="text-zinc-200 hover:text-white font-semibold underline">M TEJAS YADAV</a></span>
+    <div class="flex items-center gap-3 text-zinc-400 text-[10px]">
+      <span>114 VERIFIED OSINT INCIDENTS</span>
+      <span>•</span>
+      <span>MHA I4C & CERT-IN</span>
     </div>
   </div>
 
   <!-- =========================================================================
-       MAIN EXECUTIVE NAVIGATION HEADER
+       MAIN MINIMALIST NAVIGATION HEADER
        ========================================================================= -->
-  <header class="sticky top-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800">
-    <div class="max-w-[1440px] mx-auto px-6 py-3 flex items-center justify-between gap-4">
+  <header class="sticky top-0 z-40 bg-white/95 dark:bg-black/95 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800">
+    <div class="max-w-[1440px] mx-auto px-6 py-2.5 flex items-center justify-between gap-6">
       
-      <!-- Brand & Title -->
-      <div class="flex items-center gap-3 shrink-0">
-        <div class="w-8 h-8 rounded-md bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 flex items-center justify-center font-mono font-bold text-xs">
+      <!-- Brand Logo & Title -->
+      <div class="flex items-center gap-2.5 shrink-0 cursor-pointer" data-tab="overview">
+        <div class="w-7 h-7 rounded bg-black dark:bg-white text-white dark:text-black flex items-center justify-center font-mono font-bold text-xs">
           CJ
         </div>
-        <div>
-          <h1 class="text-sm font-bold text-zinc-900 dark:text-zinc-100 tracking-tight flex items-center gap-2">
-            Cyber Jagruti
-            <span class="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700">2020–2026 YTD</span>
-          </h1>
-          <p class="text-[11px] text-zinc-500 dark:text-zinc-400">National Cyber Threat Intelligence & Spatial Risk Engine</p>
-        </div>
+        <span class="text-sm font-bold tracking-tight text-black dark:text-white font-sans">
+          Cyber Jagruti
+        </span>
       </div>
 
-      <!-- Navigation & Controls -->
-      <div class="flex items-center gap-3 shrink-0">
-        <!-- Quick Search Palette Trigger -->
-        <button id="open-command-palette-btn" class="px-2.5 py-1.5 text-xs font-mono text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-md flex items-center gap-2 transition cursor-pointer" title="Search Intel (Ctrl+K)">
-          <i class="fa-solid fa-magnifying-glass text-[10px] text-zinc-500"></i>
-          <span class="hidden sm:inline">Search Intel</span>
-          <kbd class="px-1 py-0.5 text-[9px] font-mono font-bold bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded text-zinc-600 dark:text-zinc-400">Ctrl K</kbd>
+      <!-- Streamlined 5-Pill Navigation -->
+      <div class="segmented-control no-scrollbar">
+        <button class="segmented-btn active" data-tab="overview"><i class="fa-solid fa-chart-pie text-xs"></i><span>Overview</span></button>
+        <button class="segmented-btn" data-tab="map"><i class="fa-solid fa-map-location-dot text-xs"></i><span>Spatial Map</span></button>
+        <button class="segmented-btn" data-tab="sectors"><i class="fa-solid fa-shield-halved text-xs"></i><span>Threat Matrix</span></button>
+        <button class="segmented-btn" data-tab="simulator"><i class="fa-solid fa-gamepad text-xs text-rose-500"></i><span>Threat Simulator</span></button>
+        <button class="segmented-btn" data-tab="repository"><i class="fa-solid fa-table-list text-xs"></i><span>Data Repository</span></button>
+      </div>
+
+      <!-- Quick Actions (Search & Theme) -->
+      <div class="flex items-center gap-2 shrink-0">
+        <!-- Quick Search Palette Button -->
+        <button id="open-command-palette-btn" class="px-2.5 py-1 text-xs font-mono text-zinc-600 dark:text-zinc-300 hover:text-black dark:hover:text-white bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded flex items-center gap-2 transition cursor-pointer" title="Search Intel (Ctrl+K)">
+          <i class="fa-solid fa-magnifying-glass text-[10px] text-zinc-400"></i>
+          <span class="hidden md:inline">Search</span>
+          <kbd class="px-1 py-0.2 text-[9px] font-mono bg-white dark:bg-black border border-zinc-300 dark:border-zinc-700 rounded text-zinc-500">⌘K</kbd>
         </button>
 
-        <!-- Segmented Tab Navigation -->
-        <div class="segmented-control no-scrollbar">
-          <button class="segmented-btn active" data-tab="overview"><i class="fa-solid fa-chart-pie text-xs"></i><span>Overview</span></button>
-          <button class="segmented-btn" data-tab="simulator"><i class="fa-solid fa-gamepad text-xs text-rose-500"></i><span>Threat Simulator</span></button>
-          <button class="segmented-btn" data-tab="compare"><i class="fa-solid fa-code-compare text-xs text-blue-500"></i><span>State Sandbox</span></button>
-          <button class="segmented-btn" data-tab="map"><i class="fa-solid fa-map-location-dot text-xs"></i><span>ISRO Map</span></button>
-          <button class="segmented-btn" data-tab="sectors"><i class="fa-solid fa-building-shield text-xs"></i><span>Sectors</span></button>
-          <button class="segmented-btn" data-tab="fraud"><i class="fa-solid fa-user-ninja text-xs"></i><span>Digital Arrest</span></button>
-          <button class="segmented-btn" data-tab="timeline"><i class="fa-solid fa-timeline text-xs"></i><span>Timeline</span></button>
-          <button class="segmented-btn" data-tab="mitre"><i class="fa-solid fa-network-wired text-xs"></i><span>MITRE</span></button>
-          <button class="segmented-btn" data-tab="repository"><i class="fa-solid fa-table-list text-xs"></i><span>Data Grid</span></button>
-        </div>
-
-        <!-- Theme Switcher -->
-        <button id="theme-toggle-btn" class="theme-toggle-btn" title="Toggle Light/Dark Executive Theme">
+        <!-- Theme Toggle -->
+        <button id="theme-toggle-btn" class="theme-toggle-btn px-2.5 py-1 rounded border border-zinc-200 dark:border-zinc-800 cursor-pointer" title="Toggle Light/Dark Theme">
           <i class="fa-solid fa-moon text-zinc-600 dark:text-zinc-300 text-xs" id="theme-icon"></i>
-          <span id="theme-text" class="text-xs">Dark</span>
+          <span id="theme-text" class="text-xs hidden sm:inline">Dark</span>
         </button>
       </div>
 
@@ -140,24 +129,9 @@
   </header>
 
   <!-- =========================================================================
-       MAIN CONTENT CONTAINER (12-Column Structured Grid)
+       MAIN CONTENT CONTAINER
        ========================================================================= -->
   <main class="max-w-[1440px] mx-auto px-6 py-6 space-y-6">
-
-    <!-- Official Disclaimers / Metadata Banner -->
-    <div class="precision-card-subtle p-3.5 flex items-center justify-between gap-4 text-xs">
-      <div class="flex items-center gap-2.5">
-        <span class="status-badge accent"><i class="fa-solid fa-satellite"></i> GEO-SPATIAL</span>
-        <span class="text-zinc-600 dark:text-zinc-400 font-medium">State boundaries rendered via <strong>ISRO Bhuvan Geo-Spatial Reference</strong> standards. Data synchronized from MHA I4C NCRP & CERT-In disclosures.</span>
-      </div>
-      <div class="flex items-center gap-3 text-[11px] font-mono text-zinc-500 shrink-0 hidden md:flex">
-        <a href="https://bhuvan.nrsc.gov.in/" target="_blank" class="hover:text-black dark:hover:text-white underline">Bhuvan</a>
-        <span>•</span>
-        <a href="https://cybercrime.gov.in/" target="_blank" class="hover:text-black dark:hover:text-white underline">MHA NCRP</a>
-        <span>•</span>
-        <a href="https://www.cert-in.org.in/" target="_blank" class="hover:text-black dark:hover:text-white underline">CERT-In</a>
-      </div>
-    </div>
 
     <!-- =========================================================================
          TAB 1: EXECUTIVE OVERVIEW (Digital Sentinel Hero & Bento Intelligence)
@@ -318,7 +292,7 @@
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         <!-- Financial vs Complaint Trend Chart -->
-        <div class="lg:col-span-2 precision-card p-5 space-y-4">
+        <div class="lg:col-span-2 precision-card p-5 space-y-4 tilt-card">
           <div class="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
             <div>
               <h3 class="text-sm font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider font-mono">
@@ -334,7 +308,7 @@
         </div>
 
         <!-- Fraud Category Distribution -->
-        <div class="precision-card p-5 space-y-4">
+        <div class="precision-card p-5 space-y-4 tilt-card">
           <div class="border-b border-zinc-200 dark:border-zinc-800 pb-3">
             <h3 class="text-sm font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider font-mono">
               Loss Distribution by Scam Vector
@@ -348,9 +322,122 @@
 
       </div>
 
+      <!-- Interactive Cyber Pulse & 1930 Golden Hour Simulation Bento -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Interactive 1930 Golden Hour Simulator -->
+        <div class="lg:col-span-2 precision-card p-5 space-y-4 tilt-card">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="status-badge emerald"><i class="fa-solid fa-bolt"></i> INTERACTIVE LAB</span>
+                <h3 class="text-sm font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider font-mono">
+                  MHA I4C 1930 "Golden Hour" Lien Hold Simulator
+                </h3>
+              </div>
+              <p class="text-xs text-zinc-500 pt-0.5">Simulate citizen reporting delay to calculate fund freeze probability across Indian banks</p>
+            </div>
+            <span id="golden-recovery-badge" class="px-2.5 py-1 text-xs font-mono font-bold rounded-md bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+              88% RECOVERY ESTIMATE
+            </span>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <div class="flex items-center justify-between text-xs font-mono text-zinc-600 dark:text-zinc-400 mb-1.5">
+                <span>Citizen Reporting Time Elapsed:</span>
+                <span id="golden-time-display" class="font-bold text-black dark:text-white">15 Minutes (Golden Window)</span>
+              </div>
+              <input type="range" id="golden-hour-slider" min="5" max="1440" value="15" step="5" class="golden-slider">
+              <div class="flex items-center justify-between text-[10px] font-mono text-zinc-400 mt-1">
+                <span>5 Mins (Immediate)</span>
+                <span>2 Hours (Layering Begins)</span>
+                <span>24 Hours (Crypto Exfil)</span>
+              </div>
+            </div>
+
+            <!-- Dynamic Simulator Output Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+              <div class="precision-card-subtle p-3 space-y-1">
+                <span class="text-[10px] font-mono text-zinc-500 uppercase">Automated API Lien Hold</span>
+                <div id="sim-lien-status" class="text-xs font-bold text-emerald-600 dark:text-emerald-400">INSTANT APB FREEZE</div>
+                <p id="sim-lien-desc" class="text-[11px] text-zinc-500 font-sans">Funds held in Layer-1 mule accounts before ATM/crypto withdrawal.</p>
+              </div>
+              <div class="precision-card-subtle p-3 space-y-1">
+                <span class="text-[10px] font-mono text-zinc-500 uppercase">Mule Siphoning Velocity</span>
+                <div id="sim-layer-count" class="text-xs font-bold text-black dark:text-white">1 / 5 Mule Layers Active</div>
+                <p id="sim-layer-desc" class="text-[11px] text-zinc-500 font-sans">Money has not yet crossed into unauthorized foreign crypto escrow.</p>
+              </div>
+              <div class="precision-card-subtle p-3 space-y-1">
+                <span class="text-[10px] font-mono text-zinc-500 uppercase">Action Protocol</span>
+                <div id="sim-action-code" class="text-xs font-bold text-blue-600 dark:text-blue-400 font-mono">DIAL 1930 / NCRP FAST-TRACK</div>
+                <p class="text-[11px] text-zinc-500 font-sans">Keep Transaction ID (UTR), SMS alert, and bank statement ready.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Cyber Threat Pulse Widget -->
+        <div class="precision-card p-5 space-y-3.5 flex flex-col justify-between tilt-card">
+          <div class="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-2.5">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+              <h3 class="text-xs font-bold font-mono uppercase tracking-wider text-zinc-900 dark:text-zinc-100">Live Threat Stream</h3>
+            </div>
+            <span class="text-[10px] font-mono text-zinc-400">REAL-TIME OSINT</span>
+          </div>
+
+          <div id="live-threat-ticker" class="space-y-2.5 max-h-52 overflow-y-auto pr-1">
+            <!-- Dynamically populated live stream items -->
+          </div>
+
+          <div class="pt-2 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-[11px] font-mono text-zinc-500">
+            <span>Stream: ACTIVE FEED</span>
+            <button id="pause-stream-btn" class="hover:text-black dark:hover:text-white text-xs cursor-pointer"><i class="fa-solid fa-pause text-[10px]"></i> Pause</button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- =========================================================================
+         TAB: CITIZEN SCAM DEFENSE & THREAT SIMULATOR
+         ========================================================================= -->
+    <div id="tab-simulator" class="tab-panel space-y-6">
+      
+      <div class="precision-card p-5 space-y-4 tilt-card">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="status-badge rose"><i class="fa-solid fa-gamepad"></i> CITIZEN SCAM DEFENSE LAB</span>
+              <h2 class="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 font-mono">
+                Interactive Threat Scenario Simulator
+              </h2>
+            </div>
+            <p class="text-xs text-zinc-500 pt-0.5">Test your real-time detection instincts against actual extortion and social engineering attacks</p>
+          </div>
+          <div class="flex items-center gap-2 text-xs font-mono">
+            <span class="text-zinc-500">Simulations Completed:</span>
+            <span id="simulator-score-badge" class="px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 font-bold text-black dark:text-white">0 / 4</span>
+          </div>
+        </div>
+
+        <!-- Scenario Selector Tabs -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono" id="scenario-selector-buttons">
+          <button class="scenario-btn active p-2.5 rounded-md border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 text-left transition cursor-pointer" data-scenario="0">
+            <div class="text-[10px] text-zinc-500">SCENARIO 01</div>
+            <div class="font-bold text-zinc-900 dark:text-zinc-100">Digital Arrest (CBI)</div>
+          </button>
+          <button class="scenario-btn p-2.5 rounded-md border border-transparent bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left transition text-zinc-500 cursor-pointer" data-scenario="1">
+            <div class="text-[10px] text-zinc-500">SCENARIO 02</div>
+            <div class="font-bold text-zinc-900 dark:text-zinc-100">WhatsApp Stock Scam</div>
+          </button>
+          <button class="scenario-btn p-2.5 rounded-md border border-transparent bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left transition text-zinc-500 cursor-pointer" data-scenario="2">
+            <div class="text-[10px] text-zinc-500">SCENARIO 03</div>
+            <div class="font-bold text-zinc-900 dark:text-zinc-100">Telegram Rating Job</div>
+          </button>
+          <button class="scenario-btn p-2.5 rounded-md border border-transparent bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left transition text-zinc-500 cursor-pointer" data-scenario="3">
+            <div class="text-[10px] text-zinc-500">SCENARIO 04</div>
+            <div class="font-bold text-zinc-900 dark:text-zinc-100">Electricity Bill SMS</div>
          TAB 2: ISRO BHUVAN MAP & SPATIAL RISK
          ========================================================================= -->
     <div id="tab-map" class="tab-panel space-y-6">
@@ -371,42 +458,41 @@
             <!-- Sort By Selector -->
             <div class="flex items-center gap-2 text-xs">
               <span class="text-zinc-500 font-mono">SORT:</span>
-              <select id="state-sort-select" class="px-2 py-1 text-xs font-semibold">
-                <option value="loss">Financial Loss (₹ Cr)</option>
-                <option value="complaints">NCRP Complaints</option>
-                <option value="vulnerability">Vulnerability Index</option>
-              </select>
+              <button class="sort-state-btn px-2 py-1 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 rounded font-semibold text-xs transition" data-sort="loss">Loss (₹ Cr)</button>
+              <button class="sort-state-btn px-2 py-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded font-semibold text-xs transition" data-sort="complaints">Complaints</button>
+              <button class="sort-state-btn px-2 py-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 rounded font-semibold text-xs transition" data-sort="vulnerability">Risk Score</button>
             </div>
           </div>
 
-          <div id="map" class="h-[520px] w-full border border-zinc-200 dark:border-zinc-800"></div>
+          <div id="map" class="h-[520px] w-full border border-zinc-200 dark:border-zinc-800 rounded-md"></div>
         </div>
 
-        <!-- Selected State Detail & Ranked Leaderboard -->
-        <div class="precision-card p-5 space-y-5 flex flex-col justify-between">
-          <div class="space-y-4">
-            <div class="border-b border-zinc-200 dark:border-zinc-800 pb-3">
-              <span class="text-xs font-mono uppercase text-black dark:text-white font-semibold block">State Telemetry Inspector</span>
-              <h3 id="selected-state-name" class="text-xl font-bold text-zinc-900 dark:text-zinc-100">Maharashtra</h3>
-              <span id="selected-state-threat" class="text-xs text-zinc-500 dark:text-zinc-400 block pt-0.5">Primary Threat: Digital Arrest & Corporate Ransomware</span>
+        <!-- Selected State Detail Card -->
+        <div class="precision-card p-5 space-y-4 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="border-b border-zinc-200 dark:border-zinc-800 pb-2">
+              <span class="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">Spatial Node Inspector</span>
+              <h4 id="selected-state-name" class="text-lg font-bold text-zinc-900 dark:text-zinc-100">Maharashtra</h4>
+              <p id="selected-state-threat" class="text-xs text-zinc-500 font-mono">Primary Threat: Digital Arrest & Corporate BEC</p>
             </div>
 
-            <div class="grid grid-cols-2 gap-2.5 text-xs">
-              <div class="precision-card-subtle p-3 space-y-1">
-                <span class="text-zinc-500 font-mono text-[11px] block">NCRP Complaints</span>
-                <span id="selected-state-complaints" class="text-base font-bold font-mono text-zinc-900 dark:text-zinc-100">12,10,000</span>
+            <!-- State Key Metrics -->
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <div class="p-2.5 rounded bg-zinc-100 dark:bg-zinc-800 space-y-0.5">
+                <span class="text-[10px] text-zinc-500 font-mono">Total Complaints</span>
+                <div id="selected-state-complaints" class="font-mono font-bold text-sm text-zinc-900 dark:text-zinc-100">1,98,420</div>
               </div>
-              <div class="precision-card-subtle p-3 space-y-1">
-                <span class="text-zinc-500 font-mono text-[11px] block">Reported Loss</span>
-                <span id="selected-state-loss" class="text-base font-bold font-mono text-black dark:text-white">₹10,450.00 Cr</span>
+              <div class="p-2.5 rounded bg-zinc-100 dark:bg-zinc-800 space-y-0.5">
+                <span class="text-[10px] text-zinc-500 font-mono">Reported Loss</span>
+                <div id="selected-state-loss" class="font-mono font-bold text-sm text-zinc-900 dark:text-zinc-100">₹10,450.00 Cr</div>
               </div>
-              <div class="precision-card-subtle p-3 space-y-1">
-                <span class="text-zinc-500 font-mono text-[11px] block">Funds Saved (1930)</span>
-                <span id="selected-state-saved" class="text-base font-bold font-mono text-emerald-600 dark:text-emerald-400">₹2,350.00 Cr</span>
+              <div class="p-2.5 rounded bg-zinc-100 dark:bg-zinc-800 space-y-0.5">
+                <span class="text-[10px] text-zinc-500 font-mono">1930 Funds Saved</span>
+                <div id="selected-state-saved" class="font-mono font-bold text-sm text-emerald-600 dark:text-emerald-400">₹1,840.00 Cr</div>
               </div>
-              <div class="precision-card-subtle p-3 space-y-1">
-                <span class="text-zinc-500 font-mono text-[11px] block">Risk Index</span>
-                <span id="selected-state-vuln" class="text-base font-bold font-mono text-rose-600 dark:text-rose-400">94 / 100</span>
+              <div class="p-2.5 rounded bg-zinc-100 dark:bg-zinc-800 space-y-0.5">
+                <span class="text-[10px] text-zinc-500 font-mono">Vulnerability Index</span>
+                <div id="selected-state-vuln" class="font-mono font-bold text-sm text-rose-600 dark:text-rose-400">92 / 100</div>
               </div>
             </div>
 
@@ -422,85 +508,114 @@
 
       </div>
 
+      <!-- Comparative State Threat Sandbox Section -->
+      <div class="precision-card p-5 space-y-4 tilt-card">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="status-badge blue"><i class="fa-solid fa-code-compare"></i> FORENSIC SANDBOX</span>
+              <h3 class="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 font-mono">
+                Jurisdiction Benchmark Comparator
+              </h3>
+            </div>
+            <p class="text-xs text-zinc-500 pt-0.5">Side-by-side cyber vulnerability, loss density, and 1930 recovery benchmark</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-1.5">
+            <label class="text-xs font-mono font-semibold text-zinc-500">PRIMARY JURISDICTION (A)</label>
+            <select id="compare-state-a" class="w-full"></select>
+          </div>
+          <div class="space-y-1.5">
+            <label class="text-xs font-mono font-semibold text-zinc-500">BENCHMARK JURISDICTION (B)</label>
+            <select id="compare-state-b" class="w-full"></select>
+          </div>
+        </div>
+
+        <div id="compare-output-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          <!-- Populated dynamically via app.js -->
+        </div>
+      </div>
+
     </div>
 
     <!-- =========================================================================
-         TAB 3: SECTOR IMPACT & LANDMARK BREACHES
+         TAB 3: THREAT MATRIX (Sectors, Digital Arrest, Taxonomy & MITRE)
          ========================================================================= -->
     <div id="tab-sectors" class="tab-panel space-y-6">
 
-      <div class="border-b border-zinc-200 dark:border-zinc-800 pb-3">
-        <h3 class="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 font-mono">
-          Critical Infrastructure & Sector Vulnerability Profiles
-        </h3>
-        <p class="text-xs text-zinc-500">Threat intelligence analysis across regulated Indian industry verticals</p>
-      </div>
-
-      <div id="sectors-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- Populated via JS -->
-      </div>
-
-      <!-- Landmark Breaches -->
-      <div class="precision-card p-5 space-y-4">
+      <!-- Sector Profiles -->
+      <div class="space-y-3">
         <div class="border-b border-zinc-200 dark:border-zinc-800 pb-3">
           <h3 class="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 font-mono">
-            Landmark Critical Breach Case Studies (2020–2026 YTD)
+            Critical Infrastructure & Sector Vulnerability Profiles
           </h3>
-          <p class="text-xs text-zinc-500">Click any incident card to view complete forensic details and MITRE techniques</p>
+          <p class="text-xs text-zinc-500">Threat intelligence analysis across regulated Indian industry verticals</p>
         </div>
-
-        <div id="landmark-incidents-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div id="sectors-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <!-- Populated via JS -->
         </div>
       </div>
 
-    </div>
-
-    <!-- =========================================================================
-         TAB 4: DIGITAL ARREST & FRAUD TAXONOMY
-         ========================================================================= -->
-    <div id="tab-fraud" class="tab-panel space-y-6">
-
       <!-- Digital Arrest Spotlight Box -->
-      <div class="precision-card p-5 space-y-4">
+      <div class="precision-card p-6 space-y-5 tilt-card">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3">
           <div>
-            <h2 class="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 font-mono flex items-center gap-2">
-              <i class="fa-solid fa-user-ninja"></i>
-              Spotlight: "Digital Arrest" Cross-Border Extortion Syndicate Model
-            </h2>
-            <p class="text-xs text-zinc-500">Organized cyber compound operations (Cambodia, Laos, Myanmar) targeting Indian citizens</p>
+            <div class="flex items-center gap-2">
+              <span class="status-badge rose"><i class="fa-solid fa-user-ninja"></i> TRANSNATIONAL SYNDICATE</span>
+              <h2 class="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 font-mono">
+                "Digital Arrest" Extortion Compound Forensic Flow
+              </h2>
+            </div>
+            <p class="text-xs text-zinc-500 pt-0.5">Step-by-step anatomy of Southeast Asian cyber compound operations targeting Indian citizens</p>
           </div>
-          <span class="status-badge accent">DOMINANT 2024–2026 VECTOR</span>
+          <span class="px-2.5 py-1 text-xs font-mono font-bold rounded-md bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 border border-rose-300 dark:border-rose-800">
+            ₹17,800 CR EXFILTRATED
+          </span>
         </div>
 
-        <!-- 4-Stage Flowchart Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-          
-          <div class="precision-card-subtle p-4 space-y-2">
-            <div class="text-xs font-mono font-bold text-zinc-500">STAGE 01 • CONTACT</div>
-            <h4 class="text-xs font-bold text-zinc-900 dark:text-zinc-100">Spoofed IVR & Impersonation</h4>
-            <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">Impersonation of Telecom (TRAI), Customs, or CBI alleging illegal narcotics found in victim's parcel.</p>
+        <!-- 4-Stage Connected Step Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+          <div class="precision-card-subtle p-4 space-y-2.5 border border-zinc-200 dark:border-zinc-800 relative group hover:border-zinc-400 transition">
+            <div class="flex items-center justify-between">
+              <span class="w-6 h-6 rounded-full bg-rose-500 text-white font-mono font-bold text-xs flex items-center justify-center">01</span>
+              <i class="fa-solid fa-phone-volume text-rose-500 text-sm"></i>
+            </div>
+            <h4 class="text-xs font-bold text-zinc-900 dark:text-zinc-100">Spoofed IVR & Parcel Trap</h4>
+            <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed font-sans">Automated robocall alleging Customs seized illegal narcotics/passports in victim's name.</p>
+            <div class="text-[10px] font-mono text-zinc-400 pt-1 border-t border-zinc-200 dark:border-zinc-800">Tactic: Fear Induction</div>
           </div>
 
-          <div class="precision-card-subtle p-4 space-y-2">
-            <div class="text-xs font-mono font-bold text-zinc-500">STAGE 02 • ISOLATION</div>
-            <h4 class="text-xs font-bold text-zinc-900 dark:text-zinc-100">Video "Interrogation"</h4>
-            <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">Target isolated via Skype/WhatsApp video call with impostors wearing authentic police/agency uniforms.</p>
+          <div class="precision-card-subtle p-4 space-y-2.5 border border-zinc-200 dark:border-zinc-800 relative group hover:border-zinc-400 transition">
+            <div class="flex items-center justify-between">
+              <span class="w-6 h-6 rounded-full bg-amber-500 text-white font-mono font-bold text-xs flex items-center justify-center">02</span>
+              <i class="fa-solid fa-video text-amber-500 text-sm"></i>
+            </div>
+            <h4 class="text-xs font-bold text-zinc-900 dark:text-zinc-100">Video "Room Isolation"</h4>
+            <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed font-sans">Victim coerced onto Skype with actors in fake police uniforms displaying forged Supreme Court orders.</p>
+            <div class="text-[10px] font-mono text-zinc-400 pt-1 border-t border-zinc-200 dark:border-zinc-800">Tactic: Social Isolation</div>
           </div>
 
-          <div class="precision-card-subtle p-4 space-y-2">
-            <div class="text-xs font-mono font-bold text-zinc-500">STAGE 03 • TRANSFER</div>
+          <div class="precision-card-subtle p-4 space-y-2.5 border border-zinc-200 dark:border-zinc-800 relative group hover:border-zinc-400 transition">
+            <div class="flex items-center justify-between">
+              <span class="w-6 h-6 rounded-full bg-blue-500 text-white font-mono font-bold text-xs flex items-center justify-center">03</span>
+              <i class="fa-solid fa-building-columns text-blue-500 text-sm"></i>
+            </div>
             <h4 class="text-xs font-bold text-zinc-900 dark:text-zinc-100">"Verification" Escrow</h4>
-            <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">Victim coerced under psychological terror into transferring life savings to "Govt Verification Accounts".</p>
+            <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed font-sans">Victim transfers life savings into designated "RBI Clearing Accounts" for financial clearance.</p>
+            <div class="text-[10px] font-mono text-zinc-400 pt-1 border-t border-zinc-200 dark:border-zinc-800">Tactic: Authority Coercion</div>
           </div>
 
-          <div class="precision-card-subtle p-4 space-y-2">
-            <div class="text-xs font-mono font-bold text-zinc-500">STAGE 04 • EXFILTRATION</div>
-            <h4 class="text-xs font-bold text-zinc-900 dark:text-zinc-100">Mule Siphoning & Crypto</h4>
-            <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">Funds immediately layered across domestic mule bank accounts, converted into USDT, and wired abroad.</p>
+          <div class="precision-card-subtle p-4 space-y-2.5 border border-zinc-200 dark:border-zinc-800 relative group hover:border-zinc-400 transition">
+            <div class="flex items-center justify-between">
+              <span class="w-6 h-6 rounded-full bg-emerald-500 text-white font-mono font-bold text-xs flex items-center justify-center">04</span>
+              <i class="fa-solid fa-coins text-emerald-500 text-sm"></i>
+            </div>
+            <h4 class="text-xs font-bold text-zinc-900 dark:text-zinc-100">Mule Layering & Crypto</h4>
+            <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed font-sans">Funds siphoned across 5+ domestic mule tiers, converted to USDT crypto, and bridged offshore.</p>
+            <div class="text-[10px] font-mono text-zinc-400 pt-1 border-t border-zinc-200 dark:border-zinc-800">Tactic: Rapid Exfiltration</div>
           </div>
-
         </div>
       </div>
 
@@ -517,58 +632,99 @@
         </div>
       </div>
 
+      <!-- Landmark Breaches -->
+      <div class="precision-card p-5 space-y-4">
+        <div class="border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 font-mono">
+            Landmark Critical Breach Case Studies (2020–2026 YTD)
+          </h3>
+          <p class="text-xs text-zinc-500">Click any incident card to view complete forensic details and MITRE techniques</p>
+        </div>
+        <div id="landmark-incidents-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <!-- MITRE ATT&CK Matrix -->
+      <div class="precision-card p-5 space-y-4">
+        <div class="border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 font-mono">
+            MITRE ATT&CK Enterprise Threat Mapping for India
+          </h3>
+          <p class="text-xs text-zinc-500">Adversary tactics, techniques, and observed attack procedures mapped against Indian targets</p>
+        </div>
+
+        <div class="overflow-x-auto border border-zinc-200 dark:border-zinc-800 rounded-lg">
+          <table class="stripe-table">
+            <thead>
+              <tr>
+                <th>Tactic ID & Name</th>
+                <th>Technique ID & Name</th>
+                <th class="text-center">Frequency</th>
+                <th>Primary Attack Vector in India</th>
+              </tr>
+            </thead>
+            <tbody id="mitre-table-body">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
 
     <!-- =========================================================================
-         TAB 5: TIMELINE & MILESTONES
+         TAB 4: CITIZEN SCAM DEFENSE & THREAT SIMULATOR
          ========================================================================= -->
-    <div id="tab-timeline" class="tab-panel space-y-6">
+    <div id="tab-simulator" class="tab-panel space-y-6">
+      
+      <div class="precision-card p-5 space-y-4 tilt-card">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="status-badge rose"><i class="fa-solid fa-gamepad"></i> CITIZEN SCAM DEFENSE LAB</span>
+              <h2 class="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 font-mono">
+                Interactive Threat Scenario Simulator
+              </h2>
+            </div>
+            <p class="text-xs text-zinc-500 pt-0.5">Test your real-time detection instincts against actual extortion and social engineering attacks</p>
+          </div>
+          <div class="flex items-center gap-2 text-xs font-mono">
+            <span class="text-zinc-500">Simulations Completed:</span>
+            <span id="simulator-score-badge" class="px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 font-bold text-black dark:text-white">0 / 4</span>
+          </div>
+        </div>
 
-      <div class="border-b border-zinc-200 dark:border-zinc-800 pb-3">
-        <h3 class="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 font-mono">
-          Chronological National Cybercrime Timeline (2020–2026 YTD)
-        </h3>
-        <p class="text-xs text-zinc-500">Key policy enactments, legislative interventions, enforcement strikes, and major breach events</p>
-      </div>
+        <!-- Scenario Selector Tabs -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono" id="scenario-selector-buttons">
+          <button class="scenario-btn active p-2.5 rounded-md border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 text-left transition cursor-pointer" data-scenario="0">
+            <div class="text-[10px] text-zinc-500">SCENARIO 01</div>
+            <div class="font-bold text-zinc-900 dark:text-zinc-100">Digital Arrest (CBI)</div>
+          </button>
+          <button class="scenario-btn p-2.5 rounded-md border border-transparent bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left transition text-zinc-500 cursor-pointer" data-scenario="1">
+            <div class="text-[10px] text-zinc-500">SCENARIO 02</div>
+            <div class="font-bold text-zinc-900 dark:text-zinc-100">WhatsApp Stock Scam</div>
+          </button>
+          <button class="scenario-btn p-2.5 rounded-md border border-transparent bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left transition text-zinc-500 cursor-pointer" data-scenario="2">
+            <div class="text-[10px] text-zinc-500">SCENARIO 03</div>
+            <div class="font-bold text-zinc-900 dark:text-zinc-100">Telegram Rating Job</div>
+          </button>
+          <button class="scenario-btn p-2.5 rounded-md border border-transparent bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left transition text-zinc-500 cursor-pointer" data-scenario="3">
+            <div class="text-[10px] text-zinc-500">SCENARIO 04</div>
+            <div class="font-bold text-zinc-900 dark:text-zinc-100">Electricity Bill SMS</div>
+          </button>
+        </div>
 
-      <div id="timeline-container" class="space-y-3 relative pl-6 border-l-2 border-zinc-300 dark:border-zinc-700">
-        <!-- Populated via JS -->
+        <!-- Active Scenario Card Container -->
+        <div id="active-scenario-card" class="precision-card-subtle p-5 space-y-4 border border-zinc-300 dark:border-zinc-700">
+          <!-- Populated dynamically by app.js -->
+        </div>
       </div>
 
     </div>
 
     <!-- =========================================================================
-         TAB 6: MITRE ATT&CK MATRIX
-         ========================================================================= -->
-    <div id="tab-mitre" class="tab-panel space-y-6">
-
-      <div class="border-b border-zinc-200 dark:border-zinc-800 pb-3">
-        <h3 class="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 font-mono">
-          MITRE ATT&CK Enterprise Threat Mapping for India
-        </h3>
-        <p class="text-xs text-zinc-500">Adversary tactics, techniques, and observed attack procedures mapped against Indian targets</p>
-      </div>
-
-      <div class="overflow-x-auto border border-zinc-200 dark:border-zinc-800 rounded-lg">
-        <table class="stripe-table">
-          <thead>
-            <tr>
-              <th>Tactic ID & Name</th>
-              <th>Technique ID & Name</th>
-              <th class="text-center">Frequency</th>
-              <th>Primary Attack Vector in India</th>
-            </tr>
-          </thead>
-          <tbody id="mitre-table-body">
-            <!-- Populated via JS -->
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-
-    <!-- =========================================================================
-         TAB 7: REPOSITORY DATA GRID
+         TAB 5: REPOSITORY DATA GRID & TIMELINE
          ========================================================================= -->
     <div id="tab-repository" class="tab-panel space-y-6">
 
@@ -632,15 +788,29 @@
         <div class="flex items-center justify-between text-xs font-mono text-zinc-500 pt-2">
           <span id="record-count-display">Showing 114 verified intelligence records</span>
           <div class="flex items-center gap-2">
-            <button id="export-excel-btn" class="px-2.5 py-1 text-xs font-medium text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded hover:bg-zinc-200 transition flex items-center gap-1.5">
+            <button id="export-excel-btn" class="px-2.5 py-1 text-xs font-medium text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded hover:bg-zinc-200 transition flex items-center gap-1.5 cursor-pointer">
               <i class="fa-solid fa-file-excel text-emerald-600"></i> Excel Workbook
             </button>
-            <button id="export-json-btn" class="px-2.5 py-1 text-xs font-medium text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded hover:bg-zinc-200 transition flex items-center gap-1.5">
+            <button id="export-json-btn" class="px-2.5 py-1 text-xs font-medium text-zinc-900 dark:text-zinc-100 bg-zinc-100 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded hover:bg-zinc-200 transition flex items-center gap-1.5 cursor-pointer">
               <i class="fa-solid fa-code"></i> JSON API
             </button>
           </div>
         </div>
 
+      </div>
+
+      <!-- Chronological Timeline Section -->
+      <div class="precision-card p-5 space-y-4">
+        <div class="border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-zinc-900 dark:text-zinc-100 font-mono">
+            Chronological National Cybercrime Timeline (2020–2026 YTD)
+          </h3>
+          <p class="text-xs text-zinc-500">Key policy enactments, legislative interventions, enforcement strikes, and major breach events</p>
+        </div>
+
+        <div id="timeline-container" class="space-y-3 relative pl-6 border-l-2 border-zinc-300 dark:border-zinc-700">
+          <!-- Populated via JS -->
+        </div>
       </div>
 
     </div>
@@ -671,10 +841,10 @@
         <span class="text-zinc-200 font-bold uppercase text-[11px] block">Portal Modules</span>
         <ul class="space-y-1 text-[11px]">
           <li><a href="#" class="hover:text-white transition nav-footer-link" data-tab="overview">Overview Briefing</a></li>
-          <li><a href="#" class="hover:text-white transition nav-footer-link" data-tab="map">ISRO Bhuvan Geo-Map</a></li>
-          <li><a href="#" class="hover:text-white transition nav-footer-link" data-tab="sectors">Sector Vulnerabilities</a></li>
-          <li><a href="#" class="hover:text-white transition nav-footer-link" data-tab="fraud">Digital Arrest Spotlight</a></li>
-          <li><a href="#" class="hover:text-white transition nav-footer-link" data-tab="repository">Master Data Grid</a></li>
+          <li><a href="#" class="hover:text-white transition nav-footer-link" data-tab="map">ISRO Geo-Map & Sandbox</a></li>
+          <li><a href="#" class="hover:text-white transition nav-footer-link" data-tab="sectors">Threat Matrix & MITRE</a></li>
+          <li><a href="#" class="hover:text-white transition nav-footer-link" data-tab="simulator">Threat Simulator</a></li>
+          <li><a href="#" class="hover:text-white transition nav-footer-link" data-tab="repository">Data Repository & Timeline</a></li>
         </ul>
       </div>
 
@@ -736,6 +906,26 @@
       <div class="flex items-center justify-between text-[11px] text-zinc-500 pt-2 border-t border-zinc-200 dark:border-zinc-800 font-mono">
         <span>Source: <strong id="modal-ref" class="text-zinc-700 dark:text-zinc-300">CERT-In & Parliamentary Disclosure</strong></span>
         <span class="text-emerald-600 dark:text-emerald-400 font-semibold">VERIFIED OSINT</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       SPOTLIGHT COMMAND PALETTE (CTRL+K SEARCH)
+       ========================================================================= -->
+  <div id="command-palette-modal" class="hidden">
+    <div class="command-box">
+      <div class="flex items-center px-4 border-b border-zinc-200 dark:border-zinc-800">
+        <i class="fa-solid fa-magnifying-glass text-zinc-400 text-xs mr-2"></i>
+        <input type="text" id="palette-search-input" placeholder="Type to search 114 incidents, 36 states, malware strains, CVEs..." class="command-input">
+        <button id="close-palette-btn" class="text-[10px] font-mono px-1.5 py-0.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-500 rounded cursor-pointer border border-zinc-300 dark:border-zinc-700">ESC</button>
+      </div>
+      <div id="palette-results-container" class="command-results-list no-scrollbar">
+        <!-- Live search results rendered by JS -->
+      </div>
+      <div class="px-4 py-2 bg-zinc-50 dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800 text-[10px] font-mono text-zinc-500 flex items-center justify-between">
+        <span>Use <kbd class="font-bold">↑</kbd> <kbd class="font-bold">↓</kbd> to navigate • <kbd class="font-bold">Enter</kbd> to inspect</span>
+        <span>CYBER JAGRUTI COMMAND PALETTE</span>
       </div>
     </div>
   </div>

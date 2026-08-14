@@ -11,17 +11,22 @@ document.addEventListener("DOMContentLoaded", () => {
   let geoJsonLayer = null;
   let pinMarkersGroup = null;
   let currentSort = "loss";
+  let liveStreamInterval = null;
+  let isStreamPaused = false;
+  let currentScenarioIdx = 0;
+  let solvedScenarios = new Set();
 
-  // Executive Theme Engine (Default: Light Mode)
+  // Executive Theme Engine (Default: Light Mode / White Base)
   const themeToggleBtn = document.getElementById("theme-toggle-btn");
   const themeIcon = document.getElementById("theme-icon");
   const themeText = document.getElementById("theme-text");
 
+  // Force Light mode default unless explicitly dark in saved preferences
   const savedTheme = localStorage.getItem("india_cyber_theme");
   if (savedTheme === "dark") {
     enableDarkMode();
   } else {
-    disableDarkMode();
+    disableDarkMode(); // Default to White / Off-White
   }
 
   if (themeToggleBtn) {
@@ -65,37 +70,32 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    tabPanels.forEach(p => p.classList.remove("active"));
-    const activePanel = document.getElementById(`tab-${target}`);
-    if (activePanel) {
-      activePanel.classList.add("active");
+    tabPanels.forEach(p => {
+      if (p.id === `tab-${target}`) {
+        p.classList.add("active");
+        if (window.gsap) {
+          gsap.fromTo(p, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25, ease: "power2.out" });
+        }
+      } else {
+        p.classList.remove("active");
+      }
+    });
 
-      // GSAP Purposeful Reveal Transition
-      if (window.gsap) {
-        gsap.fromTo(
-          activePanel,
-          { opacity: 0, y: 6 },
-          { opacity: 1, y: 0, duration: 0.2, ease: "power2.out" }
-        );
-      }
-
-      if (target === "map" && mapInstance) {
-        setTimeout(() => mapInstance.invalidateSize(), 150);
-      }
-      if (target === "overview") {
-        animateCounters();
-      }
+    if (target === "map" && mapInstance) {
+      setTimeout(() => {
+        mapInstance.invalidateSize();
+      }, 150);
     }
   };
 
   document.querySelectorAll(".segmented-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", (e) => {
       const target = btn.getAttribute("data-tab");
-      switchTab(target);
+      if (target) switchTab(target);
     });
   });
 
-  document.querySelectorAll("[data-target-tab], .nav-footer-link").forEach(elem => {
+  document.querySelectorAll("[data-target-tab], .nav-footer-link, [data-tab='overview']").forEach(elem => {
     elem.addEventListener("click", (e) => {
       e.preventDefault();
       const target = elem.getAttribute("data-target-tab") || elem.getAttribute("data-tab");
@@ -136,6 +136,14 @@ document.addEventListener("DOMContentLoaded", () => {
     renderRepositoryGrid(data.incidents);
     setupSearchAndFilters();
     setupStateSorting(data.states);
+
+    // Interactive Suites
+    initGoldenHourSimulator();
+    initLiveThreatStream(data.incidents);
+    initScamSimulator();
+    initStateComparisonSandbox(data.states);
+    initCommandPalette(data);
+    initTiltCards();
   }
 
   // ==========================================================================
@@ -168,7 +176,6 @@ document.addEventListener("DOMContentLoaded", () => {
       tl.kill();
       tl = gsap.timeline({ defaults: { ease: "power2.out" } });
 
-      // Initial Canvas Reset
       curtain.classList.remove("revealed");
       gsap.set(curtain, { display: "flex", y: 0, opacity: 1, clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" });
       gsap.set(initLabel, { opacity: 0, y: 12 });
@@ -189,12 +196,12 @@ document.addEventListener("DOMContentLoaded", () => {
       tl.to(flag, { opacity: 1, y: 0, scale: 1, duration: 1.0, ease: "power3.out" }, 0.80);
       tl.to(tagline, { opacity: 1, y: 0, duration: 0.5 }, 1.30);
 
-      // 1.80s - Flag reaches reveal position, initiates curtain wipe
+      // 1.80s - Flag reaches reveal position
       tl.to(flag, { scale: 1.05, opacity: 0, duration: 0.35, ease: "power2.in" }, 1.85);
       tl.to(initLabel, { opacity: 0, duration: 0.25 }, 1.85);
       tl.to(tagline, { opacity: 0, duration: 0.25 }, 1.85);
 
-      // 2.00s - Interface begins unveiling via clip-path
+      // 2.00s - Interface unveils
       tl.to(curtain, {
         clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
         duration: 0.75,
@@ -205,32 +212,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 2.00);
 
       // 2.40s - CYBER JAGRUTI title reveals
-      if (heroTitle) {
-        tl.to(heroTitle, { opacity: 1, y: 0, duration: 0.45 }, 2.40);
-      }
+      if (heroTitle) tl.to(heroTitle, { opacity: 1, y: 0, duration: 0.45 }, 2.40);
+      if (heroSubtitle) tl.to(heroSubtitle, { opacity: 1, y: 0, duration: 0.35 }, 2.65);
+      if (heroDesc) tl.to(heroDesc, { opacity: 1, y: 0, duration: 0.35 }, 2.75);
+      if (heroStats) tl.to(heroStats.children, { opacity: 1, y: 0, stagger: 0.1, duration: 0.45 }, 2.85);
+      if (bgMap) tl.to(bgMap, { opacity: document.body.classList.contains("dark-mode") ? 0.06 : 0.12, scale: 1, duration: 0.7 }, 3.20);
+      if (heroCtaGroup) tl.to(heroCtaGroup, { opacity: 1, y: 0, duration: 0.4 }, 3.80);
 
-      // 2.70s - Subtitle + statistics stagger in
-      if (heroSubtitle) {
-        tl.to(heroSubtitle, { opacity: 1, y: 0, duration: 0.35 }, 2.65);
-      }
-      if (heroDesc) {
-        tl.to(heroDesc, { opacity: 1, y: 0, duration: 0.35 }, 2.75);
-      }
-      if (heroStats) {
-        tl.to(heroStats.children, { opacity: 1, y: 0, stagger: 0.1, duration: 0.45 }, 2.85);
-      }
-
-      // 3.20s - India map telemetry grid activates
-      if (bgMap) {
-        tl.to(bgMap, { opacity: document.body.classList.contains("dark-mode") ? 0.08 : 0.14, scale: 1, duration: 0.7 }, 3.20);
-      }
-
-      // 3.80s - CTA group interactive
-      if (heroCtaGroup) {
-        tl.to(heroCtaGroup, { opacity: 1, y: 0, duration: 0.4 }, 3.80);
-      }
-
-      // 4.20s - Settle and trigger KPI counter count-up
       tl.add(() => {
         animateCounters();
       }, 4.10);
@@ -244,7 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (heroSubtitle) gsap.set(heroSubtitle, { opacity: 1, y: 0 });
       if (heroDesc) gsap.set(heroDesc, { opacity: 1, y: 0 });
       if (heroStats) gsap.set(heroStats.children, { opacity: 1, y: 0 });
-      if (bgMap) gsap.set(bgMap, { opacity: document.body.classList.contains("dark-mode") ? 0.08 : 0.14, scale: 1 });
+      if (bgMap) gsap.set(bgMap, { opacity: document.body.classList.contains("dark-mode") ? 0.06 : 0.12, scale: 1 });
       if (heroCtaGroup) gsap.set(heroCtaGroup, { opacity: 1, y: 0 });
       animateCounters();
     }
@@ -282,7 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!ctx || !trends || trends.length === 0) return;
 
     const isDark = document.body.classList.contains("dark-mode");
-    const textColor = isDark ? "#FAFAFA" : "#09090B";
+    const textColor = isDark ? "#FAFAFA" : "#000000";
     const mutedColor = isDark ? "#A1A1AA" : "#71717A";
     const gridColor = isDark ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.05)";
 
@@ -427,7 +415,516 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // ==========================================================================
+  // Interactive Golden Hour 1930 Simulator
+  // ==========================================================================
+  function initGoldenHourSimulator() {
+    const slider = document.getElementById("golden-hour-slider");
+    const timeDisplay = document.getElementById("golden-time-display");
+    const badge = document.getElementById("golden-recovery-badge");
+    const lienStatus = document.getElementById("sim-lien-status");
+    const lienDesc = document.getElementById("sim-lien-desc");
+    const layerCount = document.getElementById("sim-layer-count");
+    const layerDesc = document.getElementById("sim-layer-desc");
+    const actionCode = document.getElementById("sim-action-code");
+
+    if (!slider) return;
+
+    slider.addEventListener("input", (e) => {
+      const minutes = parseInt(e.target.value, 10);
+      let timeText = `${minutes} Minutes`;
+      if (minutes >= 60) {
+        const hrs = (minutes / 60).toFixed(1);
+        timeText = `${hrs} Hours`;
+      }
+
+      if (minutes <= 30) {
+        timeDisplay.innerText = `${timeText} (Golden Recovery Window)`;
+        timeDisplay.className = "font-bold text-emerald-600 dark:text-emerald-400";
+        badge.innerText = `${Math.round(96 - (minutes * 0.4))}% RECOVERY ESTIMATE`;
+        badge.className = "px-2.5 py-1 text-xs font-mono font-bold rounded-md bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800";
+        lienStatus.innerText = "INSTANT APB LIEN FREEZE";
+        lienStatus.className = "text-xs font-bold text-emerald-600 dark:text-emerald-400";
+        lienDesc.innerText = "Funds successfully held in recipient account before any ATM withdrawal or P2P transfer.";
+        layerCount.innerText = "1 / 5 Mule Layers Active";
+        layerDesc.innerText = "Money is directly quarantined inside domestic banking clearing gateway.";
+        actionCode.innerText = "DIAL 1930 / AUTO-REVERSAL";
+      } else if (minutes <= 120) {
+        timeDisplay.innerText = `${timeText} (Layering Stage 1)`;
+        timeDisplay.className = "font-bold text-amber-600 dark:text-amber-400";
+        badge.innerText = `${Math.round(80 - ((minutes - 30) * 0.4))}% RECOVERY ESTIMATE`;
+        badge.className = "px-2.5 py-1 text-xs font-mono font-bold rounded-md bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-800";
+        lienStatus.innerText = "INTER-BANK SECONDARY HOLD";
+        lienStatus.className = "text-xs font-bold text-amber-600 dark:text-amber-400";
+        lienDesc.innerText = "Funds moved to Layer-2 mule accounts. Automated lien dispatched to partner private banks.";
+        layerCount.innerText = "2-3 / 5 Mule Layers Active";
+        layerDesc.innerText = "Siphoning syndicate actively dispersing money across micro UPI transactions.";
+        actionCode.innerText = "NCRP 1930 + NODAL OFFICER LIAISON";
+      } else if (minutes <= 480) {
+        timeDisplay.innerText = `${timeText} (Multi-Layer Dispersion)`;
+        timeDisplay.className = "font-bold text-rose-600 dark:text-rose-400";
+        badge.innerText = `${Math.round(42 - ((minutes - 120) * 0.05))}% RECOVERY ESTIMATE`;
+        badge.className = "px-2.5 py-1 text-xs font-mono font-bold rounded-md bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 border border-rose-300 dark:border-rose-800";
+        lienStatus.innerText = "PARTIAL RECOVERY & REQUISITION";
+        lienStatus.className = "text-xs font-bold text-rose-600 dark:text-rose-400";
+        lienDesc.innerText = "Significant capital converted into merchant gift vouchers and cash-out points.";
+        layerCount.innerText = "4 / 5 Mule Layers Active";
+        layerDesc.innerText = "Syndicate runners attempting crypto on-ramp via unauthorized P2P platforms.";
+        actionCode.innerText = "POLICE CYBER CELL FORMAL FIR";
+      } else {
+        timeDisplay.innerText = `${timeText} (Exfiltration Complete)`;
+        timeDisplay.className = "font-bold text-zinc-500";
+        badge.innerText = "12% RECOVERY ESTIMATE";
+        badge.className = "px-2.5 py-1 text-xs font-mono font-bold rounded-md bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-700";
+        lienStatus.innerText = "OFFSHORE TRACE REQUIRED";
+        lienStatus.className = "text-xs font-bold text-zinc-600 dark:text-zinc-400";
+        lienDesc.innerText = "Capital layered into USDT and wired to transnational compound accounts (SE Asia).";
+        layerCount.innerText = "5 / 5 Mule Layers Active";
+        layerDesc.innerText = "Funds completely bridged into offshore non-KYC crypto wallets.";
+        actionCode.innerText = "FIU-IND & INTERPOL RED NOTICE";
+      }
+    });
+  }
+
+  // ==========================================================================
+  // Live Threat Stream Ticker
+  // ==========================================================================
+  function initLiveThreatStream(incidents) {
+    const ticker = document.getElementById("live-threat-ticker");
+    const pauseBtn = document.getElementById("pause-stream-btn");
+    if (!ticker || !incidents || incidents.length === 0) return;
+
+    let idx = 0;
+    const streamFeed = incidents.slice(0, 15);
+
+    function addTickerItem() {
+      if (isStreamPaused) return;
+      const inc = streamFeed[idx % streamFeed.length];
+      idx++;
+
+      const item = document.createElement("div");
+      item.className = "p-2.5 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 flex items-center justify-between gap-2 text-xs font-sans";
+      item.innerHTML = `
+        <div class="space-y-0.5">
+          <div class="flex items-center gap-1.5">
+            <span class="text-[9px] font-mono px-1 py-0.2 bg-zinc-200 dark:bg-zinc-800 rounded font-bold">${inc.id}</span>
+            <span class="font-semibold text-zinc-900 dark:text-zinc-100">${inc.target}</span>
+          </div>
+          <div class="text-[11px] text-zinc-500">${inc.category} • ${inc.state}</div>
+        </div>
+        <div class="text-right shrink-0">
+          <div class="font-mono font-bold text-xs text-black dark:text-white">₹${inc.loss_cr.toFixed(1)} Cr</div>
+          <span class="text-[9px] font-mono font-bold text-rose-500 uppercase">${inc.severity}</span>
+        </div>
+      `;
+
+      ticker.prepend(item);
+      if (ticker.children.length > 5) {
+        ticker.removeChild(ticker.lastChild);
+      }
+
+      if (window.gsap) {
+        gsap.fromTo(item, { opacity: 0, y: -6 }, { opacity: 1, y: 0, duration: 0.3 });
+      }
+    }
+
+    // Populate initial 3 items
+    for (let i = 0; i < 3; i++) {
+      addTickerItem();
+    }
+
+    liveStreamInterval = setInterval(addTickerItem, 4500);
+
+    if (pauseBtn) {
+      pauseBtn.addEventListener("click", () => {
+        isStreamPaused = !isStreamPaused;
+        pauseBtn.innerHTML = isStreamPaused ? `<i class="fa-solid fa-play text-[10px]"></i> Resume` : `<i class="fa-solid fa-pause text-[10px]"></i> Pause`;
+      });
+    }
+  }
+
+  // ==========================================================================
+  // Citizen Scam Defense & Interactive Simulator Lab
+  // ==========================================================================
+  function initScamSimulator() {
+    const scenarios = [
+      {
+        id: "scenario-0",
+        title: "Digital Arrest: 'CBI Narcotics & TRAI Disconnection Notice'",
+        context: "You receive an automated IVR call claiming your mobile number was used in 23 illegal money laundering parcels seized at Mumbai Customs. The caller transfers you to a Skype video call where a person in authentic police uniform shows an arrest warrant with your Aadhaar number and orders you to stay in room isolation.",
+        audioSimulation: "Simulating Incoming Trai IVR Call...",
+        choices: [
+          { text: "Transfer ₹4,50,000 into the designated 'RBI Supreme Court Verification Escrow' to clear your name.", correct: false, reason: "HIGH RISK COERCION: Law enforcement agencies or courts NEVER demand escrow funds over video calls or conduct virtual arrests." },
+          { text: "Immediately disconnect the call, report the number on Chakshu (sancharsaathi.gov.in), and dial 1930.", correct: true, reason: "ACCURATE DEFENSE: Disconnecting breaks the psychological isolation loop. Dialing 1930 alerts I4C to freeze active syndicate accounts." },
+          { text: "Ask them to send the arrest warrant on WhatsApp before paying the verification penalty.", correct: false, reason: "VULNERABILITY: Scammers forge official stamps, emblem logos, and FIR documents within minutes to intensify panic." }
+        ],
+        vector: "Authority Coercion & Psychological Isolation",
+        mitreCode: "T1566.002 • Phishing: Spearphishing Link / Social Engineering"
+      },
+      {
+        id: "scenario-1",
+        title: "WhatsApp VIP Group: 'Institutional Pre-IPO 300% Returns'",
+        context: "You are added to a WhatsApp group called 'HDFC Securities VIP Institutional Club'. Group members post screenshots of ₹50,000 turning into ₹2,50,000 in 3 days. The 'Professor' sends an APK download link for a private trading portal.",
+        audioSimulation: "Live Group Sentiment Feed: 42 Bot Users Active...",
+        choices: [
+          { text: "Invest ₹25,000 as a small test to see if the custom trading portal allows withdrawal.", correct: false, reason: "HONEYPOT TRAP: The syndicate allows initial small ₹5,000 withdrawals to build trust before trapping multi-lakh sums." },
+          { text: "Refuse the APK, report the group to WhatsApp and NCRP (cybercrime.gov.in), and block all administrators.", correct: true, reason: "ACCURATE DEFENSE: Genuine SEBI registered brokers NEVER distribute investment APKs on WhatsApp or guarantee returns." },
+          { text: "Check SEBI registration number listed on their forged PDF certificate.", correct: false, reason: "DECEPTIVE PROOF: Fraudsters clone genuine SEBI registration numbers of legitimate institutional traders." }
+        ],
+        vector: "Greed Exploitation & Synthesized Social Proof",
+        mitreCode: "T1204.002 • User Execution: Malicious File / Fake Trading Portal"
+      },
+      {
+        id: "scenario-2",
+        title: "Telegram Part-Time: 'Google Maps Rating & YouTube Like Job'",
+        context: "You receive a message: 'Earn ₹3,000 to ₹8,000 daily by rating hotels and liking videos'. After completing 3 simple ratings, you receive ₹500 directly in UPI. Then, you are invited to 'Prepaid Merchant Tasks' where you deposit ₹10,000 to unlock ₹18,000.",
+        audioSimulation: "Task Manager Telegram Bot: Task #04 Pending...",
+        choices: [
+          { text: "Pay ₹10,000 for the merchant task since they already gave you ₹500 real cash.", correct: false, reason: "CLASSIC TASK SCAM: The initial ₹500 is syndicate bait. The moment you pay ₹10,000, your balance is locked behind 'tax fees'." },
+          { text: "Keep the ₹500, immediately report the UPI VPA on 1930 Helpline, and terminate communication.", correct: true, reason: "ACCURATE DEFENSE: Task scams account for ₹14,200 Cr in national losses. Reporting freezes their receiving mule account." },
+          { text: "Ask customer care on Telegram why the money is locked.", correct: false, reason: "MANIPULATION: Telegram customer service bots are operated by the same extortion compound operators." }
+        ],
+        vector: "Micro-Reward Conditioning & Escalating Sunk Cost",
+        mitreCode: "T1586.002 • Compromised Accounts / Virtual UPI Siphoning"
+      },
+      {
+        id: "scenario-3",
+        title: "Urgent SMS: 'Electricity Power Disconnection Tonight at 9:30 PM'",
+        context: "An SMS arrives: 'Dear Customer, your electricity power will be disconnected at 9:30 PM tonight because your previous month bill was updated. Please contact electricity officer at 9876543210 immediately.'",
+        audioSimulation: "Incoming Disconnection Notice...",
+        choices: [
+          { text: "Call the phone number in the SMS and follow their instructions to install QuickSupport APK.", correct: false, reason: "MALICIOUS REMOTE ACCESS: QuickSupport / AnyDesk allows scammers to take complete screen and OTP control of your banking apps." },
+          { text: "Ignore the SMS number, open your state electricity board official app or portal directly to verify balance.", correct: true, reason: "ACCURATE DEFENSE: Power distribution companies never send disconnection notices from personal 10-digit mobile numbers." },
+          { text: "Reply to the SMS with your consumer number to get an updated bill receipt.", correct: false, reason: "RISK: Replying confirms your active phone line to automated phishing syndicates." }
+        ],
+        vector: "Artificial Urgency & Screen Sharing Exploitation",
+        mitreCode: "T1219 • Remote Access Software / Banking Trojan Injection"
+      }
+    ];
+
+    const cardContainer = document.getElementById("active-scenario-card");
+    const selectorButtons = document.querySelectorAll(".scenario-btn");
+    const scoreBadge = document.getElementById("simulator-score-badge");
+
+    function renderScenario(idx) {
+      currentScenarioIdx = idx;
+      const sc = scenarios[idx];
+      if (!cardContainer || !sc) return;
+
+      selectorButtons.forEach(btn => {
+        const sIdx = parseInt(btn.getAttribute("data-scenario"), 10);
+        if (sIdx === idx) {
+          btn.className = "scenario-btn active p-2.5 rounded-md border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 text-left transition cursor-pointer";
+        } else {
+          btn.className = "scenario-btn p-2.5 rounded-md border border-transparent bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800 text-left transition text-zinc-500 cursor-pointer";
+        }
+      });
+
+      cardContainer.innerHTML = `
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-3">
+          <div>
+            <span class="text-[10px] font-mono uppercase font-bold text-zinc-500">THREAT VECTOR: ${sc.vector}</span>
+            <h3 class="text-sm font-bold text-zinc-900 dark:text-zinc-100">${sc.title}</h3>
+          </div>
+          <span class="text-[10px] font-mono px-2 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded font-semibold text-zinc-700 dark:text-zinc-300">${sc.mitreCode}</span>
+        </div>
+
+        <div class="p-3.5 rounded bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 space-y-2">
+          <div class="flex items-center gap-2 text-xs font-mono text-rose-500 font-semibold">
+            <div class="waveform-container">
+              <span class="waveform-bar"></span>
+              <span class="waveform-bar"></span>
+              <span class="waveform-bar"></span>
+              <span class="waveform-bar"></span>
+              <span class="waveform-bar"></span>
+            </div>
+            <span>${sc.audioSimulation}</span>
+          </div>
+          <p class="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed font-sans">${sc.context}</p>
+        </div>
+
+        <div class="space-y-2 pt-1">
+          <div class="text-xs font-mono font-semibold text-zinc-500 uppercase">CHOOSE YOUR DEFENSIVE ACTION:</div>
+          <div class="space-y-2" id="choices-wrapper">
+            ${sc.choices.map((ch, cIdx) => `
+              <button class="choice-btn w-full p-3 rounded border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:border-zinc-500 dark:hover:border-zinc-500 text-left transition cursor-pointer text-xs font-sans text-zinc-900 dark:text-zinc-100 flex items-start gap-2.5" data-choice="${cIdx}">
+                <span class="font-mono font-bold text-[11px] px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700">${String.fromCharCode(65 + cIdx)}</span>
+                <span class="leading-snug">${ch.text}</span>
+              </button>
+            `).join("")}
+          </div>
+        </div>
+
+        <div id="scenario-verdict-box" class="hidden p-3.5 rounded border text-xs space-y-1"></div>
+      `;
+
+      cardContainer.querySelectorAll(".choice-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          const cIdx = parseInt(btn.getAttribute("data-choice"), 10);
+          const selectedChoice = sc.choices[cIdx];
+          const verdictBox = document.getElementById("scenario-verdict-box");
+
+          if (selectedChoice.correct) {
+            verdictBox.className = "p-3.5 rounded border border-emerald-300 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950 text-xs space-y-1 block";
+            verdictBox.innerHTML = `
+              <div class="font-bold font-mono text-emerald-800 dark:text-emerald-300 flex items-center gap-2">
+                <i class="fa-solid fa-circle-check"></i> CORRECT DEFENSE DECISION
+              </div>
+              <p class="text-emerald-900 dark:text-emerald-200 font-sans leading-relaxed">${selectedChoice.reason}</p>
+            `;
+            solvedScenarios.add(idx);
+            if (scoreBadge) scoreBadge.innerText = `${solvedScenarios.size} / 4`;
+          } else {
+            verdictBox.className = "p-3.5 rounded border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950 text-xs space-y-1 block";
+            verdictBox.innerHTML = `
+              <div class="font-bold font-mono text-rose-800 dark:text-rose-300 flex items-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation"></i> VULNERABILITY DETECTED
+              </div>
+              <p class="text-rose-900 dark:text-rose-200 font-sans leading-relaxed">${selectedChoice.reason}</p>
+            `;
+          }
+        });
+      });
+    }
+
+    selectorButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const sIdx = parseInt(btn.getAttribute("data-scenario"), 10);
+        renderScenario(sIdx);
+      });
+    });
+
+    renderScenario(0);
+  }
+
+  // ==========================================================================
+  // State Comparison Sandbox Engine
+  // ==========================================================================
+  function initStateComparisonSandbox(states) {
+    const selectA = document.getElementById("compare-state-a");
+    const selectB = document.getElementById("compare-state-b");
+    const outputGrid = document.getElementById("compare-output-grid");
+
+    if (!selectA || !selectB || !states || states.length === 0) return;
+
+    selectA.innerHTML = "";
+    selectB.innerHTML = "";
+
+    states.forEach((st, idx) => {
+      const optA = document.createElement("option");
+      optA.value = st.name;
+      optA.innerText = `${st.name} (₹${st.loss_cr.toLocaleString()} Cr)`;
+      selectA.appendChild(optA);
+
+      const optB = document.createElement("option");
+      optB.value = st.name;
+      optB.innerText = `${st.name} (₹${st.loss_cr.toLocaleString()} Cr)`;
+      selectB.appendChild(optB);
+    });
+
+    selectA.value = states[0]?.name || "Maharashtra";
+    selectB.value = states[1]?.name || "Telangana";
+
+    function updateComparison() {
+      const stateA = states.find(s => s.name === selectA.value) || states[0];
+      const stateB = states.find(s => s.name === selectB.value) || states[1];
+
+      function renderCard(st, other, label) {
+        const lossDelta = st.loss_cr - other.loss_cr;
+        const lossDeltaText = lossDelta >= 0 ? `+₹${lossDelta.toFixed(1)} Cr higher than ${other.name}` : `₹${Math.abs(lossDelta).toFixed(1)} Cr lower than ${other.name}`;
+        const lossDeltaColor = lossDelta >= 0 ? "text-rose-600 dark:text-rose-400" : "text-emerald-600 dark:text-emerald-400";
+
+        return `
+          <div class="precision-card-subtle p-5 space-y-4 border border-zinc-300 dark:border-zinc-700">
+            <div class="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-2.5">
+              <div>
+                <span class="text-[10px] font-mono uppercase font-bold text-zinc-500">${label}</span>
+                <h3 class="text-base font-bold text-zinc-900 dark:text-zinc-100">${st.name}</h3>
+              </div>
+              <span class="px-2 py-0.5 text-xs font-mono font-bold rounded ${st.vulnerability_idx >= 80 ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300' : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'}">
+                Risk: ${st.vulnerability_idx || 65}/100
+              </span>
+            </div>
+
+            <div class="space-y-3 text-xs">
+              <div class="p-3 rounded bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 space-y-1">
+                <div class="text-[11px] text-zinc-500 font-mono">Reported Financial Loss</div>
+                <div class="text-lg font-bold font-mono text-black dark:text-white">₹${st.loss_cr.toLocaleString()} Cr</div>
+                <div class="text-[10px] font-mono ${lossDeltaColor}">${lossDeltaText}</div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2">
+                <div class="p-2.5 rounded bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 space-y-0.5">
+                  <div class="text-[10px] text-zinc-500 font-mono">Citizen Complaints</div>
+                  <div class="text-sm font-bold font-mono text-zinc-900 dark:text-zinc-100">${st.complaints.toLocaleString()}</div>
+                </div>
+                <div class="p-2.5 rounded bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 space-y-0.5">
+                  <div class="text-[10px] text-zinc-500 font-mono">1930 Funds Saved</div>
+                  <div class="text-sm font-bold font-mono text-emerald-600 dark:text-emerald-400">₹${(st.saved_cr || 0).toLocaleString()} Cr</div>
+                </div>
+              </div>
+
+              <div class="pt-2 border-t border-zinc-200 dark:border-zinc-800 space-y-1">
+                <div class="text-[11px] font-mono font-semibold text-zinc-500">PRIMARY THREAT PROFILE:</div>
+                <p class="text-xs text-zinc-700 dark:text-zinc-300 font-sans leading-relaxed">${st.dominant_threat || "Digital Arrest & Investment Fraud Syndicates"}</p>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      outputGrid.innerHTML = `
+        ${renderCard(stateA, stateB, "JURISDICTION A (PRIMARY)")}
+        ${renderCard(stateB, stateA, "JURISDICTION B (BENCHMARK)")}
+      `;
+    }
+
+    selectA.addEventListener("change", updateComparison);
+    selectB.addEventListener("change", updateComparison);
+    updateComparison();
+  }
+
+  // ==========================================================================
+  // Global Command Palette (Ctrl+K)
+  // ==========================================================================
+  function initCommandPalette(data) {
+    const modal = document.getElementById("command-palette-modal");
+    const openBtn = document.getElementById("open-command-palette-btn");
+    const closeBtn = document.getElementById("close-palette-btn");
+    const input = document.getElementById("palette-search-input");
+    const results = document.getElementById("palette-results-container");
+
+    if (!modal || !input || !results) return;
+
+    function openPalette() {
+      modal.classList.remove("hidden");
+      input.value = "";
+      renderResults("");
+      input.focus();
+    }
+
+    function closePalette() {
+      modal.classList.add("hidden");
+    }
+
+    if (openBtn) openBtn.addEventListener("click", openPalette);
+    if (closeBtn) closeBtn.addEventListener("click", closePalette);
+
+    window.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        if (modal.classList.contains("hidden")) {
+          openPalette();
+        } else {
+          closePalette();
+        }
+      }
+      if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+        closePalette();
+      }
+    });
+
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closePalette();
+    });
+
+    function renderResults(query) {
+      const q = query.trim().toLowerCase();
+      results.innerHTML = "";
+
+      const matchedIncidents = data.incidents.filter(i => 
+        !q || i.target.toLowerCase().includes(q) || i.category.toLowerCase().includes(q) || i.state.toLowerCase().includes(q) || i.threat_actor.toLowerCase().includes(q)
+      ).slice(0, 6);
+
+      const matchedStates = data.states.filter(s =>
+        !q || s.name.toLowerCase().includes(q)
+      ).slice(0, 3);
+
+      if (matchedIncidents.length === 0 && matchedStates.length === 0) {
+        results.innerHTML = `<div class="p-4 text-xs text-zinc-500 font-mono text-center">No intelligence records match "${query}"</div>`;
+        return;
+      }
+
+      if (matchedStates.length > 0) {
+        const stateHead = document.createElement("div");
+        stateHead.className = "px-3 py-1.5 text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-wider";
+        stateHead.innerText = "State Risk Nodes";
+        results.appendChild(stateHead);
+
+        matchedStates.forEach(st => {
+          const item = document.createElement("div");
+          item.className = "command-item";
+          item.innerHTML = `
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-map-pin text-blue-500 text-xs"></i>
+              <span class="font-bold">${st.name}</span>
+              <span class="text-xs text-zinc-500">• ₹${st.loss_cr.toLocaleString()} Cr Loss</span>
+            </div>
+            <span class="text-[10px] font-mono text-zinc-400">Risk: ${st.vulnerability_idx || 65}/100</span>
+          `;
+          item.addEventListener("click", () => {
+            closePalette();
+            switchTab("map");
+            updateSelectedStateCard(st);
+          });
+          results.appendChild(item);
+        });
+      }
+
+      if (matchedIncidents.length > 0) {
+        const incHead = document.createElement("div");
+        incHead.className = "px-3 py-1.5 text-[10px] font-mono font-bold text-zinc-400 uppercase tracking-wider mt-2";
+        incHead.innerText = "Verified OSINT Incident Records";
+        results.appendChild(incHead);
+
+        matchedIncidents.forEach(inc => {
+          const item = document.createElement("div");
+          item.className = "command-item";
+          item.innerHTML = `
+            <div class="flex items-center gap-2">
+              <span class="font-mono text-[10px] font-bold px-1.5 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded">${inc.id}</span>
+              <span class="font-semibold">${inc.target}</span>
+              <span class="text-xs text-zinc-500">• ${inc.category}</span>
+            </div>
+            <span class="text-xs font-mono font-bold text-black dark:text-white">₹${inc.loss_cr.toFixed(1)} Cr</span>
+          `;
+          item.addEventListener("click", () => {
+            closePalette();
+            openModal(inc.id);
+          });
+          results.appendChild(item);
+        });
+      }
+    }
+
+    input.addEventListener("input", (e) => {
+      renderResults(e.target.value);
+    });
+  }
+
+  // ==========================================================================
+  // 3D Card Hover Perspective Effect
+  // ==========================================================================
+  function initTiltCards() {
+    document.querySelectorAll(".tilt-card").forEach(card => {
+      card.addEventListener("mousemove", (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        const rotateX = (-y / rect.height) * 3;
+        const rotateY = (x / rect.width) * 3;
+        card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+      });
+
+      card.addEventListener("mouseleave", () => {
+        card.style.transform = "perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0)";
+      });
+    });
+  }
+
+  // ==========================================================================
   // ISRO Bhuvan Spatial Risk Engine
+  // ==========================================================================
   function initBhuvanISROMapOnly(states) {
     const mapDiv = document.getElementById("map");
     if (!mapDiv) return;
@@ -484,8 +981,8 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       const customIcon = L.divIcon({
+        className: "custom-hub-pin",
         html: pinHtml,
-        className: 'custom-pinpoint-marker',
         iconSize: [20, 20],
         iconAnchor: [10, 10]
       });
@@ -514,9 +1011,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const vulnElem = document.getElementById("selected-state-vuln");
 
     if (nameElem) nameElem.innerText = stData.name;
-    if (threatElem) threatElem.innerText = `Primary Threat: ${stData.threat || "Cyber Phishing & Vishing"}`;
+    if (threatElem) threatElem.innerText = `Primary Threat: ${stData.dominant_threat || "Digital Arrest & Investment Extortion"}`;
     if (compElem) compElem.innerText = (stData.complaints || 0).toLocaleString();
-    if (lossElem) lossElem.innerText = `₹${(stData.loss_cr || 0).toLocaleString()} Cr`;
+    if (lossElem) lossElem.innerText = `₹${(stData.loss_cr || 0).toFixed(2)} Cr`;
     if (savedElem) savedElem.innerText = `₹${(stData.saved_cr || 0).toLocaleString()} Cr`;
     if (vulnElem) vulnElem.innerText = `${stData.vulnerability_idx || 50} / 100`;
   }
@@ -568,23 +1065,21 @@ document.addEventListener("DOMContentLoaded", () => {
           layer.bindTooltip(`
             <div class="font-sans text-xs">
               <div class="font-bold text-zinc-900">${stName}</div>
-              <div class="font-mono text-zinc-600 mt-0.5">Complaints: ${(stData.complaints || 45000).toLocaleString()}</div>
-              <div class="font-mono text-zinc-900 font-semibold">Loss: ₹${(stData.loss_cr || 280.0).toLocaleString()} Cr</div>
+              <div class="text-zinc-600 font-mono text-[11px]">Loss: ₹${(stData.loss_cr || 0).toLocaleString()} Cr</div>
+              <div class="text-zinc-500 font-mono text-[10px]">Vulnerability: ${stData.vulnerability_idx || 50}/100</div>
             </div>
           `, { sticky: true });
 
           layer.on({
             mouseover: function(e) {
               const l = e.target;
-              l.setStyle({ weight: 2, color: '#09090B', fillOpacity: 0.85 });
+              l.setStyle({ weight: 2.5, color: "#09090B", fillOpacity: 0.85 });
               l.bringToFront();
-              updateSelectedStateCard(stData);
             },
             mouseout: function(e) {
               geoJsonLayer.resetStyle(e.target);
             },
             click: function() {
-              mapInstance.fitBounds(layer.getBounds(), { padding: [20, 20] });
               updateSelectedStateCard(stData);
             }
           });
@@ -592,106 +1087,103 @@ document.addEventListener("DOMContentLoaded", () => {
       }).addTo(mapInstance);
     }
 
-    renderStateRankingsSidebar(states);
+    renderStateLeaderboard(states);
   }
 
-  function renderStateRankingsSidebar(states) {
-    const rankingContainer = document.getElementById("state-leaderboard-list");
-    if (!rankingContainer) return;
-    rankingContainer.innerHTML = "";
+  function renderStateLeaderboard(states) {
+    const listContainer = document.getElementById("state-leaderboard-list");
+    if (!listContainer) return;
 
-    states.forEach((st, idx) => {
+    listContainer.innerHTML = "";
+    states.slice(0, 10).forEach((st, idx) => {
       const item = document.createElement("div");
-      item.className = "precision-card-subtle p-2.5 rounded-md hover:border-zinc-400 transition cursor-pointer flex items-center justify-between text-xs";
+      item.className = "flex items-center justify-between p-2 rounded border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:border-zinc-400 transition cursor-pointer text-xs";
+      
       item.innerHTML = `
         <div class="flex items-center gap-2">
-          <span class="w-4 h-4 rounded bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-mono font-bold text-[10px] flex items-center justify-center">${idx + 1}</span>
-          <div>
-            <div class="font-semibold text-zinc-900 dark:text-zinc-100">${st.name}</div>
-            <div class="text-[10px] font-mono text-zinc-500">${st.complaints.toLocaleString()} cases</div>
-          </div>
+          <span class="w-5 h-5 rounded bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 flex items-center justify-center font-mono font-bold text-[10px]">#${idx + 1}</span>
+          <span class="font-semibold text-zinc-900 dark:text-zinc-100">${st.name}</span>
         </div>
         <div class="text-right font-mono">
-          <div class="font-bold text-zinc-900 dark:text-zinc-100">₹${st.loss_cr.toLocaleString()} Cr</div>
-          <div class="text-[10px] text-zinc-500">Idx: ${st.vulnerability_idx}</div>
+          <span class="font-bold text-black dark:text-white">₹${st.loss_cr.toLocaleString()} Cr</span>
+          <span class="text-[10px] text-zinc-500 block">${st.complaints.toLocaleString()} cases</span>
         </div>
       `;
 
       item.addEventListener("click", () => {
         updateSelectedStateCard(st);
-        if (geoJsonLayer) {
-          geoJsonLayer.eachLayer(l => {
-            if (l.feature && l.feature.properties.name === st.name) {
-              mapInstance.fitBounds(l.getBounds(), { padding: [20, 20] });
-              l.openTooltip();
-            }
-          });
-        }
       });
 
-      rankingContainer.appendChild(item);
+      listContainer.appendChild(item);
     });
   }
 
   function setupStateSorting(states) {
-    const sortSelect = document.getElementById("state-sort-select");
-    if (sortSelect) {
-      sortSelect.addEventListener("change", (e) => {
-        currentSort = e.target.value;
+    document.querySelectorAll(".sort-state-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".sort-state-btn").forEach(b => {
+          b.classList.remove("active", "bg-zinc-900", "text-white", "dark:bg-zinc-100", "dark:text-zinc-900");
+          b.classList.add("bg-zinc-100", "dark:bg-zinc-800", "text-zinc-600", "dark:text-zinc-400");
+        });
+
+        btn.classList.add("active", "bg-zinc-900", "text-white", "dark:bg-zinc-100", "dark:text-zinc-900");
+        btn.classList.remove("bg-zinc-100", "dark:bg-zinc-800", "text-zinc-600", "dark:text-zinc-400");
+
+        currentSort = btn.getAttribute("data-sort");
         renderBhuvanStateChoropleth(states);
       });
-    }
+    });
   }
 
-  // Sector Intelligence Cards
+  // Sector Impact Cards
   function renderSectorCards() {
+    const sectors = [
+      { name: "Banking & Financial Services (BFSI)", icon: "fa-building-columns", risk: "CRITICAL", loss: "₹24,800 Cr", threat: "Digital Arrest, Fake Demat Trading, AEPS Stencils", cve: "CVE-2023-38831", badge: "rose" },
+      { name: "Healthcare & MedTech Infrastructure", icon: "fa-hospital", risk: "HIGH", loss: "₹6,400 Cr", threat: "AIIMS-Style Ransomware & EHR Database Leaks", cve: "CVE-2022-26923", badge: "rose" },
+      { name: "Critical Power & Energy Dispatch Grids", icon: "fa-bolt", risk: "HIGH", loss: "₹8,200 Cr", threat: "RedEcho / ShadowPad State-Sponsored Probes", cve: "CVE-2021-44228", badge: "amber" },
+      { name: "E-Commerce, Logistics & Retail", icon: "fa-cart-shopping", risk: "MEDIUM", loss: "₹11,500 Cr", threat: "Part-Time Task Fraud & Fake Courier Customs IVR", cve: "CVE-2023-36884", badge: "amber" },
+      { name: "Government Digital Public Infrastructure", icon: "fa-landmark", risk: "HIGH", loss: "₹9,800 Cr", threat: "CoWIN / ICMR Scraping, Spear-Phishing", cve: "CVE-2023-23397", badge: "blue" },
+      { name: "IT, Telecom & Cloud Service Providers", icon: "fa-server", risk: "CRITICAL", loss: "₹7,800 Cr", threat: "SIM-Box Bypass, Unauthorized IMEI Cloning", cve: "CVE-2024-1709", badge: "rose" }
+    ];
+
     const container = document.getElementById("sectors-grid");
     if (!container) return;
 
-    const sectors = [
-      { name: "BFSI & Capital Markets", risk: "Critical", icon: "fa-building-columns", threat: "IMPS Glitches, LockBit 3.0, Digital Arrest", loss: "₹24,500+ Cr", details: "Unpatched ADFS servers, exposed APIs, SWIFT log mismatches." },
-      { name: "Healthcare & Pharma", risk: "Critical", icon: "fa-hospital", threat: "BlackCat Ransomware, Darknet PII Leaks", loss: "₹4,200+ Cr", details: "Legacy e-Hospital systems, unencrypted databases (AIIMS & ICMR breaches)." },
-      { name: "Critical Power & Energy", risk: "Critical", icon: "fa-bolt", threat: "RedEcho ShadowPad, SCADA Firmware Exploits", loss: "High Disruption", details: "POSOCO grid recon, Kudankulam NPCIL contractor data leaks." },
-      { name: "Government & Defense", risk: "Critical", icon: "fa-shield-halved", threat: "SideCopy Spear Phishing, World Leaks", loss: "Espionage", details: "Targeting MEA, Defense personnel with malicious RTF macros." },
-      { name: "IT & Cloud Infrastructure", risk: "High", icon: "fa-cloud", threat: "Supply Chain Hacks, AWS Bucket Exposure, DDoS", loss: "₹3,600 Cr", details: "Air India SITA cloud vendor breach, Karnataka Data Centre DDoS." },
-      { name: "Telecom & ISPs", risk: "High", icon: "fa-tower-cell", threat: "SIM Swap Fraud, BGP Hijacking", loss: "Infrastructure", details: "15 Lakh+ malicious SIMs/IMEIs blocked by MHA I4C." }
-    ];
-
     container.innerHTML = "";
-    sectors.forEach(s => {
+    sectors.forEach(sec => {
       const card = document.createElement("div");
-      card.className = "precision-card p-4 space-y-2.5";
+      card.className = "precision-card p-4 space-y-3 tilt-card";
       card.innerHTML = `
         <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <div class="w-7 h-7 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 flex items-center justify-center text-xs">
-              <i class="fa-solid ${s.icon}"></i>
-            </div>
-            <h3 class="font-bold text-xs text-zinc-900 dark:text-zinc-100">${s.name}</h3>
+          <div class="w-8 h-8 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 flex items-center justify-center text-xs">
+            <i class="fa-solid ${sec.icon}"></i>
           </div>
-          <span class="status-badge ${s.risk === 'Critical' ? 'accent' : ''}">${s.risk}</span>
+          <span class="status-badge ${sec.badge}">${sec.risk}</span>
         </div>
-        <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed font-sans">${s.details}</p>
-        <div class="text-xs pt-2 border-t border-zinc-200 dark:border-zinc-800 flex justify-between text-zinc-500 font-mono text-[11px]">
-          <span>Threat: <strong class="text-zinc-700 dark:text-zinc-300 font-sans">${s.threat}</strong></span>
+        <div>
+          <h4 class="font-bold text-xs text-zinc-900 dark:text-zinc-100">${sec.name}</h4>
+          <span class="text-xs font-mono font-bold text-black dark:text-white">${sec.loss} Total Loss</span>
+        </div>
+        <p class="text-xs text-zinc-500 font-sans leading-tight">Primary Vector: ${sec.threat}</p>
+        <div class="pt-2 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-[10px] font-mono text-zinc-400">
+          <span>Observed CVE:</span>
+          <strong class="text-zinc-700 dark:text-zinc-300">${sec.cve}</strong>
         </div>
       `;
       container.appendChild(card);
     });
   }
 
-  // Landmark Incidents Grid
+  // Landmark Breaches Grid
   function renderLandmarkIncidents(incidents) {
     const container = document.getElementById("landmark-incidents-grid");
     if (!container || !incidents) return;
 
-    const landmarkIDs = ["INC-2022-003", "INC-2022-004", "INC-2023-002", "INC-2023-003", "INC-2026-001", "INC-2026-002"];
-    const landmarks = incidents.filter(i => landmarkIDs.includes(i.id));
-
+    const landmarks = incidents.filter(i => i.severity === "CRITICAL").slice(0, 8);
     container.innerHTML = "";
     landmarks.forEach(inc => {
       const card = document.createElement("div");
-      card.className = "precision-card-subtle p-3.5 flex flex-col justify-between space-y-2 cursor-pointer hover:border-zinc-400 transition group";
+      card.className = "precision-card-subtle p-3.5 flex flex-col justify-between space-y-2 cursor-pointer hover:border-zinc-400 transition group tilt-card";
       card.innerHTML = `
         <div class="space-y-1">
           <div class="flex items-center justify-between">
@@ -715,95 +1207,129 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Fraud Taxonomy Grid
+  // Fraud Taxonomy Grid (Rich Visual Infographic Cards)
   function renderFraudTaxonomy(fraudList) {
     const container = document.getElementById("fraud-taxonomy-grid");
     if (!container || !fraudList) return;
 
+    const categoryIcons = {
+      "Digital Arrest Scams": { icon: "fa-user-ninja", color: "#EF4444", bg: "rgba(239, 68, 68, 0.12)" },
+      "UPI / QR Code Fraud": { icon: "fa-qrcode", color: "#3B82F6", bg: "rgba(59, 130, 246, 0.12)" },
+      "Part-time Job & Crypto Fraud": { icon: "fa-briefcase", color: "#10B981", bg: "rgba(16, 185, 129, 0.12)" },
+      "Banking Trojans & Phishing": { icon: "fa-shield-virus", color: "#F59E0B", bg: "rgba(245, 158, 11, 0.12)" },
+      "Customer Support & KYC Spoofing": { icon: "fa-headset", color: "#8B5CF6", bg: "rgba(139, 92, 246, 0.12)" },
+      "Aadhaar / AEPS Biometric Fraud": { icon: "fa-fingerprint", color: "#EC4899", bg: "rgba(236, 72, 153, 0.12)" }
+    };
+
+    const totalLoss = fraudList.reduce((acc, curr) => acc + curr.loss_cr, 0);
     container.innerHTML = "";
 
     fraudList.forEach(f => {
+      const meta = categoryIcons[f.category] || { icon: "fa-triangle-exclamation", color: "#64748B", bg: "rgba(100, 116, 139, 0.12)" };
+      const sharePct = totalLoss > 0 ? ((f.loss_cr / totalLoss) * 100).toFixed(1) : "0";
+
       const card = document.createElement("div");
-      card.className = "precision-card p-4 space-y-2.5";
+      card.className = "precision-card p-4 space-y-3 tilt-card hover:border-zinc-400 transition";
       card.innerHTML = `
         <div class="flex items-center justify-between">
-          <h3 class="font-bold text-xs text-zinc-900 dark:text-zinc-100">${f.category}</h3>
-          <span class="text-xs font-mono font-bold text-zinc-900 dark:text-zinc-100">₹${f.loss_cr.toLocaleString()} Cr</span>
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center text-xs" style="background-color: ${meta.bg}; color: ${meta.color}">
+              <i class="fa-solid ${meta.icon}"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-xs text-zinc-900 dark:text-zinc-100">${f.category}</h3>
+              <span class="text-[10px] font-mono text-zinc-500">${sharePct}% of Total Losses</span>
+            </div>
+          </div>
+          <span class="text-sm font-mono font-bold text-black dark:text-white">₹${f.loss_cr.toLocaleString()} Cr</span>
         </div>
-        <p class="text-xs text-zinc-600 dark:text-zinc-400 font-sans"><strong class="font-semibold text-zinc-900 dark:text-zinc-100">Vector:</strong> ${f.vector}</p>
+
+        <!-- Visual Progress Bar Share -->
+        <div class="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-1.5 overflow-hidden">
+          <div class="h-1.5 rounded-full transition-all duration-500" style="width: ${sharePct}%; background-color: ${meta.color}"></div>
+        </div>
+
+        <p class="text-xs text-zinc-600 dark:text-zinc-400 font-sans line-clamp-2">${f.vector}</p>
+
         <div class="grid grid-cols-2 gap-2 text-[11px] font-mono pt-2 border-t border-zinc-200 dark:border-zinc-800 text-zinc-500">
-          <div>Cases: <strong class="text-zinc-700 dark:text-zinc-300">${f.cases.toLocaleString()}</strong></div>
-          <div>Avg Loss: <strong class="text-zinc-700 dark:text-zinc-300">₹${Math.round(f.avg_loss_inr).toLocaleString()}</strong></div>
+          <div class="bg-zinc-50 dark:bg-zinc-900 p-2 rounded border border-zinc-100 dark:border-zinc-800">
+            <span class="block text-[9px] text-zinc-400">REPORTED CASES</span>
+            <strong class="text-zinc-800 dark:text-zinc-200 text-xs">${f.cases.toLocaleString()}</strong>
+          </div>
+          <div class="bg-zinc-50 dark:bg-zinc-900 p-2 rounded border border-zinc-100 dark:border-zinc-800">
+            <span class="block text-[9px] text-zinc-400">AVG VICTIM LOSS</span>
+            <strong class="text-zinc-800 dark:text-zinc-200 text-xs">₹${Math.round(f.avg_loss_inr).toLocaleString()}</strong>
+          </div>
         </div>
       `;
       container.appendChild(card);
     });
   }
 
-  // Chronological Timeline Milestones
-  function renderTimelineMilestones(timelineData) {
+  // Timeline Milestones
+  function renderTimelineMilestones(timeline) {
     const container = document.getElementById("timeline-container");
-    if (!container || !timelineData) return;
+    if (!container || !timeline) return;
 
     container.innerHTML = "";
-    timelineData.forEach(t => {
+    timeline.forEach(m => {
       const item = document.createElement("div");
-      item.className = "relative group";
+      item.className = "relative pl-6 pb-6 last:pb-0";
       item.innerHTML = `
-        <div class="absolute -left-[31px] top-2 w-2.5 h-2.5 rounded-full bg-zinc-900 dark:bg-zinc-100 border-2 border-white dark:border-zinc-900"></div>
-        <div class="precision-card p-3.5 space-y-1">
-          <div class="flex items-center justify-between text-xs">
-            <span class="font-bold font-mono text-zinc-900 dark:text-zinc-100">${t.date}</span>
-            <span class="status-badge">${t.type}</span>
+        <div class="absolute -left-[31px] top-0 w-3.5 h-3.5 rounded-full bg-zinc-900 dark:bg-zinc-100 border-2 border-white dark:border-zinc-900"></div>
+        <div class="precision-card-subtle p-3.5 space-y-1 tilt-card">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-black dark:text-white">${m.date}</span>
+            <span class="status-badge">${m.type}</span>
           </div>
-          <h4 class="font-bold text-xs text-zinc-900 dark:text-zinc-100">${t.title}</h4>
-          <p class="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed font-sans">${t.impact}</p>
+          <h4 class="font-bold text-xs text-zinc-900 dark:text-zinc-100">${m.event}</h4>
+          <p class="text-xs text-zinc-500 font-sans leading-tight">${m.impact}</p>
         </div>
       `;
       container.appendChild(item);
     });
   }
 
-  // MITRE ATT&CK Matrix Table
-  function renderMitreMatrix(mitreData) {
-    const container = document.getElementById("mitre-table-body");
-    if (!container || !mitreData) return;
+  // MITRE Matrix Table
+  function renderMitreMatrix(mitreList) {
+    const tbody = document.getElementById("mitre-table-body");
+    if (!tbody || !mitreList) return;
 
-    container.innerHTML = "";
-    mitreData.forEach(m => {
+    tbody.innerHTML = "";
+    mitreList.forEach(m => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td class="font-bold font-mono text-xs">${m.tactic_name} <span class="text-zinc-500">(${m.tactic_id})</span></td>
-        <td class="font-semibold text-xs">${m.technique_name} <span class="text-zinc-500 font-mono text-[11px]">(${m.technique_id})</span></td>
-        <td class="text-center font-bold font-mono text-xs"><span class="status-badge">${m.frequency}</span></td>
-        <td class="text-xs text-zinc-600 dark:text-zinc-400 font-sans">${m.vectors}</td>
+        <td class="font-mono text-xs font-bold">${m.tactic_id}: ${m.tactic}</td>
+        <td class="font-mono text-xs">${m.technique_id} — ${m.technique_name}</td>
+        <td class="text-center font-mono font-bold text-xs">${m.frequency}</td>
+        <td class="text-xs text-zinc-600 dark:text-zinc-400 font-sans">${m.primary_vector}</td>
       `;
-      container.appendChild(tr);
+      tbody.appendChild(tr);
     });
   }
 
-  // Master Repository Grid
+  // Master Incident Repository Grid
   function renderRepositoryGrid(incidents) {
     const tbody = document.getElementById("incidents-table-body");
     if (!tbody || !incidents) return;
-    tbody.innerHTML = "";
 
-    incidents.forEach(inc => {
+    tbody.innerHTML = "";
+    incidents.slice(0, 50).forEach(inc => {
       const tr = document.createElement("tr");
-      const badgeClass = inc.severity === "Critical" ? "accent" : "";
+      const badgeClass = inc.severity === "CRITICAL" ? "rose" : inc.severity === "HIGH" ? "amber" : "accent";
 
       tr.innerHTML = `
         <td class="font-mono font-bold text-xs">${inc.id}</td>
-        <td class="whitespace-nowrap font-mono text-xs text-zinc-500">${inc.date}</td>
+        <td class="font-mono text-xs text-zinc-500">${inc.date}</td>
         <td class="text-xs">${inc.state}</td>
-        <td class="font-bold text-xs">${inc.target}</td>
+        <td class="font-semibold text-xs">${inc.target}</td>
         <td class="text-xs text-zinc-600 dark:text-zinc-400">${inc.sector}</td>
         <td class="text-xs">${inc.category}</td>
         <td class="text-xs text-zinc-500 font-mono">${inc.threat_actor}</td>
         <td class="text-right font-mono font-bold text-xs">₹${inc.loss_cr.toFixed(2)}</td>
         <td class="text-center"><span class="status-badge ${badgeClass}">${inc.severity}</span></td>
         <td class="text-center">
-          <button class="px-2 py-0.5 bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 rounded font-medium text-[11px] transition view-detail-btn font-mono" data-id="${inc.id}">View</button>
+          <button class="px-2 py-0.5 bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 rounded font-medium text-[11px] transition view-detail-btn font-mono cursor-pointer" data-id="${inc.id}">View</button>
         </td>
       `;
 
