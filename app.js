@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Segmented Navigation & GSAP Layout Transitions
   const switchTab = (target) => {
-    const segBtns = document.querySelectorAll(".segmented-btn");
+    const segBtns = document.querySelectorAll(".segmented-btn, .mobile-nav-link");
     const tabPanels = document.querySelectorAll(".tab-panel");
 
     segBtns.forEach(b => {
@@ -80,7 +80,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Fix: Invalidate Leaflet Map Size immediately when switching to Spatial Map
+    // Close mobile drawer if open
+    const mobileDrawer = document.getElementById("mobile-nav-drawer");
+    if (mobileDrawer && !mobileDrawer.classList.contains("hidden")) {
+      mobileDrawer.classList.add("hidden");
+    }
+
+    // Invalidate Leaflet Map Size when switching to Spatial Map
     if (target === "map" && mapInstance) {
       setTimeout(() => {
         mapInstance.invalidateSize(true);
@@ -92,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  document.querySelectorAll(".segmented-btn").forEach(btn => {
+  document.querySelectorAll(".segmented-btn, .mobile-nav-link").forEach(btn => {
     btn.addEventListener("click", () => {
       const target = btn.getAttribute("data-tab");
       if (target) switchTab(target);
@@ -110,10 +116,54 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Mobile Menu Drawer Toggle
+  const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+  const mobileNavDrawer = document.getElementById("mobile-nav-drawer");
+  if (mobileMenuBtn && mobileNavDrawer) {
+    mobileMenuBtn.addEventListener("click", () => {
+      mobileNavDrawer.classList.toggle("hidden");
+    });
+  }
+
+  // Methodology Modal Controls
+  const methodologyModal = document.getElementById("methodology-modal");
+  const openMethBtn = document.getElementById("open-methodology-btn");
+  const heroMethBtn = document.getElementById("hero-methodology-btn");
+  const footerMethBtn = document.getElementById("footer-methodology-btn");
+  const closeMethBtn = document.getElementById("close-methodology-btn");
+  const dismissMethBtn = document.getElementById("dismiss-methodology-btn");
+
+  function openMethodology() {
+    if (methodologyModal) methodologyModal.classList.remove("hidden");
+  }
+
+  function closeMethodology() {
+    if (methodologyModal) methodologyModal.classList.add("hidden");
+  }
+
+  if (openMethBtn) openMethBtn.addEventListener("click", openMethodology);
+  if (heroMethBtn) heroMethBtn.addEventListener("click", openMethodology);
+  if (footerMethBtn) footerMethBtn.addEventListener("click", (e) => { e.preventDefault(); openMethodology(); });
+  if (closeMethBtn) closeMethBtn.addEventListener("click", closeMethodology);
+  if (dismissMethBtn) dismissMethBtn.addEventListener("click", closeMethodology);
+
+  if (methodologyModal) {
+    methodologyModal.addEventListener("click", (e) => {
+      if (e.target === methodologyModal) closeMethodology();
+    });
+  }
+
   document.querySelectorAll("#print-ceo-report-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       window.print();
     });
+  });
+
+  // Window Resize Listener for Responsive Leaflet Map
+  window.addEventListener("resize", () => {
+    if (mapInstance) {
+      mapInstance.invalidateSize(true);
+    }
   });
 
   // Fetch JSON Payload
@@ -268,7 +318,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!ctx || !trends || trends.length === 0) return;
 
     const isDark = document.body.classList.contains("dark-mode");
-    const textColor = isDark ? "#FAFAFA" : "#000000";
+    const textColor = isDark ? "#FAFAFA" : "#09090B";
     const mutedColor = isDark ? "#A1A1AA" : "#71717A";
     const gridColor = isDark ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.05)";
 
@@ -313,37 +363,37 @@ document.addEventListener("DOMContentLoaded", () => {
         plugins: {
           legend: {
             position: "top",
-            labels: { color: textColor, font: { family: "Inter", size: 11, weight: "500" }, usePointStyle: true, boxWidth: 6 }
+            labels: { color: textColor, font: { family: "Manrope", size: 11, weight: "600" }, usePointStyle: true, boxWidth: 6 }
           },
           tooltip: {
             backgroundColor: isDark ? "#0A0A0A" : "#FFFFFF",
-            titleColor: isDark ? "#FFFFFF" : "#000000",
+            titleColor: isDark ? "#FFFFFF" : "#09090B",
             bodyColor: isDark ? "#E4E4E7" : "#27272A",
             borderColor: isDark ? "#27272A" : "#E4E4E7",
             borderWidth: 1,
             padding: 10,
             cornerRadius: 6,
-            bodyFont: { family: "Inter", size: 11 }
+            bodyFont: { family: "Manrope", size: 11 }
           }
         },
         scales: {
           x: {
             grid: { display: false },
-            ticks: { color: mutedColor, font: { family: "Inter", size: 11 } }
+            ticks: { color: mutedColor, font: { family: "IBM Plex Mono", size: 11 } }
           },
           yLoss: {
             type: "linear",
             position: "left",
             grid: { color: gridColor },
-            title: { display: true, text: "Loss (INR Cr)", color: mutedColor, font: { family: "Inter", size: 11, weight: "500" } },
-            ticks: { color: mutedColor, font: { family: "Inter", size: 11 }, callback: v => `₹${v}` }
+            title: { display: true, text: "Loss (INR Cr)", color: mutedColor, font: { family: "Manrope", size: 11, weight: "600" } },
+            ticks: { color: mutedColor, font: { family: "IBM Plex Mono", size: 11 }, callback: v => `₹${v}` }
           },
           yComplaints: {
             type: "linear",
             position: "right",
             grid: { display: false },
-            title: { display: true, text: "Complaints (Lakhs)", color: mutedColor, font: { family: "Inter", size: 11, weight: "500" } },
-            ticks: { color: mutedColor, font: { family: "Inter", size: 11 }, callback: v => `${v}L` }
+            title: { display: true, text: "Complaints (Lakhs)", color: mutedColor, font: { family: "Manrope", size: 11, weight: "600" } },
+            ticks: { color: mutedColor, font: { family: "IBM Plex Mono", size: 11 }, callback: v => `${v}L` }
           }
         }
       }
@@ -356,7 +406,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!ctx || !fraudData || fraudData.length === 0) return;
 
     const isDark = document.body.classList.contains("dark-mode");
-    const textColor = isDark ? "#FFFFFF" : "#000000";
+    const textColor = isDark ? "#FFFFFF" : "#09090B";
 
     const labels = fraudData.map(f => f.category);
     const losses = fraudData.map(f => f.loss_cr);
@@ -390,17 +440,17 @@ document.addEventListener("DOMContentLoaded", () => {
         plugins: {
           legend: {
             position: "bottom",
-            labels: { color: textColor, font: { family: "Inter", size: 11, weight: "500" }, boxWidth: 8, padding: 6 }
+            labels: { color: textColor, font: { family: "Manrope", size: 11, weight: "600" }, boxWidth: 8, padding: 6 }
           },
           tooltip: {
             backgroundColor: isDark ? "#0A0A0A" : "#FFFFFF",
-            titleColor: isDark ? "#FFFFFF" : "#000000",
+            titleColor: isDark ? "#FFFFFF" : "#09090B",
             bodyColor: isDark ? "#E4E4E7" : "#27272A",
             borderColor: isDark ? "#27272A" : "#E4E4E7",
             borderWidth: 1,
             padding: 8,
             cornerRadius: 6,
-            bodyFont: { family: "Inter", size: 11 },
+            bodyFont: { family: "Manrope", size: 11 },
             callbacks: {
               label: function(context) {
                 return ` ${context.label}: ₹${context.raw.toLocaleString()} Cr`;
@@ -438,44 +488,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (minutes <= 30) {
         timeDisplay.innerText = `${timeText} (Golden Recovery Window)`;
-        timeDisplay.className = "font-bold text-emerald-600 dark:text-emerald-400";
+        timeDisplay.className = "font-bold text-emerald-600 dark:text-emerald-400 font-mono";
         badge.innerText = `${Math.round(96 - (minutes * 0.4))}% RECOVERY ESTIMATE`;
         badge.className = "px-2.5 py-1 text-xs font-mono font-bold rounded-md bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800";
         lienStatus.innerText = "INSTANT APB LIEN FREEZE";
-        lienStatus.className = "text-xs font-bold text-emerald-600 dark:text-emerald-400";
+        lienStatus.className = "text-xs font-bold text-emerald-600 dark:text-emerald-400 font-mono";
         lienDesc.innerText = "Funds successfully held in recipient account before any ATM withdrawal or P2P transfer.";
         layerCount.innerText = "1 / 5 Mule Layers Active";
         layerDesc.innerText = "Money is directly quarantined inside domestic banking clearing gateway.";
         actionCode.innerText = "DIAL 1930 / AUTO-REVERSAL";
       } else if (minutes <= 120) {
         timeDisplay.innerText = `${timeText} (Layering Stage 1)`;
-        timeDisplay.className = "font-bold text-amber-600 dark:text-amber-400";
+        timeDisplay.className = "font-bold text-amber-600 dark:text-amber-400 font-mono";
         badge.innerText = `${Math.round(80 - ((minutes - 30) * 0.4))}% RECOVERY ESTIMATE`;
         badge.className = "px-2.5 py-1 text-xs font-mono font-bold rounded-md bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-800";
         lienStatus.innerText = "INTER-BANK SECONDARY HOLD";
-        lienStatus.className = "text-xs font-bold text-amber-600 dark:text-amber-400";
+        lienStatus.className = "text-xs font-bold text-amber-600 dark:text-amber-400 font-mono";
         lienDesc.innerText = "Funds moved to Layer-2 mule accounts. Automated lien dispatched to partner private banks.";
         layerCount.innerText = "2-3 / 5 Mule Layers Active";
         layerDesc.innerText = "Siphoning syndicate actively dispersing money across micro UPI transactions.";
         actionCode.innerText = "NCRP 1930 + NODAL OFFICER LIAISON";
       } else if (minutes <= 480) {
         timeDisplay.innerText = `${timeText} (Multi-Layer Dispersion)`;
-        timeDisplay.className = "font-bold text-rose-600 dark:text-rose-400";
+        timeDisplay.className = "font-bold text-rose-600 dark:text-rose-400 font-mono";
         badge.innerText = `${Math.round(42 - ((minutes - 120) * 0.05))}% RECOVERY ESTIMATE`;
         badge.className = "px-2.5 py-1 text-xs font-mono font-bold rounded-md bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300 border border-rose-300 dark:border-rose-800";
         lienStatus.innerText = "PARTIAL RECOVERY & REQUISITION";
-        lienStatus.className = "text-xs font-bold text-rose-600 dark:text-rose-400";
+        lienStatus.className = "text-xs font-bold text-rose-600 dark:text-rose-400 font-mono";
         lienDesc.innerText = "Significant capital converted into merchant gift vouchers and cash-out points.";
         layerCount.innerText = "4 / 5 Mule Layers Active";
         layerDesc.innerText = "Syndicate runners attempting crypto on-ramp via unauthorized P2P platforms.";
         actionCode.innerText = "POLICE CYBER CELL FORMAL FIR";
       } else {
         timeDisplay.innerText = `${timeText} (Exfiltration Complete)`;
-        timeDisplay.className = "font-bold text-zinc-500";
+        timeDisplay.className = "font-bold text-zinc-500 font-mono";
         badge.innerText = "12% RECOVERY ESTIMATE";
         badge.className = "px-2.5 py-1 text-xs font-mono font-bold rounded-md bg-zinc-100 text-zinc-800 dark:bg-zinc-800 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-700";
         lienStatus.innerText = "OFFSHORE TRACE REQUIRED";
-        lienStatus.className = "text-xs font-bold text-zinc-600 dark:text-zinc-400";
+        lienStatus.className = "text-xs font-bold text-zinc-600 dark:text-zinc-400 font-mono";
         lienDesc.innerText = "Capital layered into USDT and wired to transnational compound accounts (SE Asia).";
         layerCount.innerText = "5 / 5 Mule Layers Active";
         layerDesc.innerText = "Funds completely bridged into offshore non-KYC crypto wallets.";
@@ -621,7 +671,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-3">
           <div>
             <span class="text-[10px] font-mono uppercase font-bold text-zinc-500">THREAT VECTOR: ${sc.vector}</span>
-            <h3 class="text-sm font-bold text-zinc-900 dark:text-zinc-100">${sc.title}</h3>
+            <h3 class="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-display">${sc.title}</h3>
           </div>
           <span class="text-[10px] font-mono px-2 py-0.5 bg-zinc-200 dark:bg-zinc-800 rounded font-semibold text-zinc-700 dark:text-zinc-300">${sc.mitreCode}</span>
         </div>
@@ -736,7 +786,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-2.5">
               <div>
                 <span class="text-[10px] font-mono uppercase font-bold text-zinc-500">${label}</span>
-                <h3 class="text-base font-bold text-zinc-900 dark:text-zinc-100">${st.name}</h3>
+                <h3 class="text-base font-bold text-zinc-900 dark:text-zinc-100 font-display">${st.name}</h3>
               </div>
               <span class="px-2 py-0.5 text-xs font-mono font-bold rounded ${st.vulnerability_idx >= 80 ? 'bg-rose-100 text-rose-800 dark:bg-rose-950 dark:text-rose-300' : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'}">
                 Risk: ${st.vulnerability_idx || 65}/100
@@ -945,7 +995,6 @@ document.addEventListener("DOMContentLoaded", () => {
     renderBhuvanStateChoropleth(states);
     renderPinpointLocations();
 
-    // Trigger invalidateSize after slight delay to ensure full rendering
     setTimeout(() => {
       if (mapInstance) mapInstance.invalidateSize();
     }, 200);
@@ -989,7 +1038,7 @@ document.addEventListener("DOMContentLoaded", () => {
       marker.bindPopup(`
         <div class="p-3 space-y-1.5 font-sans">
           <div class="text-[10px] font-mono font-bold text-zinc-500 uppercase">ISRO Bhuvan Spatial Node</div>
-          <div class="font-bold text-xs text-zinc-900">${hub.name}</div>
+          <div class="font-bold text-xs text-zinc-900 font-display">${hub.name}</div>
           <div class="text-xs text-zinc-600">Category: <strong>${hub.type}</strong></div>
           <div class="text-xs text-zinc-900 font-mono font-bold">Reported Loss: ${hub.loss}</div>
           <div class="text-[11px] text-zinc-500 italic">Threat: ${hub.threat}</div>
@@ -1061,7 +1110,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           layer.bindTooltip(`
             <div class="font-sans text-xs">
-              <div class="font-bold text-zinc-900">${stName}</div>
+              <div class="font-bold text-zinc-900 font-display">${stName}</div>
               <div class="text-zinc-600 font-mono text-[11px]">Loss: ₹${(stData.loss_cr || 0).toLocaleString()} Cr</div>
               <div class="text-zinc-500 font-mono text-[10px]">Vulnerability: ${stData.vulnerability_idx || 50}/100</div>
             </div>
@@ -1099,7 +1148,7 @@ document.addEventListener("DOMContentLoaded", () => {
       item.innerHTML = `
         <div class="flex items-center gap-2">
           <span class="w-5 h-5 rounded bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 flex items-center justify-center font-mono font-bold text-[10px]">#${idx + 1}</span>
-          <span class="font-semibold text-zinc-900 dark:text-zinc-100">${st.name}</span>
+          <span class="font-semibold text-zinc-900 dark:text-zinc-100 font-sans">${st.name}</span>
         </div>
         <div class="text-right font-mono">
           <span class="font-bold text-black dark:text-white">₹${st.loss_cr.toLocaleString()} Cr</span>
@@ -1158,7 +1207,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <span class="status-badge ${sec.badge}">${sec.risk}</span>
         </div>
         <div>
-          <h4 class="font-bold text-xs text-zinc-900 dark:text-zinc-100">${sec.name}</h4>
+          <h4 class="font-bold text-xs text-zinc-900 dark:text-zinc-100 font-display">${sec.name}</h4>
           <span class="text-xs font-mono font-bold text-black dark:text-white">${sec.loss} Total Loss</span>
         </div>
         <p class="text-xs text-zinc-500 font-sans leading-tight">Primary Vector: ${sec.threat}</p>
@@ -1187,7 +1236,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 rounded">${inc.id}</span>
             <span class="text-xs font-mono font-bold text-zinc-900 dark:text-zinc-100">₹${inc.loss_cr.toFixed(2)} Cr</span>
           </div>
-          <h4 class="font-bold text-xs text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">${inc.target}</h4>
+          <h4 class="font-bold text-xs text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors font-display">${inc.target}</h4>
           <p class="text-[11px] text-zinc-500 leading-tight font-sans">${inc.category} (${inc.threat_actor})</p>
         </div>
         <div class="pt-2 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-[11px] font-semibold text-zinc-900 dark:text-zinc-100 font-mono">
@@ -1234,7 +1283,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <i class="fa-solid ${meta.icon}"></i>
             </div>
             <div>
-              <h3 class="font-bold text-xs text-zinc-900 dark:text-zinc-100">${f.category}</h3>
+              <h3 class="font-bold text-xs text-zinc-900 dark:text-zinc-100 font-display">${f.category}</h3>
               <span class="text-[10px] font-mono text-zinc-500">${sharePct}% of Total Losses</span>
             </div>
           </div>
@@ -1278,7 +1327,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <span class="text-xs font-mono font-bold text-black dark:text-white">${m.date}</span>
             <span class="status-badge">${m.type}</span>
           </div>
-          <h4 class="font-bold text-xs text-zinc-900 dark:text-zinc-100">${m.event}</h4>
+          <h4 class="font-bold text-xs text-zinc-900 dark:text-zinc-100 font-display">${m.event}</h4>
           <p class="text-xs text-zinc-500 font-sans leading-tight">${m.impact}</p>
         </div>
       `;
@@ -1317,10 +1366,10 @@ document.addEventListener("DOMContentLoaded", () => {
       tr.innerHTML = `
         <td class="font-mono font-bold text-xs">${inc.id}</td>
         <td class="font-mono text-xs text-zinc-500">${inc.date}</td>
-        <td class="text-xs">${inc.state}</td>
-        <td class="font-semibold text-xs">${inc.target}</td>
-        <td class="text-xs text-zinc-600 dark:text-zinc-400">${inc.sector}</td>
-        <td class="text-xs">${inc.category}</td>
+        <td class="text-xs font-sans">${inc.state}</td>
+        <td class="font-semibold text-xs font-sans">${inc.target}</td>
+        <td class="text-xs text-zinc-600 dark:text-zinc-400 font-sans">${inc.sector}</td>
+        <td class="text-xs font-sans">${inc.category}</td>
         <td class="text-xs text-zinc-500 font-mono">${inc.threat_actor}</td>
         <td class="text-right font-mono font-bold text-xs">₹${inc.loss_cr.toFixed(2)}</td>
         <td class="text-center"><span class="status-badge ${badgeClass}">${inc.severity}</span></td>
