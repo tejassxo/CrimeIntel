@@ -46,25 +46,63 @@
 
   <!-- The Republic Reveal (Opening Tricolour Sequence) -->
   <div id="republic-reveal-curtain">
-    <div class="text-center space-y-4 px-6 max-w-xl">
-      <div id="reveal-initiative-label" class="text-xs font-mono font-semibold tracking-widest text-zinc-400 uppercase">
+    <div class="text-center space-y-5 px-6 max-w-xl flex flex-col items-center">
+      <div id="reveal-initiative-label" class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/80 border border-zinc-800 text-[11px] font-mono font-bold tracking-widest text-zinc-300 uppercase shadow-lg">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
         National Digital Intelligence Initiative
       </div>
-      <div id="reveal-flag" class="space-y-1 my-4">
-        <div class="h-2 w-48 bg-[#FF9933] mx-auto rounded-t-sm shadow-sm"></div>
-        <div class="h-2 w-48 bg-[#FFFFFF] mx-auto flex items-center justify-center relative">
-          <div class="w-2.5 h-2.5 rounded-full border border-[#000080] flex items-center justify-center">
-            <div class="w-1 h-1 bg-[#000080] rounded-full"></div>
+
+      <!-- Cinematic Indian Flag Card with 24-Spoke Chakra & Silk Shimmer -->
+      <div id="reveal-flag" class="my-2">
+        <div class="flag-cinematic-card">
+          <div class="flag-band flag-saffron"></div>
+          <div class="flag-band flag-white">
+            <!-- 24-Spoke Precision SVG Ashoka Chakra -->
+            <svg viewBox="0 0 100 100" class="ashoka-chakra-svg">
+              <circle cx="50" cy="50" r="44" fill="none" stroke="#000080" stroke-width="4" />
+              <circle cx="50" cy="50" r="9" fill="#000080" />
+              <circle cx="50" cy="50" r="4" fill="#FFFFFF" />
+              <g stroke="#000080" stroke-width="2.2" stroke-linecap="round">
+                <line x1="50" y1="50" x2="50" y2="7" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(15 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(30 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(45 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(60 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(75 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(90 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(105 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(120 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(135 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(150 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(165 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(180 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(195 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(210 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(225 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(240 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(255 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(270 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(285 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(300 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(315 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(330 50 50)" />
+                <line x1="50" y1="50" x2="50" y2="7" transform="rotate(345 50 50)" />
+              </g>
+            </svg>
           </div>
+          <div class="flag-band flag-green"></div>
+          <div class="flag-shimmer-sweep"></div>
         </div>
-        <div class="h-2 w-48 bg-[#128807] mx-auto rounded-b-sm shadow-sm"></div>
       </div>
-      <div id="reveal-tagline" class="text-sm font-sans font-medium text-zinc-300">
-        CYBER JAGRUTI • 2020–2026 YTD
+
+      <div id="reveal-tagline" class="space-y-1">
+        <h2 class="font-display font-extrabold text-lg tracking-tight text-white">CYBER JAGRUTI</h2>
+        <p class="font-sans text-xs text-zinc-400">India Cybercrime Intelligence Observatory • 2020–2026 YTD</p>
       </div>
-      <div class="pt-4">
-        <button id="skip-reveal-btn" class="text-xs font-mono text-zinc-500 hover:text-zinc-300 transition underline underline-offset-4">
-          Press [ESC] or Click to Skip
+
+      <div class="pt-2">
+        <button id="skip-reveal-btn" class="px-3 py-1 rounded bg-zinc-900/60 hover:bg-zinc-800 text-xs font-mono text-zinc-400 hover:text-white transition border border-zinc-800 cursor-pointer">
+          Press <kbd class="px-1 bg-zinc-800 rounded text-zinc-300">ESC</kbd> or Click to Enter
         </button>
       </div>
     </div>

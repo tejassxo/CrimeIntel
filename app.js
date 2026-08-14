@@ -183,29 +183,42 @@ document.addEventListener("DOMContentLoaded", () => {
       tl = gsap.timeline({ defaults: { ease: "power2.out" } });
 
       curtain.classList.remove("revealed");
-      gsap.set(curtain, { display: "flex", y: 0, opacity: 1, clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" });
-      gsap.set(initLabel, { opacity: 0, y: 12 });
-      gsap.set(flag, { opacity: 0, y: 70, scale: 0.94 });
-      gsap.set(tagline, { opacity: 0, y: 10 });
+      gsap.set(curtain, { display: "flex", opacity: 1, clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)" });
+      gsap.set(initLabel, { opacity: 0, y: 15, scale: 0.95 });
+      gsap.set(flag, { opacity: 0, y: 40, scale: 0.88, rotateX: 10, transformPerspective: 800 });
+      gsap.set(tagline, { opacity: 0, y: 15 });
 
-      tl.to(initLabel, { opacity: 1, y: 0, duration: 0.45 }, 0.35);
-      tl.to(flag, { opacity: 1, y: 0, scale: 1, duration: 0.85, ease: "power3.out" }, 0.70);
-      tl.to(tagline, { opacity: 1, y: 0, duration: 0.45 }, 1.15);
+      // Phase 1: Initiative badge materializes
+      tl.to(initLabel, { opacity: 1, y: 0, scale: 1, duration: 0.5 }, 0.25);
 
-      tl.to(flag, { scale: 1.05, opacity: 0, duration: 0.3, ease: "power2.in" }, 1.65);
-      tl.to(initLabel, { opacity: 0, duration: 0.2 }, 1.65);
-      tl.to(tagline, { opacity: 0, duration: 0.2 }, 1.65);
+      // Phase 2: Indian Flag card glides up in 3D perspective with saffron/green bloom
+      tl.to(flag, { 
+        opacity: 1, 
+        y: 0, 
+        scale: 1, 
+        rotateX: 0, 
+        duration: 0.95, 
+        ease: "power3.out" 
+      }, 0.55);
 
+      // Phase 3: Tagline illuminates
+      tl.to(tagline, { opacity: 1, y: 0, duration: 0.5 }, 0.95);
+
+      // Phase 4: Flag blooms and smoothly elevates before unmasking
+      tl.to(flag, { scale: 1.04, opacity: 0.9, duration: 0.45, ease: "power2.inOut" }, 1.85);
+      tl.to([initLabel, tagline], { opacity: 0, y: -10, duration: 0.35 }, 1.95);
+
+      // Phase 5: Cinematic aperture unmasking
       tl.to(curtain, {
         clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
-        duration: 0.65,
+        duration: 0.75,
         ease: "power3.inOut",
         onComplete: () => {
           curtain.classList.add("revealed");
           animateCounters();
           if (mapInstance) mapInstance.invalidateSize(true);
         }
-      }, 1.80);
+      }, 2.20);
     }
 
     function skipSequence() {

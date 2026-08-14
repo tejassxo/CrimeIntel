@@ -588,22 +588,101 @@ body {
   background-color: var(--bg-subtle);
 }
 
-/* Republic Reveal Opening Curtain */
+/* Republic Reveal Opening Curtain & Cinematic Indian Flag */
 #republic-reveal-curtain {
   position: fixed;
   inset: 0;
   z-index: 3000;
-  background-color: #000000;
+  background: radial-gradient(circle at center, #111115 0%, #000000 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: #FFFFFF;
+  overflow: hidden;
 }
 
 #republic-reveal-curtain.revealed {
   display: none !important;
 }
+
+/* Flag Structure & Silk Wave */
+.flag-cinematic-card {
+  width: 260px;
+  height: 160px;
+  border-radius: 10px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(255, 153, 51, 0.15), 0 0 30px rgba(19, 136, 8, 0.15);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transform-style: preserve-3d;
+}
+
+.flag-band {
+  flex: 1;
+  width: 100%;
+  position: relative;
+}
+
+.flag-saffron {
+  background: linear-gradient(90deg, #E65100 0%, #FF9933 50%, #FFB74D 100%);
+}
+
+.flag-white {
+  background: linear-gradient(90deg, #F5F5F5 0%, #FFFFFF 50%, #ECEFF1 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.flag-green {
+  background: linear-gradient(90deg, #0D5302 0%, #138808 50%, #2E7D32 100%);
+}
+
+/* Silk Wave Shimmer Overlay */
+.flag-shimmer-sweep {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 20%, rgba(255, 255, 255, 0.35) 50%, transparent 80%);
+  background-size: 200% 100%;
+  pointer-events: none;
+  animation: silkSweep 3.5s ease-in-out infinite;
+}
+
+@keyframes silkSweep {
+  0% { background-position: -150% 0; }
+  100% { background-position: 150% 0; }
+}
+
+/* Ashoka Chakra Spin Animation */
+.ashoka-chakra-svg {
+  width: 44px;
+  height: 44px;
+  animation: chakraSpin 24s linear infinite;
+  filter: drop-shadow(0 0 1px rgba(0, 0, 128, 0.5));
+}
+
+@keyframes chakraSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Subtle Hero National Tricolour Ribbon */
+.hero-tricolour-accent {
+  width: 4px;
+  height: 28px;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.hero-tricolour-accent span:nth-child(1) { flex: 1; background-color: #FF9933; }
+.hero-tricolour-accent span:nth-child(2) { flex: 1; background-color: #FFFFFF; }
+.hero-tricolour-accent span:nth-child(3) { flex: 1; background-color: #138808; }
 
 /* Waveform Bars for Scam Audio Simulation */
 .waveform-container {
