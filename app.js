@@ -1354,6 +1354,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const modal = document.getElementById("incident-modal");
     modal.classList.remove("hidden");
+    const box = modal.querySelector(".precision-card");
+    if (window.gsap && box) {
+      gsap.fromTo(box, { scale: 0.94, opacity: 0, y: -12 }, { scale: 1, opacity: 1, y: 0, duration: 0.25, ease: "power2.out" });
+    }
   }
 
   const closeModalBtn = document.getElementById("close-modal-btn");
